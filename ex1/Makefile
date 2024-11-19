@@ -14,7 +14,7 @@ MANIFEST_DIR      = ${BASEDIR}\manifest
 # FILES #
 #########
 JFlex_GENERATED_FILE = ${SRC_DIR}\Lexer.java
-SRC_FILES            = ${SRC_DIR}\*.java
+SRC_FILES = ${SRC_DIR}\Lexer.java ${SRC_DIR}\Main.java ${SRC_DIR}\TokenNames.java
 CLASS_FILES          = ${BIN_DIR}\*.class
 EXTERNAL_JAR_FILES   = ${EXTERNAL_JARS_DIR}\java-cup-11b-runtime.jar
 MANIFEST_FILE        = ${MANIFEST_DIR}\MANIFEST.MF
