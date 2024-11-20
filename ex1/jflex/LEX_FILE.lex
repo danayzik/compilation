@@ -22,7 +22,7 @@ import java_cup.runtime.*;
 /* The code will be written to the file Lexer.java.  */
 /*****************************************************/ 
 %class Lexer
-
+%states MULTI_COMMENT ASTERISK_IN_COMMENT
 /********************************************************************/
 /* The current line number can be accessed with the variable yyline */
 /* and the current column number with the variable yycolumn.        */
@@ -76,7 +76,9 @@ INTEGER			= 0 | [1-9][0-9]*
 ID				= [a-z]+
 STRING          = \"([a-zA-Z]*)\"
 TYPE_ONE_COMMENT= \/\/[a-zA-Z0-9 \t(){}\[\]\?!+\-*/.;]*
-TYPE_TWO_COMMENT= \/\*(?:(?!\*\/)[\*a-zA-Z0-9\s(){}\[\]\?\!\+\-\.;\/])*\*\/
+COMMENT_START   = \/\*
+ALLOWED_COMMENT_CHARS = [a-zA-Z0-9\s\(\){}\[\]\?\!\+\-\.;\/]*
+SLASH = \/
 /******************************/
 /* DOLAR DOLAR - DON'T TOUCH! */
 /******************************/
@@ -95,6 +97,7 @@ TYPE_TWO_COMMENT= \/\*(?:(?!\*\/)[\*a-zA-Z0-9\s(){}\[\]\?\!\+\-\.;\/])*\*\/
 
 <YYINITIAL> {
 
+{COMMENT_START}     { yybegin(MULTI_COMMENT);}
 "nil"               { return symbol(TokenNames.NIL, "NIL");}
 "array"             { return symbol(TokenNames.ARRAY, "ARRAY");}
 "class"             { return symbol(TokenNames.CLASS, "CLASS");}
@@ -128,12 +131,25 @@ TYPE_TWO_COMMENT= \/\*(?:(?!\*\/)[\*a-zA-Z0-9\s(){}\[\]\?\!\+\-\.;\/])*\*\/
 "<"                 { return symbol(TokenNames.LT, "LT");}
 ">"                 { return symbol(TokenNames.GT, "GT");}
 {TYPE_ONE_COMMENT}  { }
-{TYPE_TWO_COMMENT}  { }
 <<EOF>>				{ return symbol(TokenNames.EOF);}
+.                   {return symbol(TokenNames.ERROR);}
 /**************************************************************/
 /* YYINITIAL is the state at which the lexer begins scanning. */
 /* So these regular expressions will only be matched if the   */
 /* .+   // lexical ERROR caught, add this. also, add it to too large of an int*/
 /**************************************************************/
 
+}
+<MULTI_COMMENT> {
+"*"        { yybegin(ASTERISK_IN_COMMENT); }
+{ALLOWED_COMMENT_CHARS}      { }
+<<EOF>>				{yybegin(YYINITIAL); return symbol(TokenNames.ERROR);}
+.                   {return symbol(TokenNames.ERROR);}
+}
+<ASTERISK_IN_COMMENT>{
+"*"   {}
+{SLASH}   {yybegin(YYINITIAL);}
+[a-zA-Z0-9\s\(\){}\[\]\?\!\+\-\.;]*  {yybegin(MULTI_COMMENT);}
+<<EOF>>				{yybegin(YYINITIAL); return symbol(TokenNames.ERROR);}
+.                   {return symbol(TokenNames.ERROR);}
 }

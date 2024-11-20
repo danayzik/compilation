@@ -1,8 +1,3 @@
-)
-moish 77 999 zebra
-90 * ( sdf ) "hello"
-int x := 5
-/* meow ***/
- //; */
-/* m
-*/
+/* gfhfhf
+
+ghffh5464
