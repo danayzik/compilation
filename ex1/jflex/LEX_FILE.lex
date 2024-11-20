@@ -74,7 +74,9 @@ LineTerminator	= \r|\n|\r\n
 WhiteSpace		= {LineTerminator} | [ \t]
 INTEGER			= 0 | [1-9][0-9]*
 ID				= [a-z]+
-
+STRING          = \"([a-zA-Z]*)\"
+TYPE_ONE_COMMENT= \/\/[a-zA-Z0-9 \t(){}\[\]\?!+\-*/.;]*
+TYPE_TWO_COMMENT= \/\*(?:(?!\*\/)[\*a-zA-Z0-9\s(){}\[\]\?\!\+\-\.;\/])*\*\/
 /******************************/
 /* DOLAR DOLAR - DON'T TOUCH! */
 /******************************/
@@ -93,14 +95,45 @@ ID				= [a-z]+
 
 <YYINITIAL> {
 
-"+"					{ return symbol(TokenNames.PLUS);}
-"-"					{ return symbol(TokenNames.MINUS);}
-"PPP"				{ return symbol(TokenNames.TIMES);}
-"/"					{ return symbol(TokenNames.DIVIDE);}
-"("					{ return symbol(TokenNames.LPAREN);}
-")"					{ return symbol(TokenNames.RPAREN);}
-{INTEGER}			{ return symbol(TokenNames.NUMBER, Integer.valueOf(yytext()));}
-{ID}				{ return symbol(TokenNames.ID,     new String( yytext()));}   
+"nil"               { return symbol(TokenNames.NIL, "NIL");}
+"array"             { return symbol(TokenNames.ARRAY, "ARRAY");}
+"class"             { return symbol(TokenNames.CLASS, "CLASS");}
+"extends"           { return symbol(TokenNames.EXTENDS, "EXTENDS");}
+"return"            { return symbol(TokenNames.RETURN, "RETURN");}
+"while"             { return symbol(TokenNames.WHILE, "WHILE");}
+"if"                { return symbol(TokenNames.IF, "IF");}
+"new"               { return symbol(TokenNames.NEW, "NEW");}
+"int"               { return symbol(TokenNames.TYPE_INT, "TYPE_INT");}
+"void"              { return symbol(TokenNames.TYPE_VOID, "TYPE_VOID");}
+"string"            { return symbol(TokenNames.TYPE_STRING,"TYPE_STRING");}
+"+"					{ return symbol(TokenNames.PLUS, "PLUS");}
+"-"					{ return symbol(TokenNames.MINUS, "MINUS");}
+"*"				    { return symbol(TokenNames.TIMES, "TIMES");}
+"/"					{ return symbol(TokenNames.DIVIDE, "DIVIDE");}
+"("					{ return symbol(TokenNames.LPAREN, "LPAREN");}
+")"					{ return symbol(TokenNames.RPAREN, "RPAREN");}
+{INTEGER}			{ return symbol(TokenNames.NUMBER, String.format("INT(%s)", yytext()));}
+{STRING}            { return symbol(TokenNames.STRING, String.format("STRING(%s)", yytext()));}
+{ID}				{ return symbol(TokenNames.ID, String.format("ID(%s)", yytext()));}
 {WhiteSpace}		{ /* just skip what was found, do nothing */ }
+"["                 { return symbol(TokenNames.LBRACK, "LBRACK");}
+"]"                 { return symbol(TokenNames.RBRACK, "RBRACK");}
+"{"                 { return symbol(TokenNames.LBRACE, "LBRACE");}
+"}"                 { return symbol(TokenNames.RBRACE, "RBRACE");}
+","                 { return symbol(TokenNames.COMMA, "COMMA");}
+"."                 { return symbol(TokenNames.DOT, "DOT");}
+";"                 { return symbol(TokenNames.SEMICOLON, "SEMICOLON");}
+":="                { return symbol(TokenNames.ASSIGN, "ASSIGN");}
+"="                 { return symbol(TokenNames.EQ, "EQ");}
+"<"                 { return symbol(TokenNames.LT, "LT");}
+">"                 { return symbol(TokenNames.GT, "GT");}
+{TYPE_ONE_COMMENT}  { }
+{TYPE_TWO_COMMENT}  { }
 <<EOF>>				{ return symbol(TokenNames.EOF);}
+/**************************************************************/
+/* YYINITIAL is the state at which the lexer begins scanning. */
+/* So these regular expressions will only be matched if the   */
+/* .+   // lexical ERROR caught, add this. also, add it to too large of an int*/
+/**************************************************************/
+
 }
