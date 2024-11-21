@@ -1,40 +1,40 @@
 ###############
 # DIRECTORIES #
 ###############
-BASEDIR           = $(shell echo %CD%)
-JFlex_DIR         = ${BASEDIR}\jflex
-SRC_DIR           = ${BASEDIR}\src
-BIN_DIR           = ${BASEDIR}\bin
-INPUT_DIR         = ${BASEDIR}\input
-OUTPUT_DIR        = ${BASEDIR}\output
-EXTERNAL_JARS_DIR = ${BASEDIR}\jar_files
-MANIFEST_DIR      = ${BASEDIR}\manifest
+BASEDIR           = $(shell pwd)
+JFlex_DIR         = ${BASEDIR}/jflex
+SRC_DIR           = ${BASEDIR}/src
+BIN_DIR           = ${BASEDIR}/bin
+INPUT_DIR         = ${BASEDIR}/input
+OUTPUT_DIR        = ${BASEDIR}/output
+EXTERNAL_JARS_DIR = ${BASEDIR}/jar_files
+MANIFEST_DIR      = ${BASEDIR}/manifest
 
 #########
 # FILES #
 #########
-JFlex_GENERATED_FILE = ${SRC_DIR}\Lexer.java
-SRC_FILES = ${SRC_DIR}\Lexer.java ${SRC_DIR}\Main.java ${SRC_DIR}\TokenNames.java
-CLASS_FILES          = ${BIN_DIR}\*.class
-EXTERNAL_JAR_FILES   = ${EXTERNAL_JARS_DIR}\java-cup-11b-runtime.jar
-MANIFEST_FILE        = ${MANIFEST_DIR}\MANIFEST.MF
+JFlex_GENERATED_FILE = ${SRC_DIR}/Lexer.java
+SRC_FILES            = ${SRC_DIR}/*.java
+CLASS_FILES          = ${BIN_DIR}/*.class
+EXTERNAL_JAR_FILES   = ${EXTERNAL_JARS_DIR}/java-cup-11b-runtime.jar
+MANIFEST_FILE        = ${MANIFEST_DIR}/MANIFEST.MF
 
 ########################
 # DEFINITIONS :: JFlex #
 ########################
-JFlex_PROGRAM = jflex
+JFlex_PROGRAM  = jflex
 JFlex_FLAGS    = -q
 JFlex_DEST_DIR = ${SRC_DIR}
-JFlex_FILE     = ${JFlex_DIR}\LEX_FILE.lex
+JFlex_FILE     = ${JFlex_DIR}/LEX_FILE.lex
 
 ########################
 # DEFINITIONS :: LEXER #
 ########################
-INPUT    = ${INPUT_DIR}\Input.txt
-OUTPUT   = ${OUTPUT_DIR}\OutputTokens.txt
+INPUT    = ${INPUT_DIR}/Input.txt
+OUTPUT   = ${OUTPUT_DIR}/OutputTokens.txt
 
 all:
-	cls
+	clear
 	@echo "****************************"
 	@echo "*                          *"
 	@echo "*                          *"
@@ -42,6 +42,7 @@ all:
 	@echo "*                          *"
 	@echo "*                          *"
 	@echo "****************************"
+	rm -rf LEXER
 	@echo "\n"
 	@echo "***********************************************************"
 	@echo "*                                                         *"
@@ -50,7 +51,7 @@ all:
 	@echo "*                                                         *"
 	@echo "*                                                         *"
 	@echo "***********************************************************"
-
+	rm -rf ${JFlex_GENERATED_FILE} ${CLASS_FILES}
 	@echo "\n"
 	@echo "************************************************************"
 	@echo "*                                                          *"
@@ -87,4 +88,3 @@ all:
 	@echo "*                           *"
 	@echo "*****************************"
 	java -jar LEXER ${INPUT} ${OUTPUT}
-
