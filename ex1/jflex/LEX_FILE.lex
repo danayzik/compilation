@@ -22,7 +22,7 @@ import java_cup.runtime.*;
 /* The code will be written to the file Lexer.java.  */
 /*****************************************************/ 
 %class Lexer
-%states MULTI_COMMENT ASTERISK_IN_COMMENT
+%states MULTI_COMMENT ASTERISK_IN_COMMENT ONE_LINE_COMMENT
 /********************************************************************/
 /* The current line number can be accessed with the variable yyline */
 /* and the current column number with the variable yycolumn.        */
@@ -73,11 +73,13 @@ import java_cup.runtime.*;
 LineTerminator	= \r|\n|\r\n
 WhiteSpace		= {LineTerminator} | [ \t]
 INTEGER			= 0 | [1-9][0-9]*
+LEADING_ZEROES_INT = 0[1-9][0-9]*
 ID				= [a-z]+
 STRING          = \"([a-zA-Z]*)\"
-TYPE_ONE_COMMENT= \/\/[a-zA-Z0-9 \t(){}\[\]\?!+\-*/.;]*
-COMMENT_START   = \/\*
-ALLOWED_COMMENT_CHARS = [a-zA-Z0-9\s\(\){}\[\]\?\!\+\-\.;\/]*
+ONE_LINE_COMMENT_START = \/\/
+ALLOWED_ONE_LINE_COMMENT_CHARS = [a-zA-Z0-9 \t(){}\[\]\?!\+\-\*\/\.;]+
+MULTI_COMMENT_START   = \/\*
+ALLOWED_MULTI_COMMENT_CHARS = ([a-zA-Z0-9\(\){}\[\]\?\!\+\-\.;]|{WhiteSpace})+
 SLASH = \/
 /******************************/
 /* DOLAR DOLAR - DON'T TOUCH! */
@@ -97,7 +99,9 @@ SLASH = \/
 
 <YYINITIAL> {
 
-{COMMENT_START}     { yybegin(MULTI_COMMENT);}
+{MULTI_COMMENT_START}       {yybegin(MULTI_COMMENT);}
+{ONE_LINE_COMMENT_START}    {yybegin(ONE_LINE_COMMENT);}
+{LEADING_ZEROES_INT}        {return symbol(TokenNames.ERROR);}
 "nil"               { return symbol(TokenNames.NIL, "NIL");}
 "array"             { return symbol(TokenNames.ARRAY, "ARRAY");}
 "class"             { return symbol(TokenNames.CLASS, "CLASS");}
@@ -115,7 +119,7 @@ SLASH = \/
 "/"					{ return symbol(TokenNames.DIVIDE, "DIVIDE");}
 "("					{ return symbol(TokenNames.LPAREN, "LPAREN");}
 ")"					{ return symbol(TokenNames.RPAREN, "RPAREN");}
-{INTEGER}			{ return symbol(TokenNames.NUMBER, String.format("INT(%s)", yytext()));}
+{INTEGER}			{ if(Integer.valueOf(yytext()) > 32767){return symbol(TokenNames.ERROR);}return symbol(TokenNames.NUMBER, String.format("INT(%s)", yytext()));}
 {STRING}            { return symbol(TokenNames.STRING, String.format("STRING(%s)", yytext()));}
 {ID}				{ return symbol(TokenNames.ID, String.format("ID(%s)", yytext()));}
 {WhiteSpace}		{ /* just skip what was found, do nothing */ }
@@ -130,7 +134,6 @@ SLASH = \/
 "="                 { return symbol(TokenNames.EQ, "EQ");}
 "<"                 { return symbol(TokenNames.LT, "LT");}
 ">"                 { return symbol(TokenNames.GT, "GT");}
-{TYPE_ONE_COMMENT}  { }
 <<EOF>>				{ return symbol(TokenNames.EOF);}
 .                   {return symbol(TokenNames.ERROR);}
 /**************************************************************/
@@ -142,14 +145,20 @@ SLASH = \/
 }
 <MULTI_COMMENT> {
 "*"        { yybegin(ASTERISK_IN_COMMENT); }
-{ALLOWED_COMMENT_CHARS}      { }
-<<EOF>>				{yybegin(YYINITIAL); return symbol(TokenNames.ERROR);}
+{ALLOWED_MULTI_COMMENT_CHARS}|\/      { }
+<<EOF>>				{return symbol(TokenNames.ERROR);}
 .                   {return symbol(TokenNames.ERROR);}
 }
 <ASTERISK_IN_COMMENT>{
 "*"   {}
 {SLASH}   {yybegin(YYINITIAL);}
-[a-zA-Z0-9\s\(\){}\[\]\?\!\+\-\.;]*  {yybegin(MULTI_COMMENT);}
-<<EOF>>				{yybegin(YYINITIAL); return symbol(TokenNames.ERROR);}
+{ALLOWED_MULTI_COMMENT_CHARS}  {yybegin(MULTI_COMMENT);}
+<<EOF>>				{return symbol(TokenNames.ERROR);}
+.                   {return symbol(TokenNames.ERROR);}
+}
+<ONE_LINE_COMMENT> {
+{ALLOWED_ONE_LINE_COMMENT_CHARS}      { }
+{LineTerminator}              {yybegin(YYINITIAL);}
+<<EOF>>				{return symbol(TokenNames.EOF);}
 .                   {return symbol(TokenNames.ERROR);}
 }
