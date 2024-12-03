@@ -99,6 +99,7 @@ non terminal AST_CFIELD cField;
 non terminal AST_NEW_EXP newExp;
 non terminal AST_STMT stmt;
 non terminal AST_STMT_LIST stmtList;
+non terminal AST_TYPE type;
 
 
 /***********************/
@@ -139,7 +140,26 @@ stmt		::=		var:v ASSIGN exp:e SEMICOLON								{: RESULT = new AST_STMT_ASSIGN(v
 exp			::=		INT:i						        {: RESULT = new AST_EXP_INT(i); :}
                     | MINUS INT:i						{: RESULT = new AST_EXP_VAR(-i); :}
 					| var:v								{: RESULT = new AST_EXP_VAR(v); :}
+					| LPAREN exp:e1 RPAREN				{: RESULT = new AST_EXP_PAREN(e1); :}
 					| exp:e1 PLUS  exp:e2				{: RESULT = new AST_EXP_BINOP(e1, e2, 0);:}
-					| exp:e1 TIMES  exp:e2				{: RESULT = new AST_EXP_BINOP(e1, e2, 0);:}
 					| exp:e1 MINUS exp:e2				{: RESULT = new AST_EXP_BINOP(e1, e2, 1);:}
+					| exp:e1 TIMES  exp:e2				{: RESULT = new AST_EXP_BINOP(e1, e2, 2);:}
+					| exp:e1 DIVIDE  exp:e2				{: RESULT = new AST_EXP_BINOP(e1, e2, 3);:}
+					| exp:e1 LT  exp:e2				    {: RESULT = new AST_EXP_BINOP(e1, e2, 4);:}
+					| exp:e1 GT  exp:e2				    {: RESULT = new AST_EXP_BINOP(e1, e2, 5);:}
+					| exp:e1 EQ  exp:e2				    {: RESULT = new AST_EXP_BINOP(e1, e2, 6);:}
+					| STRING:s1				            {: RESULT = new AST_EXP_STRING(s1);:}
+					| NIL			                    {: RESULT = new AST_EXP_NIL();:}
+					// add function call
+					;
+
+dec		  ::=		type ID:s ASSIGN newExp:e1 SEMICOLON						{: RESULT = new AST_STMT_ASSIGN(v,e); :}
+					| 	{: RESULT = new AST_STMT_IF(cond,body); :}
+					|
+					;
+
+type	::=		    TYPE_INT								{: RESULT = new AST_TPE("int"); :}
+					| TYPE_STRING 	                        {: RESULT = new AST_STMT_IF("string"); :}
+					| TYPE_VOID	                            {: RESULT = new AST_STMT_WHILE("void"); :}
+					| ID:s	                                {: RESULT = new AST_STMT_WHILE(s); :}
 					;

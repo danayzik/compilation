@@ -5,6 +5,26 @@ public class AST_EXP_BINOP extends AST_EXP
 	int OP;
 	public AST_EXP left;
 	public AST_EXP right;
+	public static int mapOperator(String operator) {
+		switch (operator) {
+			case "PLUS":
+				return 0;
+			case "MINUS":
+				return 1;
+			case "TIMES":
+				return 2;
+			case "DIVIDE":
+				return 3;
+			case "LT":
+				return 4;
+			case "GT":
+				return 5;
+			case "EQ":
+				return 6;
+			default:
+				throw new IllegalArgumentException("Invalid operator: " + operator);
+		}
+	}
 	
 	/******************/
 	/* CONSTRUCTOR(S) */
@@ -34,14 +54,13 @@ public class AST_EXP_BINOP extends AST_EXP
 	/*************************************************/
 	public void PrintMe()
 	{
-		String sOP="";
+
 		
 		/*********************************/
 		/* CONVERT OP to a printable sOP */
 		/*********************************/
-		if (OP == 0) {sOP = "+";}
-		if (OP == 1) {sOP = "-";}
-		
+		String sOP=mapOperator(this.OP);
+
 		/*************************************/
 		/* AST NODE TYPE = AST BINOP EXP */
 		/*************************************/
