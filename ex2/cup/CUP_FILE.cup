@@ -8,7 +8,7 @@ parser code
 {:
 	public Lexer lexer;
 	public List<FUNC_ARG>funcArgListBuilder;
-	public Parser(Lexer lexer);
+	public Parser(Lexer lexer)
 	{
 		super(lexer);
 		this.lexer = lexer;
