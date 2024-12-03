@@ -7,8 +7,8 @@ import AST.*;
 parser code 
 {:
 	public Lexer lexer;
-
-	public Parser(Lexer lexer)
+	public List<FUNC_ARG>funcArgListBuilder;
+	public Parser(Lexer lexer);
 	{
 		super(lexer);
 		this.lexer = lexer;
@@ -100,18 +100,23 @@ non terminal AST_NEW_EXP newExp;
 non terminal AST_STMT stmt;
 non terminal AST_STMT_LIST stmtList;
 non terminal AST_TYPE type;
+non terminal AST_NEW_EXP newExp;
+non terminal List<FUNC_ARG> funcArgList;
+non terminal AST_CFIELD_LIST cFieldList;
+
+
 
 
 /***********************/
 /* OPERATOR PRECEDENCE */
 /***********************/
-precedence ASSIGN;
+precedence nonassoc ASSIGN;
 precedence left EQUALS;
 precedence left LT, GT;
 precedence left PLUS, MINUS;
 precedence left TIMES, DIVIDE;
-precedence LBRACKET;
-precedence LPAREN;
+precedence nonassoc LBRACKET;
+precedence nonassoc LPAREN;
 precedence left DOT;
 
 /************************/
@@ -127,14 +132,25 @@ stmtList	::=		stmt:s	stmtList:l		{: RESULT = new AST_STMT_LIST(s,l);    :}
 					| stmt:s				{: RESULT = new AST_STMT_LIST(s,null); :}
 					;
 
+cFieldList	::=		cField:f	cFieldList:l		{: RESULT = new AST_CFIELD_LIST(f,l);    :}
+					| cField:f				{: RESULT = new AST_CFIELD_LIST(f,null); :}
+					;
+
 var			::=		ID:name								{: RESULT = new AST_VAR_SIMPLE(name);       :}
 					| var:v DOT ID:fieldName			{: RESULT = new AST_VAR_FIELD(v,fieldName); :} 
 					| var:v LBRACK exp:e RBRACK			{: RESULT = new AST_VAR_SUBSCRIPT(v,e);     :} 
 					;
 					
-stmt		::=		var:v ASSIGN exp:e SEMICOLON								{: RESULT = new AST_STMT_ASSIGN(v,e); :}
-					| IF    LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_IF(cond,body); :}
+stmt		::=		  type:t ID:id ASSIGN newExp:e SEMICOLON				    {: RESULT = new AST_LOCAL_VAR_DEC(t, id, e); :}
+                    | type:t ID:id SEMICOLON	                                {: RESULT = new AST_LOCAL_VAR_DEC(t, id); :}
+                    | type:t ASSIGN exp:e ID:s SEMICOLON	                    {: RESULT = new AST_LOCAL_VAR_DEC(t, id, e); :}
+                    | var:v ASSIGN exp:e SEMICOLON								{: RESULT = new AST_STMT_ASSIGN(v,e); :}
+                    | var:v ASSIGN newExp:e SEMICOLON								{: RESULT = new AST_STMT_ASSIGN(v,e); :}
+                    | RETURN SEMICOLON                                      {: RESULT = new AST_STMT_RETURN(null); :}
+                    | RETURN exp:e SEMICOLON                                      {: RESULT = new AST_STMT_RETURN(e); :}
+					| IF LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_IF(cond,body); :}
 					| WHILE LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_WHILE(cond,body); :}
+					// add function call
 					;
 
 exp			::=		INT:i						        {: RESULT = new AST_EXP_INT(i); :}
@@ -153,13 +169,37 @@ exp			::=		INT:i						        {: RESULT = new AST_EXP_INT(i); :}
 					// add function call
 					;
 
-dec		  ::=		type ID:s ASSIGN newExp:e1 SEMICOLON						{: RESULT = new AST_STMT_ASSIGN(v,e); :}
-					| 	{: RESULT = new AST_STMT_IF(cond,body); :}
-					|
+dec		  ::=		  type:t ID:id ASSIGN newExp:e SEMICOLON				    {: RESULT = new AST_GLOBAL_VAR_DEC(t, id, e); :}
+                    | type:t ID:id SEMICOLON	                                {: RESULT = new AST_GLOBAL_VAR_DEC(t, id); :}
+                    | type:t ASSIGN exp:e ID:s SEMICOLON	                    {: RESULT = new AST_GLOBAL_VAR_DEC(t, id, e); :}
+					| ARRAY ID:id EQ type:t LBRACK RBRACK SEMICOLON	            {: RESULT = new AST_DEC_ARRAY_TYPE_DEF(id, t); :}
+					| type:funcType ID:funcName LPAREN RPAREN LBRACE stmtList:body RBRACE {: RESULT = new AST_GLOBAL_FUNC_DEC(funcType, funcName, body, null); :}
+                    | type:funcType ID:funcName LPAREN type:argType ID:argID RPAREN LBRACE stmtList:body RBRACE  {: RESULT = new AST_GLOBAL_FUNC_DEC(funcType, funcName, body, new ArrayList<>(List.of(new FUNC_ARG(argType, argID)))); :}
+                    | type:funcType ID:fundName LPAREN type:argType ID:argID funcArgList:fArgLst RPAREN LBRACE stmtList:body RBRACE  {: fArgLst.add(new FUNC_ARG(argType, argID));RESULT = new AST_GLOBAL_FUNC_DEC(funcType, funcName, body, new ArrayList<>(fArgLst)); :}
+					| CLASS ID:id LBRACE cFieldList:flist RBRACE {: RESULT = new AST_CLASS_DEC(id, flist, null); :}
+					| CLASS ID:id EXTENDS ID:parentID LBRACE cFieldList:flist RBRACE  {: RESULT = new AST_CLASS_DEC(id, flist, parentID); :}
 					;
 
-type	::=		    TYPE_INT								{: RESULT = new AST_TPE("int"); :}
-					| TYPE_STRING 	                        {: RESULT = new AST_STMT_IF("string"); :}
-					| TYPE_VOID	                            {: RESULT = new AST_STMT_WHILE("void"); :}
-					| ID:s	                                {: RESULT = new AST_STMT_WHILE(s); :}
+type	::=		    TYPE_INT								{: RESULT = new AST_TYPE("int"); :}
+					| TYPE_STRING 	                        {: RESULT = new AST_TYPE("string"); :}
+					| TYPE_VOID	                            {: RESULT = new AST_TYPE("void"); :}
+					| ID:s	                                {: RESULT = new AST_TYPE(s); :}
 					;
+
+newExp	::=		    NEW TYPE:t1								{: RESULT = new AST_NEW_EXP_SIMPLE(t1); :}
+					| NEW type:t LBRACK exp:e RBRACK 	    {: RESULT = new AST_NEW_EXP_ARRAY(t, e); :}
+					;
+
+cField	::=		      type:t ID:id ASSIGN newExp:e SEMICOLON				    {: RESULT = new AST_CLASS_VAR_DEC(t, id, e); :}
+                    | type:t ID:id SEMICOLON	                                {: RESULT = new AST_CLASS_VAR_DEC(t, id); :}
+                    | type:t ASSIGN exp:e ID:s SEMICOLON	                    {: RESULT = new AST_CLASS_VAR_DEC(t, id, e); :}
+					| type:funcType ID:funcName LPAREN RPAREN LBRACE stmtList:body RBRACE {: RESULT = new AST_CLASS_FUNC_DEC(funcType, funcName, body, null); :}
+                    | type:funcType ID:funcName LPAREN type:argType ID:argID RPAREN LBRACE stmtList:body RBRACE  {: RESULT = new AST_CLASS_FUNC_DEC(funcType, funcName, body, new ArrayList<>(List.of(new FUNC_ARG(argType, argID)))); :}
+                    | type:funcType ID:fundName LPAREN type:argType ID:argID funcArgList:fArgLst RPAREN LBRACE stmtList:body RBRACE  {: fArgLst.add(new FUNC_ARG(argType, argID));RESULT = new AST_CLASS_FUNC_DEC(funcType, funcName, body, new ArrayList<>(fArgLst)); :}
+					;
+
+
+funcArgList	 ::=	COMMA type:argType ID:argID funcArgList:fArgLst				{: fArgLst.add(new FUNC_ARG(argType, argID)); :}
+                    | COMMA type:t ID:argID                                {: funcArgListBuilder = new ArrayList<>(List.of(new FUNC_ARG(argType, argID))); :}
+					;
+

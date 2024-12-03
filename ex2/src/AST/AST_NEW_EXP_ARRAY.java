@@ -1,7 +1,7 @@
 package AST;
 //Not finished
 
-public class AST_NEW_EXP_ARRAY extends AST_NEWEXP
+public class AST_NEW_EXP_ARRAY extends AST_NEW_EXP
 {
 	/************************/
 	/* simple variable name */
