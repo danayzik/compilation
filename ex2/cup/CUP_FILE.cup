@@ -8,6 +8,7 @@ import AST.*;
 
 parser code 
 {:
+
 	public Lexer lexer;
 	public List<FUNC_ARG>funcArgListBuilder;
 	public Parser(Lexer lexer)
@@ -107,8 +108,6 @@ non terminal List<FUNC_ARG> funcArgList;
 non terminal AST_CFIELD_LIST cFieldList;
 non terminal AST_EXP_LIST expList;
 non terminal AST_DEC_LIST decList;
-
-
 
 
 /***********************/

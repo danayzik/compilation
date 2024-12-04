@@ -6,7 +6,6 @@ public class AST_EXP_INT extends AST_EXP
 
 	public AST_EXP_INT(int value)
 	{
-
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 		this.value = value;
 	}
