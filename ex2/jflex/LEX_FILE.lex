@@ -119,9 +119,9 @@ SLASH = \/
 "/"					{ return symbol(TokenNames.DIVIDE, "DIVIDE");}
 "("					{ return symbol(TokenNames.LPAREN, "LPAREN");}
 ")"					{ return symbol(TokenNames.RPAREN, "RPAREN");}
-{INTEGER}			{ if(Integer.valueOf(yytext()) > 32767){return symbol(TokenNames.ERROR);}return symbol(TokenNames.INT, String.format("INT(%s)", yytext()));}
-{STRING}            { return symbol(TokenNames.STRING, String.format("STRING(%s)", yytext()));}
-{ID}				{ return symbol(TokenNames.ID, String.format("ID(%s)", yytext()));}
+{INTEGER}			{ if(Integer.valueOf(yytext()) > 32767){return symbol(TokenNames.ERROR);}return symbol(TokenNames.INT, Integer.valueOf(yytext()));}
+{STRING}            { return symbol(TokenNames.STRING, yytext());}
+{ID}				{ return symbol(TokenNames.ID,  yytext());}
 {WhiteSpace}		{ /* just skip what was found, do nothing */ }
 "["                 { return symbol(TokenNames.LBRACK, "LBRACK");}
 "]"                 { return symbol(TokenNames.RBRACK, "RBRACK");}
