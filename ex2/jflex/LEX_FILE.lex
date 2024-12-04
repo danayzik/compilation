@@ -101,7 +101,7 @@ SLASH = \/
 
 {MULTI_COMMENT_START}       {yybegin(MULTI_COMMENT);}
 {ONE_LINE_COMMENT_START}    {yybegin(ONE_LINE_COMMENT);}
-{LEADING_ZEROES_INT}        {return symbol(TokenNames.error);}
+{LEADING_ZEROES_INT}        {return symbol(TokenNames.ERROR);}
 "nil"               { return symbol(TokenNames.NIL, "NIL");}
 "array"             { return symbol(TokenNames.ARRAY, "ARRAY");}
 "class"             { return symbol(TokenNames.CLASS, "CLASS");}
@@ -119,7 +119,7 @@ SLASH = \/
 "/"					{ return symbol(TokenNames.DIVIDE, "DIVIDE");}
 "("					{ return symbol(TokenNames.LPAREN, "LPAREN");}
 ")"					{ return symbol(TokenNames.RPAREN, "RPAREN");}
-{INTEGER}			{ if(Integer.valueOf(yytext()) > 32767){return symbol(TokenNames.error);}return symbol(TokenNames.NUMBER, String.format("INT(%s)", yytext()));}
+{INTEGER}			{ if(Integer.valueOf(yytext()) > 32767){return symbol(TokenNames.ERROR);}return symbol(TokenNames.INT, String.format("INT(%s)", yytext()));}
 {STRING}            { return symbol(TokenNames.STRING, String.format("STRING(%s)", yytext()));}
 {ID}				{ return symbol(TokenNames.ID, String.format("ID(%s)", yytext()));}
 {WhiteSpace}		{ /* just skip what was found, do nothing */ }
@@ -135,7 +135,7 @@ SLASH = \/
 "<"                 { return symbol(TokenNames.LT, "LT");}
 ">"                 { return symbol(TokenNames.GT, "GT");}
 <<EOF>>				{ return symbol(TokenNames.EOF);}
-.                   {return symbol(TokenNames.error);}
+.                   {return symbol(TokenNames.ERROR);}
 /**************************************************************/
 /* YYINITIAL is the state at which the lexer begins scanning. */
 /* So these regular expressions will only be matched if the   */
@@ -146,19 +146,19 @@ SLASH = \/
 <MULTI_COMMENT> {
 "*"        { yybegin(ASTERISK_IN_COMMENT); }
 {ALLOWED_MULTI_COMMENT_CHARS}|\/      { }
-<<EOF>>				{return symbol(TokenNames.error);}
-.                   {return symbol(TokenNames.error);}
+<<EOF>>				{return symbol(TokenNames.ERROR);}
+.                   {return symbol(TokenNames.ERROR);}
 }
 <ASTERISK_IN_COMMENT>{
 "*"   {}
 {SLASH}   {yybegin(YYINITIAL);}
 {ALLOWED_MULTI_COMMENT_CHARS}  {yybegin(MULTI_COMMENT);}
-<<EOF>>				{return symbol(TokenNames.error);}
-.                   {return symbol(TokenNames.error);}
+<<EOF>>				{return symbol(TokenNames.ERROR);}
+.                   {return symbol(TokenNames.ERROR);}
 }
 <ONE_LINE_COMMENT> {
 {ALLOWED_ONE_LINE_COMMENT_CHARS}      { }
 {LineTerminator}              {yybegin(YYINITIAL);}
 <<EOF>>				{return symbol(TokenNames.EOF);}
-.                   {return symbol(TokenNames.error);}
+.                   {return symbol(TokenNames.ERROR);}
 }

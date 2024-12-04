@@ -18,5 +18,14 @@ public class AST_LOCAL_VAR_DEC extends AST_STMT
         this(varType, ID, null);
     }
 
-
+    public void PrintMe()
+    {
+        System.out.print("AST NODE LOCAL VAR DEC\n");
+        AST_GRAPHVIZ.getInstance().logNode(
+                SerialNumber,
+                String.format("LOCAL VAR\nDEC\nID: %s\nAssigned: %b", ID, assigned));
+        AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,type.SerialNumber);
+        type.PrintMe();
+        if (assignedExp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,assignedExp.SerialNumber);
+    }
 }

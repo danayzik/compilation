@@ -63,7 +63,7 @@ all:
 	@echo "*                                                          *"
 	@echo "*                                                          *"
 	@echo "************************************************************"
-	$(JFlex_PROGRAM) ${JFlex_FLAGS} -d ${JFlex_DEST_DIR} ${JFlex_FILE}
+	@$(JFlex_PROGRAM) ${JFlex_FLAGS} -d ${JFlex_DEST_DIR} ${JFlex_FILE}
 	@echo "*******************************************************************************"
 	@echo "*                                                                             *"
 	@echo "*                                                                             *"
@@ -79,7 +79,7 @@ all:
 	@echo "*                                                      *"
 	@echo "*                                                      *"
 	@echo "********************************************************"
-	javac -cp ${EXTERNAL_JAR_FILES} -d ${BIN_DIR} ${SRC_FILES}
+	@javac -cp ${EXTERNAL_JAR_FILES} -d ${BIN_DIR} ${SRC_FILES}
 	@echo "***********************************************************"
 	@echo "*                                                         *"
 	@echo "*                                                         *"
@@ -87,7 +87,7 @@ all:
 	@echo "*                                                         *"
 	@echo "*                                                         *"
 	@echo "***********************************************************"
-	jar cfm PARSER ${MANIFEST_FILE} -C ${BIN_DIR} .
+	@jar cfm PARSER ${MANIFEST_FILE} -C ${BIN_DIR} .
 	@echo "*****************************"
 	@echo "*                           *"
 	@echo "*                           *"
@@ -95,7 +95,7 @@ all:
 	@echo "*                           *"
 	@echo "*                           *"
 	@echo "*****************************"
-	java -jar PARSER ${INPUT} ${OUTPUT}
+	@java -jar PARSER ${INPUT} ${OUTPUT}
 	@echo "***************************************"
 	@echo "*                                     *"
 	@echo "*                                     *"
@@ -103,7 +103,7 @@ all:
 	@echo "*                                     *"
 	@echo "*                                     *"
 	@echo "***************************************"
-	dot -Tjpeg -o${OUTPUT_DIR}/AST.jpeg ${OUTPUT_DIR}/AST_IN_GRAPHVIZ_DOT_FORMAT.txt
+	@dot -Tjpeg -o${OUTPUT_DIR}/AST.jpeg ${OUTPUT_DIR}/AST_IN_GRAPHVIZ_DOT_FORMAT.txt
 	@echo "************************************************"
 	@echo "*                                              *"
 	@echo "*                                              *"

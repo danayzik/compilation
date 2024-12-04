@@ -1,5 +1,5 @@
 package AST;
-//not finished
+
 public class AST_GLOBAL_VAR_DEC extends AST_DEC
 {
     public boolean assigned;
@@ -8,6 +8,7 @@ public class AST_GLOBAL_VAR_DEC extends AST_DEC
     public String ID;
 
     public AST_GLOBAL_VAR_DEC(AST_TYPE varType, String ID, AST_EXP assignedExp) {
+        SerialNumber = AST_Node_Serial_Number.getFresh();
         this.ID = ID;
         this.type = varType;
         this.assignedExp = assignedExp;
@@ -18,5 +19,15 @@ public class AST_GLOBAL_VAR_DEC extends AST_DEC
         this(varType, ID, null);
     }
 
+    public void PrintMe()
+    {
+        System.out.print("AST NODE GLOBAL VAR DEC\n");
+        AST_GRAPHVIZ.getInstance().logNode(
+                SerialNumber,
+                String.format("VAR\nDEC\nID: %s\nAssigned: %b", ID, assigned));
+        AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,type.SerialNumber);
+        type.PrintMe();
+        if (assignedExp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,assignedExp.SerialNumber);
+    }
 
 }
