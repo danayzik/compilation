@@ -22,7 +22,7 @@ parser code
 		System.out.print(":");
 		System.out.print(lexer.getTokenStartPosition());
 		System.out.print("] ");		
-		throw new RuntimeException(String.valueOf(lexer.getLine()));
+		throw new SyntaxError(String.valueOf(lexer.getLine()));
 	}
 :}
 
@@ -33,7 +33,8 @@ scan with
 {:
 	Symbol s;
 	s = lexer.next_token();
-	//System.out.print(s.sym);
+	if (s.sym == TokenNames.ERROR)
+	    throw new LexicalError("");
 	System.out.print("[");
 	System.out.print(lexer.getLine());
 	System.out.print(":");
@@ -106,6 +107,7 @@ non terminal AST_FUNC_ARG_LIST funcArgList;
 non terminal AST_CFIELD_LIST cFieldList;
 non terminal AST_EXP_LIST expList;
 non terminal AST_DEC_LIST decList;
+
 
 
 /***********************/
@@ -221,5 +223,7 @@ cField	::=		      type:t ID:id ASSIGN newExp:e SEMICOLON				    {: RESULT = new 
 funcArgList	 ::=	COMMA type:argType ID:argID funcArgList:fArgLst				{: RESULT = new AST_FUNC_ARG_LIST(new AST_FUNC_ARG(argType,argID), fArgLst); :}
                     | COMMA type:argType ID:argID                                {: RESULT = new AST_FUNC_ARG_LIST(new AST_FUNC_ARG(argType,argID), null); :}
 					;
+
+
 
 

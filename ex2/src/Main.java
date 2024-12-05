@@ -45,11 +45,19 @@ public class Main
 			try {
 				AST = (AST_DEC_LIST) p.parse().value;
 			}
-			catch (Exception e){
-				file_writer.println(String.format("ERROR(%s)", e.getMessage()));
+			catch (SyntaxError se){
+				file_writer.println(String.format("ERROR(%s)", se.getMessage()));
+				System.out.println("Caught Syntax Error");
 				file_writer.close();
 				return;
 			}
+			catch (LexicalError le) {
+				file_writer.println("ERROR");
+				System.out.println("Caught Lexical Error");
+				file_writer.close();
+				return;
+			}
+
 			/*************************/
 			/* [6] Print the AST ... */
 			/*************************/
