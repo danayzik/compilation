@@ -42,8 +42,14 @@ public class Main
 			/***********************************/
 			/* [5] 3 ... 2 ... 1 ... Parse !!! */
 			/***********************************/
-			AST = (AST_DEC_LIST) p.parse().value;
-			
+			try {
+				AST = (AST_DEC_LIST) p.parse().value;
+			}
+			catch (Exception e){
+				file_writer.println(String.format("ERROR(%s)", e.getMessage()));
+				file_writer.close();
+				return;
+			}
 			/*************************/
 			/* [6] Print the AST ... */
 			/*************************/
@@ -52,6 +58,7 @@ public class Main
 			/*************************/
 			/* [7] Close output file */
 			/*************************/
+			file_writer.println("OK");
 			file_writer.close();
 			
 			/*************************************/

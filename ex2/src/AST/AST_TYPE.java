@@ -12,6 +12,6 @@ public class AST_TYPE extends AST_Node
     {
         System.out.print("AST NODE TYPE\n");
         AST_GRAPHVIZ.getInstance().logNode(
-                SerialNumber, type);
+                SerialNumber, String.format("Type:%s",type));
     }
 }

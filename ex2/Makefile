@@ -111,5 +111,5 @@ all:
 	@echo "*                                              *"
 	@echo "*                                              *"
 	@echo "************************************************"
-	start ${OUTPUT_DIR}/AST.jpeg
+	cmd /c start ${OUTPUT_DIR}/AST.jpeg
 

@@ -12,6 +12,7 @@ public class AST_LOCAL_VAR_DEC extends AST_STMT
         this.type = varType;
         this.assignedExp = assignedExp;
         this.assigned = (assignedExp != null);
+        SerialNumber = AST_Node_Serial_Number.getFresh();
     }
 
     public AST_LOCAL_VAR_DEC(AST_TYPE varType, String ID) {
@@ -26,6 +27,7 @@ public class AST_LOCAL_VAR_DEC extends AST_STMT
                 String.format("LOCAL VAR\nDEC\nID: %s\nAssigned: %b", ID, assigned));
         AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,type.SerialNumber);
         type.PrintMe();
+        if (assignedExp != null) assignedExp.PrintMe();
         if (assignedExp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,assignedExp.SerialNumber);
     }
 }
