@@ -1,10 +1,10 @@
 ###############
 # DIRECTORIES #
 ###############
-BASEDIR           = $(shell pwd)
-JFlex_DIR         = ${BASEDIR}/jflex
-CUP_DIR           = ${BASEDIR}/cup
-SRC_DIR           = ${BASEDIR}/src
+BASEDIR           := $(shell pwd)
+JFlex_DIR         := ${BASEDIR}/jflex
+CUP_DIR           := ${BASEDIR}/cup
+SRC_DIR           := ${BASEDIR}/src
 BIN_DIR           = ${BASEDIR}/bin
 INPUT_DIR         = ${BASEDIR}/input
 OUTPUT_DIR        = ${BASEDIR}/output
@@ -17,7 +17,7 @@ MANIFEST_DIR      = ${BASEDIR}/manifest
 JFlex_GENERATED_FILE      = ${SRC_DIR}/Lexer.java
 CUP_GENERATED_FILES       = ${SRC_DIR}/Parser.java ${SRC_DIR}/TokenNames.java
 JFlex_CUP_GENERATED_FILES = ${JFlex_GENERATED_FILE} ${CUP_GENERATED_FILES}
-SRC_FILES := $(wildcard ${SRC_DIR}/*.java ${SRC_DIR}/AST/*.java)
+SRC_FILES := ${SRC_DIR}/*.java ${SRC_DIR}/AST/*.java
 
 EXTERNAL_JAR_FILES        = ${EXTERNAL_JARS_DIR}/java-cup-11b-runtime.jar
 MANIFEST_FILE             = ${MANIFEST_DIR}/MANIFEST.MF
@@ -64,7 +64,7 @@ all:
 	@echo "*                           *"
 	@echo "*                           *"
 	@echo "*****************************"
-	rm -rf PARSER
+	@rm -rf PARSER
 	@echo "\n"
 	@echo "************************************************************"
 	@echo "*                                                          *"
@@ -76,7 +76,7 @@ all:
 	@echo "*     TokenNames.java                                      *"
 	@echo "*                                                          *"
 	@echo "************************************************************"
-	rm -rf ${JFlex_CUP_GENERATED_FILES} ${BIN_DIR}/*.class ${BIN_DIR}/AST/*.class
+	@rm -rf ${JFlex_CUP_GENERATED_FILES} ${BIN_DIR}/*.class ${BIN_DIR}/AST/*.class
 	@echo "\n"
 	@echo "************************************************************"
 	@echo "*                                                          *"
@@ -85,7 +85,7 @@ all:
 	@echo "*                                                          *"
 	@echo "*                                                          *"
 	@echo "************************************************************"
-	$(JFlex_PROGRAM) ${JFlex_FLAGS} -d ${JFlex_DEST_DIR} ${JFlex_FILE}
+	@$(JFlex_PROGRAM) ${JFlex_FLAGS} -d ${JFlex_DEST_DIR} ${JFlex_FILE}
 	@echo "\n"
 	@echo "*******************************************************************************"
 	@echo "*                                                                             *"
@@ -94,7 +94,7 @@ all:
 	@echo "*                                                                             *"
 	@echo "*                                                                             *"
 	@echo "*******************************************************************************"
-	$(CUP_PROGRAM) ${CUP_FLAGS} -destdir ${SRC_DIR} ${CUP_FILE}
+	@$(CUP_PROGRAM) ${CUP_FLAGS} -destdir ${SRC_DIR} ${CUP_FILE}
 	@echo "\n"
 	@echo "********************************************************"
 	@echo "*                                                      *"
@@ -103,7 +103,7 @@ all:
 	@echo "*                                                      *"
 	@echo "*                                                      *"
 	@echo "********************************************************"
-	javac -cp ${EXTERNAL_JAR_FILES} -d ${BIN_DIR} ${SRC_FILES}
+	@javac -cp ${EXTERNAL_JAR_FILES} -d ${BIN_DIR} ${SRC_FILES}
 	@echo "\n"
 	@echo "***********************************************************"
 	@echo "*                                                         *"
@@ -112,7 +112,7 @@ all:
 	@echo "*                                                         *"
 	@echo "*                                                         *"
 	@echo "***********************************************************"
-	jar cfm PARSER ${MANIFEST_FILE} -C ${BIN_DIR} .
+	@jar cfm PARSER ${MANIFEST_FILE} -C ${BIN_DIR} .
 	@echo "\n"
 	@echo "*****************************"
 	@echo "*                           *"
@@ -121,22 +121,5 @@ all:
 	@echo "*                           *"
 	@echo "*                           *"
 	@echo "*****************************"
-	java -jar PARSER ${INPUT} ${OUTPUT}
-	@echo "\n"
-	@echo "***************************************"
-	@echo "*                                     *"
-	@echo "*                                     *"
-	@echo "* [7] Create a jpeg AST visualization *"
-	@echo "*                                     *"
-	@echo "*                                     *"
-	@echo "***************************************"
-	dot -Tjpeg -o${OUTPUT_DIR}/AST.jpeg ${OUTPUT_DIR}/AST_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@echo "\n"
-	@echo "************************************************"
-	@echo "*                                              *"
-	@echo "*                                              *"
-	@echo "* [8] Open the jpeg AST visualization with eog *"
-	@echo "*                                              *"
-	@echo "*                                              *"
-	@echo "************************************************"
-	eog ${OUTPUT_DIR}/AST.jpeg &
+	@java -jar PARSER ${INPUT} ${OUTPUT}
+
