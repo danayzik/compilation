@@ -8,7 +8,7 @@ SRC_DIR           = ${BASEDIR}/src
 BIN_DIR           = ${BASEDIR}/bin
 INPUT_DIR         = ${BASEDIR}/input
 OUTPUT_DIR        = ${BASEDIR}/output
-EXTERNAL_JARS_DIR = ${BASEDIR}/external_jars
+EXTERNAL_JARS_DIR = ${BASEDIR}/jar_files
 MANIFEST_DIR      = ${BASEDIR}/manifest
 
 #########
