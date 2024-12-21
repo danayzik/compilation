@@ -1,21 +1,11 @@
-/***********/
-/* PACKAGE */
-/***********/
+
 package SYMBOL_TABLE;
 
-/*******************/
-/* GENERAL IMPORTS */
-/*******************/
 import java.io.PrintWriter;
 
-/*******************/
-/* PROJECT IMPORTS */
-/*******************/
 import TYPES.*;
 
-/****************/
-/* SYMBOL TABLE */
-/****************/
+
 public class SYMBOL_TABLE
 {
 	private int hashArraySize = 13;
@@ -43,14 +33,10 @@ public class SYMBOL_TABLE
 		return 12;
 	}
 
-	/****************************************************************************/
-	/* Enter a variable, function, class type or array type to the symbol table */
-	/****************************************************************************/
+
 	public void enter(String name,TYPE t)
 	{
-		/*************************************************/
-		/* [1] Compute the hash value for this new entry */
-		/*************************************************/
+
 		int hashValue = hash(name);
 
 		/******************************************************************************/

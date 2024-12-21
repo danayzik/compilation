@@ -1,7 +1,7 @@
 package AST;
 import java.util.List;
 import java.util.ArrayList;
-// not finished print arglist
+
 public class AST_GLOBAL_FUNC_DEC extends AST_DEC {
     public AST_TYPE type;
     public String ID;
