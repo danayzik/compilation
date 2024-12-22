@@ -31,7 +31,7 @@ public class AST_CLASS_DEC extends AST_DEC
     {
         TYPE_CLASS father = null;
         if(inherits){
-            father = SYMBOL_TABLE.getInstance().find(parentID);
+            father = (TYPE_CLASS) SYMBOL_TABLE.getInstance().find(parentID);
         }
         SYMBOL_TABLE.getInstance().beginScope();
         TYPE_CLASS t = new TYPE_CLASS(father,ID,cfieldList.semantMeList());
