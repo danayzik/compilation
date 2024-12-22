@@ -35,25 +35,26 @@ public class AST_GLOBAL_VAR_DEC extends AST_DEC
     {
         TYPE leftType;
         TYPE rightType = null;
-
-        leftType = SYMBOL_TABLE.getInstance().find(type.type);
+        if (type.type.equals("void"))
+            throw new SemanticError("");
+        leftType = SYMBOL_TABLE.getInstance().findInInnerScope(type.type);
         if (leftType == null)
+        {
+            throw new SemanticError("");
+        }
+        if (SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
         {
             throw new SemanticError("");
         }
         if(assigned) {
             rightType = assignedExp.semantMe();
+            if (rightType.isNil() && (leftType.isArray() || leftType.isClass())
+                return null;
             if(leftType != rightType){
                 throw new SemanticError("");
             }
         }
-
-        if (SYMBOL_TABLE.getInstance().find(ID) != null)
-        {
-            throw new SemanticError("");
-        }
-
-        SYMBOL_TABLE.getInstance().enter(name,leftType);
+        SYMBOL_TABLE.getInstance().enter(ID,leftType);
         return null;
     }
 

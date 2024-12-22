@@ -1,5 +1,7 @@
 package AST;
-//not finished
+import TYPES.*;
+import SYMBOL_TABLE.*;
+
 public class AST_CLASS_VAR_DEC extends AST_CFIELD
 {
     public boolean assigned;
@@ -28,6 +30,34 @@ public class AST_CLASS_VAR_DEC extends AST_CFIELD
         AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,type.SerialNumber);
         type.PrintMe();
         if (assignedExp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,assignedExp.SerialNumber);
+    }
+
+    public TYPE semantMe()
+    {
+        TYPE leftType;
+        TYPE rightType = null;
+        if (type.type.equals("void"))
+            throw new SemanticError("");
+        leftType = SYMBOL_TABLE.getInstance().findInInnerScope(type.type);
+
+        if (leftType == null)
+        {
+            throw new SemanticError("");
+        }
+        if (SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
+        {
+            throw new SemanticError("");
+        }
+        if(assigned) {
+            rightType = assignedExp.semantMe();
+            if (rightType.isNil() && (leftType.isArray() || leftType.isClass())
+            return null;
+            if(leftType != rightType){
+                throw new SemanticError("");
+            }
+        }
+        SYMBOL_TABLE.getInstance().enter(ID,leftType);
+        return null;
     }
 
 }

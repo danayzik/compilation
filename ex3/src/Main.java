@@ -3,6 +3,8 @@ import java.io.*;
 import java.io.PrintWriter;
 import java_cup.runtime.Symbol;
 import AST.*;
+// TODO
+// Make sure variables can't be void, and array types cant be void
 
 public class Main
 {

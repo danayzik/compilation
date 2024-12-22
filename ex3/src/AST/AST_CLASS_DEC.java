@@ -30,13 +30,21 @@ public class AST_CLASS_DEC extends AST_DEC
     public TYPE semantMe()
     {
         TYPE_CLASS father = null;
+        SYMBOL_TABLE inst = SYMBOL_TABLE.getInstance();
+        if(inst.findInInnerScope(ID) != null)
+            throw new SemanticError("");
         if(inherits){
-            father = (TYPE_CLASS) SYMBOL_TABLE.getInstance().find(parentID);
+            father = (TYPE_CLASS) inst.findInInnerScope(parentID);
+            if(father == null)
+                throw new SemanticError("");
+            if (!father.isClass())
+                throw new SemanticError("");
         }
+        TYPE_CLASS t = new TYPE_CLASS(father, ID);
+        SYMBOL_TABLE.getInstance().enter(ID, t);
         SYMBOL_TABLE.getInstance().beginScope();
-        TYPE_CLASS t = new TYPE_CLASS(father,ID,cfieldList.semantMeList());
+        t.setDataMembers(cfieldList.semantMeList());
         SYMBOL_TABLE.getInstance().endScope();
-        SYMBOL_TABLE.getInstance().enter(ID,t);
         return null;
     }
 }

@@ -1,5 +1,10 @@
 package AST;
-//not finished
+
+import SYMBOL_TABLE.SYMBOL_TABLE;
+import TYPES.TYPE;
+import TYPES.TYPE_ARRAY;
+
+
 public class AST_DEC_ARRAY_TYPE_DEF extends AST_DEC
 {
     public String ID;
@@ -17,5 +22,24 @@ public class AST_DEC_ARRAY_TYPE_DEF extends AST_DEC
                 SerialNumber,
                 String.format("ARRAY\nDEC\nID: %s", ID));
         AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,type.SerialNumber);
+    }
+
+    public TYPE semantMe()
+    {
+        TYPE arrayType;
+        if (type.type.equals("void"))
+            throw new SemanticError("");
+        if (SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
+        {
+            throw new SemanticError("");
+        }
+        arrayType = SYMBOL_TABLE.getInstance().findInAllScopes(type.type);
+        if (arrayType == null)
+        {
+            throw new SemanticError("");
+        }
+
+        SYMBOL_TABLE.getInstance().enter(ID, new TYPE_ARRAY(arrayType, ID));
+        return null;
     }
 }
