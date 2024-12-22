@@ -1,5 +1,5 @@
 package AST;
-
+import TYPES.*;
 public class AST_EXP_BINOP extends AST_EXP
 {
 	int OP;
@@ -47,5 +47,19 @@ public class AST_EXP_BINOP extends AST_EXP
 			String.format("BINOP(%s)",sOP));
 		if (left  != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,left.SerialNumber);
 		if (right != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,right.SerialNumber);
+	}
+
+	public TYPE semantMe()
+	{
+		TYPE t1 = null;
+		TYPE t2 = null;
+
+		if (left  != null) t1 = left.semantMe();
+		if (right != null) t2 = right.semantMe();
+
+		if (OP == 6 && t1 == t2) { //EQ op
+			return TYPE_INT.getInstance();
+		}
+		return null;
 	}
 }

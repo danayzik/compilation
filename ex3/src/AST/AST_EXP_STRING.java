@@ -1,5 +1,5 @@
 package AST;
-
+import TYPES.*;
 public class AST_EXP_STRING extends AST_EXP
 {
 	public String str;
@@ -15,5 +15,10 @@ public class AST_EXP_STRING extends AST_EXP
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
 			String.format("STRING(%s)",str));
+	}
+
+	public TYPE semantMe()
+	{
+		return TYPE_STRING.getInstance();
 	}
 }

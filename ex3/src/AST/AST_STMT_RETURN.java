@@ -1,5 +1,5 @@
 package AST;
-
+import TYPES.*;
 public class AST_STMT_RETURN extends AST_STMT
 {
 	public AST_EXP returnExp;
@@ -18,4 +18,13 @@ public class AST_STMT_RETURN extends AST_STMT
 				"(EXP)\n");
 		if (returnExp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,returnExp.SerialNumber);
 	}
+	public TYPE semantMe(){
+		if (returnExp == null)	{
+			return null;
+		}
+		return returnExp.semantMe();
+
+	}
+
+
 }

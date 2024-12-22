@@ -5,8 +5,6 @@ public class SYMBOL_TABLE_ENTRY
 {
 	int index;
 	public String name;
-
-
 	public TYPE type;
 
 	/*********************************************/

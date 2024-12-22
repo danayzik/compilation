@@ -1,5 +1,7 @@
 package AST;
-//not finished
+import TYPES.*;
+import SYMBOL_TABLE.*;
+
 public class AST_CLASS_DEC extends AST_DEC
 {
     public String ID;
@@ -24,5 +26,17 @@ public class AST_CLASS_DEC extends AST_DEC
                 SerialNumber,
                 String.format("CLASS\nDEC\nID: %s\nParentID: %s\nInherits: %b", ID, parentID, inherits));
         if (cfieldList != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,cfieldList.SerialNumber);
+    }
+    public TYPE semantMe()
+    {
+        TYPE_CLASS father = null;
+        if(inherits){
+            father = SYMBOL_TABLE.getInstance().find(parentID);
+        }
+        SYMBOL_TABLE.getInstance().beginScope();
+        TYPE_CLASS t = new TYPE_CLASS(father,ID,cfieldList.semantMeList());
+        SYMBOL_TABLE.getInstance().endScope();
+        SYMBOL_TABLE.getInstance().enter(ID,t);
+        return null;
     }
 }

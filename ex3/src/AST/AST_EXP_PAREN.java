@@ -1,5 +1,5 @@
 package AST;
-
+import TYPES.*;
 public class AST_EXP_PAREN extends AST_EXP
 {
     public AST_EXP childExp;
@@ -16,5 +16,9 @@ public class AST_EXP_PAREN extends AST_EXP
                 SerialNumber,
                 "(EXP)\n");
         if (childExp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,childExp.SerialNumber);
+    }
+    public TYPE semantMe()
+    {
+        return childExp.semantMe();
     }
 }

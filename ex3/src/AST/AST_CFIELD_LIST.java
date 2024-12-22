@@ -1,4 +1,5 @@
 package AST;
+import TYPES.*;
 
 public class AST_CFIELD_LIST extends AST_Node
 {
@@ -16,7 +17,6 @@ public class AST_CFIELD_LIST extends AST_Node
 
 	public void PrintMe()
 	{
-
 		System.out.print("AST NODE CFIELD LIST\n");
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
@@ -26,5 +26,20 @@ public class AST_CFIELD_LIST extends AST_Node
 		if (head != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,head.SerialNumber);
 		if (tail != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,tail.SerialNumber);
 	}
-	
+
+	public TYPE_LIST semantMeList()
+	{
+		if (tail == null)
+		{
+			return new TYPE_LIST(
+					head.semantMe(),
+					null);
+		}
+		else
+		{
+			return new TYPE_LIST(
+					head.semantMe(),
+					tail.semantMeList());
+		}
+	}
 }

@@ -1,4 +1,6 @@
 package AST;
+import TYPES.*;
+import SYMBOL_TABLE.*;
 
 public class AST_GLOBAL_VAR_DEC extends AST_DEC
 {
@@ -28,6 +30,31 @@ public class AST_GLOBAL_VAR_DEC extends AST_DEC
         AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,type.SerialNumber);
         type.PrintMe();
         if (assignedExp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,assignedExp.SerialNumber);
+    }
+    public TYPE semantMe()
+    {
+        TYPE leftType;
+        TYPE rightType = null;
+
+        leftType = SYMBOL_TABLE.getInstance().find(type.type);
+        if (leftType == null)
+        {
+            throw new SemanticError("");
+        }
+        if(assigned) {
+            rightType = assignedExp.semantMe();
+            if(leftType != rightType){
+                throw new SemanticError("");
+            }
+        }
+
+        if (SYMBOL_TABLE.getInstance().find(ID) != null)
+        {
+            throw new SemanticError("");
+        }
+
+        SYMBOL_TABLE.getInstance().enter(name,leftType);
+        return null;
     }
 
 }

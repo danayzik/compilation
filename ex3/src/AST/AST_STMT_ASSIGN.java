@@ -1,22 +1,14 @@
 package AST;
-
+import TYPES.*;
 public class AST_STMT_ASSIGN extends AST_STMT
 {
 
 	public AST_VAR var;
 	public AST_EXP exp;
 
-	/*******************/
-	/*  CONSTRUCTOR(S) */
-	/*******************/
 	public AST_STMT_ASSIGN(AST_VAR var,AST_EXP exp)
 	{
-		/******************************/
-		/* SET A UNIQUE SERIAL NUMBER */
-		/******************************/
 		SerialNumber = AST_Node_Serial_Number.getFresh();
-
-
 		this.var = var;
 		this.exp = exp;
 	}
@@ -35,5 +27,19 @@ public class AST_STMT_ASSIGN extends AST_STMT
 
 		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
 		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
+	}
+	public TYPE semantMe()
+	{
+		TYPE t1 = null;
+		TYPE t2 = null;
+
+		if (var != null) t1 = var.semantMe();
+		if (exp != null) t2 = exp.semantMe();
+
+		if (t1 != t2)
+		{
+			throw new SemanticError("");
+		}
+		return null;
 	}
 }

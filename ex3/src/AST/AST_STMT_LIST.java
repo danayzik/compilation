@@ -1,10 +1,8 @@
 package AST;
-
+import TYPES.*;
 public class AST_STMT_LIST extends AST_Node
 {
-	/****************/
-	/* DATA MEMBERS */
-	/****************/
+
 	public AST_STMT head;
 	public AST_STMT_LIST tail;
 
@@ -28,6 +26,11 @@ public class AST_STMT_LIST extends AST_Node
 			"STMT\nLIST\n");
 		if (head != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,head.SerialNumber);
 		if (tail != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,tail.SerialNumber);
+	}
+	public TYPE semantMe(){
+		if(head != null) head.semantMe();
+		if(tail != null) tail.semantMe();
+		return null;
 	}
 	
 }
