@@ -43,6 +43,8 @@ public class AST_CLASS_FUNC_DEC extends AST_CFIELD
         body.semantMe();
         body.matchReturnType(t);
         boolean overrideError = owner.isOverrideError(t, ID, func.params);
+        if (overrideError)
+            throw new SemanticError("");
         SYMBOL_TABLE.getInstance().endScope();
         return null;
     }

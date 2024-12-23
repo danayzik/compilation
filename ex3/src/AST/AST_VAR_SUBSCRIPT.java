@@ -1,4 +1,6 @@
 package AST;
+import TYPES.*;
+
 
 public class AST_VAR_SUBSCRIPT extends AST_VAR
 {
@@ -20,7 +22,17 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
 			"SUBSCRIPT\nVAR\n...[...]");
-		if (var       != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
+		if (var != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
 		if (subscript != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,subscript.SerialNumber);
+	}
+
+	public TYPE semantMe(){
+		TYPE varType = var.semantMe();
+		TYPE subscriptType = subscript.semantMe();
+		if (!varType.isArray())
+			throw new SemanticError("");
+		if (subscriptType != TYPE_INT.getInstance())
+			throw new SemanticError("");
+		return ((TYPE_ARRAY)varType).arrayType;
 	}
 }

@@ -1,5 +1,5 @@
 package AST;
-
+import TYPES.*;
 public class AST_EXP_LIST extends AST_Node
 {
 
@@ -13,10 +13,8 @@ public class AST_EXP_LIST extends AST_Node
 		this.tail = tail;
 	}
 
-
 	public void PrintMe()
 	{
-
 		System.out.print("AST NODE FUNC CALL ARG LIST\n");
 		if (head != null) head.PrintMe();
 		if (tail != null) tail.PrintMe();
@@ -25,6 +23,20 @@ public class AST_EXP_LIST extends AST_Node
 			"EXP\nLIST\n");
 		if (head != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,head.SerialNumber);
 		if (tail != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,tail.SerialNumber);
+	}
+	public TYPE_LIST semantMeList(){
+		if (tail == null)
+		{
+			return new TYPE_LIST(
+					head.semantMe(),
+					null);
+		}
+		else
+		{
+			return new TYPE_LIST(
+					head.semantMe(),
+					tail.semantMeList());
+		}
 	}
 	
 }

@@ -41,19 +41,19 @@ public class AST_CLASS_VAR_DEC extends AST_CFIELD
             throw new SemanticError("");
         leftType = TYPE_TABLE.getInstance().find(type.type);
         if (leftType == null)
-        {
             throw new SemanticError("");
-        }
         if (SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
-        {
             throw new SemanticError("");
-        }
+        TYPE_CLASS owner = TYPE_TABLE.getInstance().getCurrentClassType();
+        boolean shadowingError = owner.isShadowingError(ID);
+        if (shadowingError)
+            throw new SemanticError("");
         SYMBOL_TABLE.getInstance().enter(ID, leftType);
         if(assigned) {
             rightType = assignedExp.semantMe();
             checkLegalAssignment(leftType, rightType, "");
         }
-        return null;
+        return new TYPE_CLASS_FIELD(leftType, ID);
     }
 
 }

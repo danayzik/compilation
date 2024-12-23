@@ -5,7 +5,7 @@ public class TYPE_CLASS extends TYPE
 
 	public TYPE_CLASS father;
 
-	public TYPE_LIST data_members;
+	public TYPE_CLASS_MEMBER_LIST data_members;
 
 
 	public TYPE_CLASS(TYPE_CLASS father,String name)
@@ -14,7 +14,7 @@ public class TYPE_CLASS extends TYPE
 		this.father = father;
 		this.data_members = null;
 	}
-	public void setDataMembers(TYPE_LIST data_members){
+	public void setDataMembers(TYPE_CLASS_MEMBER_LIST data_members){
 		this.data_members = data_members;
 	}
 	public boolean isClass(){return true;}
@@ -28,24 +28,67 @@ public class TYPE_CLASS extends TYPE
 		}
 		return false;
 	}
+
+	//ugliest function i ever made
 	public boolean isOverrideError(TYPE funcType,String ID, TYPE_LIST funcParams){
 		TYPE_CLASS ancestor = this.father;
-		TYPE_LIST ancestorFields;
-		TYPE currField;
+		TYPE_CLASS_MEMBER_LIST ancestorMembers;
+		TYPE_CLASS_MEMBER currMember;
 		TYPE superType;
-		String superID;
 		TYPE_LIST superParams;
 		while(ancestor != null){
-			ancestorFields = ancestor.data_members;
-			currField = ancestorFields.head;
-			if(currField instanceof TYPE_FUNCTION){
-				if (currField.name.equals(ID)){
-					if (((TYPE_FUNCTION) currField).matchingTypes(funcType))
-
-
+			ancestorMembers = ancestor.data_members;
+			while(ancestorMembers != null) {
+				currMember = ancestorMembers.head;
+				if (currMember.name.equals(ID)) {
+					if (currMember.isField())
+						return true;
+					superType = currMember.t;
+					superParams = ((TYPE_CLASS_METHOD) currMember).args;
+					if (funcType != superType)
+						return true;
+					if (!superParams.matchingList(funcParams))
+						return true;
 				}
+				ancestorMembers = ancestorMembers.tail;
 			}
+			ancestor = ancestor.father;
 		}
+		return false;
+	}
+
+	public boolean isShadowingError(String ID){
+		TYPE_CLASS ancestor = this.father;
+		TYPE_CLASS_MEMBER_LIST ancestorMembers;
+		TYPE_CLASS_MEMBER currMember;
+		while(ancestor != null){
+			ancestorMembers = ancestor.data_members;
+			while(ancestorMembers != null) {
+				currMember = ancestorMembers.head;
+				if (currMember.name.equals(ID))
+					return true;
+				ancestorMembers = ancestorMembers.tail;
+			}
+			ancestor = ancestor.father;
+		}
+		return false;
+	}
+
+	public TYPE_CLASS_MEMBER findMember(String ID){
+		TYPE_CLASS ancestor = this;
+		TYPE_CLASS_MEMBER_LIST currMembers;
+		TYPE_CLASS_MEMBER currMember;
+		while(ancestor != null){
+			currMembers = ancestor.data_members;
+			while(currMembers != null){
+				currMember = currMembers.head;
+				if (currMember.name.equals(ID))
+					return currMember;
+				currMembers = currMembers.tail;
+			}
+			ancestor = ancestor.father;
+		}
+		return null;
 	}
 
 

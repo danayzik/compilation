@@ -27,18 +27,18 @@ public class AST_CFIELD_LIST extends AST_Node
 		if (tail != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,tail.SerialNumber);
 	}
 
-	public TYPE_LIST semantMeList()
+	public TYPE_CLASS_MEMBER_LIST semantMeList()
 	{
 		if (tail == null)
 		{
-			return new TYPE_LIST(
-					head.semantMe(),
+			return new TYPE_CLASS_MEMBER_LIST(
+					(TYPE_CLASS_MEMBER) head.semantMe(),
 					null);
 		}
 		else
 		{
-			return new TYPE_LIST(
-					head.semantMe(),
+			return new TYPE_CLASS_MEMBER_LIST(
+					(TYPE_CLASS_MEMBER) head.semantMe(),
 					tail.semantMeList());
 		}
 	}
