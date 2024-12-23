@@ -55,7 +55,6 @@ public class SYMBOL_TABLE
 
 	}
 
-
 	protected SYMBOL_TABLE() {}
 
 
@@ -65,11 +64,16 @@ public class SYMBOL_TABLE
 		{
 			instance = new SYMBOL_TABLE();
 			instance.beginScope();
-			instance.enter("int", TYPE_INT.getInstance());
-			instance.enter("string", TYPE_STRING.getInstance());
-			instance.enter("PrintInt", new TYPE_FUNCTION(TYPE_VOID.getInstance(), "PrintInt", new TYPE_LIST(TYPE_INT.getInstance(), null)));
-			instance.enter("PrintString", new TYPE_FUNCTION(TYPE_VOID.getInstance(), "PrintString", new TYPE_LIST(TYPE_STRING.getInstance(), null)));
+			TYPE_FUNCTION PrintInt = new TYPE_FUNCTION(TYPE_VOID.getInstance(), "PrintInt");
+			TYPE_LIST PrintIntParams = new TYPE_LIST(TYPE_INT.getInstance(), null);
+			TYPE_FUNCTION PrintString = new TYPE_FUNCTION(TYPE_VOID.getInstance(), "PrintString");
+			TYPE_LIST PrintStringParams = new TYPE_LIST(TYPE_STRING.getInstance(), null);
+			PrintInt.setParams(PrintIntParams);
+			PrintString.setParams(PrintStringParams);
+			instance.enter("PrintInt", PrintInt);
+			instance.enter("PrintString", PrintString);
 		}
 		return instance;
 	}
+
 }

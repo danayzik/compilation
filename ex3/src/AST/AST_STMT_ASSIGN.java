@@ -1,5 +1,7 @@
 package AST;
 import TYPES.*;
+import static AST.SemanticUtils.checkLegalAssignment;
+
 public class AST_STMT_ASSIGN extends AST_STMT
 {
 
@@ -30,16 +32,11 @@ public class AST_STMT_ASSIGN extends AST_STMT
 	}
 	public TYPE semantMe()
 	{
-		TYPE t1 = null;
-		TYPE t2 = null;
-
-		if (var != null) t1 = var.semantMe();
-		if (exp != null) t2 = exp.semantMe();
-
-		if (t1 != t2)
-		{
-			throw new SemanticError("");
-		}
+		TYPE t1;
+		TYPE t2;
+		t1 = var.semantMe();
+		t2 = exp.semantMe();
+		checkLegalAssignment(t1,t2,"");
 		return null;
 	}
 }

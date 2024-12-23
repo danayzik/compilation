@@ -1,7 +1,7 @@
 package AST;
 
-import SYMBOL_TABLE.SYMBOL_TABLE;
-import TYPES.TYPE;
+import SYMBOL_TABLE.*;
+import TYPES.*;
 
 public class AST_NEW_EXP_SIMPLE extends AST_NEW_EXP
 {
@@ -16,7 +16,7 @@ public class AST_NEW_EXP_SIMPLE extends AST_NEW_EXP
 
 	public void PrintMe()
 	{
-		System.out.format("AST NODE SIMEPL NEW EXP\n");
+		System.out.format("AST NODE SIMPLE NEW EXP\n");
 		AST_GRAPHVIZ.getInstance().logNode(SerialNumber,"NEW\nEXP");
 		type.PrintMe();
 		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,type.SerialNumber);
@@ -25,7 +25,7 @@ public class AST_NEW_EXP_SIMPLE extends AST_NEW_EXP
 
 	public TYPE semantMe() {
 		TYPE t;
-		t = SYMBOL_TABLE.getInstance().findInAllScopes(type.type);
+		t = TYPE_TABLE.getInstance().find(type.type);
 		if (t == null)
 			throw new SemanticError("");
 		if(!t.isClass())

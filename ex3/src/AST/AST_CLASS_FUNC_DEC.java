@@ -1,7 +1,6 @@
 package AST;
-import java.util.List;
-import java.util.ArrayList;
-// not finished need to print argList
+import TYPES.*;
+import SYMBOL_TABLE.*;
 public class AST_CLASS_FUNC_DEC extends AST_CFIELD
 {
     public AST_TYPE type;
@@ -30,9 +29,21 @@ public class AST_CLASS_FUNC_DEC extends AST_CFIELD
         if (body != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,body.SerialNumber);
     }
 
-
-
-
-
-
+    public TYPE semantMe(){
+        TYPE t = TYPE_TABLE.getInstance().find(type.type);
+        if(t == null)
+            throw new SemanticError("");
+        if(SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
+            throw new SemanticError("");
+        TYPE_CLASS owner = TYPE_TABLE.getInstance().getCurrentClassType();
+        TYPE_FUNCTION func = new TYPE_FUNCTION(t, ID);
+        SYMBOL_TABLE.getInstance().enter(ID, func);
+        SYMBOL_TABLE.getInstance().beginScope();
+        func.setParams(argList.semantMeList());
+        body.semantMe();
+        body.matchReturnType(t);
+        boolean overrideError = owner.isOverrideError(t, ID, func.params);
+        SYMBOL_TABLE.getInstance().endScope();
+        return null;
+    }
 }

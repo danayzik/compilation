@@ -20,10 +20,15 @@ public class AST_STMT_RETURN extends AST_STMT
 	}
 	public TYPE semantMe(){
 		if (returnExp == null)	{
-			return null;
+			semanticType = TYPE_VOID.getInstance();
+			return semanticType;
 		}
-		return returnExp.semantMe();
-
+		semanticType = returnExp.semantMe();
+		return semanticType;
+	}
+	public void matchReturnType(TYPE t){
+		if(t != semanticType)
+			throw new SemanticError("");
 	}
 
 

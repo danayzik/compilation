@@ -1,8 +1,8 @@
 package AST;
 
-import SYMBOL_TABLE.SYMBOL_TABLE;
-import TYPES.TYPE;
-import TYPES.TYPE_ARRAY;
+import SYMBOL_TABLE.*;
+import TYPES.*;
+
 
 
 public class AST_DEC_ARRAY_TYPE_DEF extends AST_DEC
@@ -33,13 +33,13 @@ public class AST_DEC_ARRAY_TYPE_DEF extends AST_DEC
         {
             throw new SemanticError("");
         }
-        arrayType = SYMBOL_TABLE.getInstance().findInAllScopes(type.type);
+        arrayType = TYPE_TABLE.getInstance().find(type.type);
         if (arrayType == null)
         {
             throw new SemanticError("");
         }
 
-        SYMBOL_TABLE.getInstance().enter(ID, new TYPE_ARRAY(arrayType, ID));
+        TYPE_TABLE.getInstance().enter(ID, new TYPE_ARRAY(arrayType, ID));
         return null;
     }
 }

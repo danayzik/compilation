@@ -1,7 +1,7 @@
 package AST;
 import TYPES.*;
 import SYMBOL_TABLE.*;
-
+import static AST.SemanticUtils.checkLegalAssignment;
 public class AST_GLOBAL_VAR_DEC extends AST_DEC
 {
     public boolean assigned;
@@ -34,10 +34,10 @@ public class AST_GLOBAL_VAR_DEC extends AST_DEC
     public TYPE semantMe()
     {
         TYPE leftType;
-        TYPE rightType = null;
+        TYPE rightType;
         if (type.type.equals("void"))
             throw new SemanticError("");
-        leftType = SYMBOL_TABLE.getInstance().findInInnerScope(type.type);
+        leftType = TYPE_TABLE.getInstance().find(type.type);
         if (leftType == null)
         {
             throw new SemanticError("");
@@ -46,15 +46,11 @@ public class AST_GLOBAL_VAR_DEC extends AST_DEC
         {
             throw new SemanticError("");
         }
+        SYMBOL_TABLE.getInstance().enter(ID, leftType);
         if(assigned) {
             rightType = assignedExp.semantMe();
-            if (rightType.isNil() && (leftType.isArray() || leftType.isClass())
-                return null;
-            if(leftType != rightType){
-                throw new SemanticError("");
-            }
+            checkLegalAssignment(leftType, rightType, "");
         }
-        SYMBOL_TABLE.getInstance().enter(ID,leftType);
         return null;
     }
 

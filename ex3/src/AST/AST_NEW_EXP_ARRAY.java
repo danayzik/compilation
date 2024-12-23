@@ -1,5 +1,7 @@
 package AST;
 
+import SYMBOL_TABLE.*;
+import TYPES.*;
 public class AST_NEW_EXP_ARRAY extends AST_NEW_EXP
 {
 	public AST_TYPE type;
@@ -20,5 +22,16 @@ public class AST_NEW_EXP_ARRAY extends AST_NEW_EXP
 		sizeExp.PrintMe();
 		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,type.SerialNumber);
 		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,sizeExp.SerialNumber);
+	}
+
+	public TYPE semantMe() {
+		TYPE t;
+		t = TYPE_TABLE.getInstance().find(type.type);
+		if (t == null)
+			throw new SemanticError("");
+		TYPE sizeExpType = sizeExp.semantMe();
+		if(sizeExpType == TYPE_INT.getInstance())
+			throw new SemanticError("");
+		return t;
 	}
 }

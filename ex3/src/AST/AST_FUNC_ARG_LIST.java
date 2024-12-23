@@ -1,5 +1,5 @@
 package AST;
-
+import TYPES.*;
 public class AST_FUNC_ARG_LIST extends AST_Node
 {
 
@@ -26,6 +26,20 @@ public class AST_FUNC_ARG_LIST extends AST_Node
 			"FUNC ARG\nLIST\n");
 		if (head != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,head.SerialNumber);
 		if (tail != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,tail.SerialNumber);
+	}
+	public TYPE_LIST semantMeList(){
+		if (tail == null)
+		{
+			return new TYPE_LIST(
+					head.semantMe(),
+					null);
+		}
+		else
+		{
+			return new TYPE_LIST(
+					head.semantMe(),
+					tail.semantMeList());
+		}
 	}
 	
 }

@@ -28,6 +28,25 @@ public class TYPE_CLASS extends TYPE
 		}
 		return false;
 	}
+	public boolean isOverrideError(TYPE funcType,String ID, TYPE_LIST funcParams){
+		TYPE_CLASS ancestor = this.father;
+		TYPE_LIST ancestorFields;
+		TYPE currField;
+		TYPE superType;
+		String superID;
+		TYPE_LIST superParams;
+		while(ancestor != null){
+			ancestorFields = ancestor.data_members;
+			currField = ancestorFields.head;
+			if(currField instanceof TYPE_FUNCTION){
+				if (currField.name.equals(ID)){
+					if (((TYPE_FUNCTION) currField).matchingTypes(funcType))
+
+
+				}
+			}
+		}
+	}
 
 
 }

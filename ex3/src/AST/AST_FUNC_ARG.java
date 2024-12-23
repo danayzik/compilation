@@ -1,4 +1,6 @@
 package AST;
+import SYMBOL_TABLE.*;
+import TYPES.*;
 
 public class AST_FUNC_ARG extends AST_Node
 {
@@ -19,5 +21,15 @@ public class AST_FUNC_ARG extends AST_Node
         if (type != null) type.PrintMe();
         if (type != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,type.SerialNumber);
     }
-
+    public TYPE semantMe(){
+        if(type.type.equals("void"))
+            throw new SemanticError("");
+        TYPE t = TYPE_TABLE.getInstance().find(type.type);
+        if(t == null)
+            throw new SemanticError("");
+        if(SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
+            throw new SemanticError("");
+        SYMBOL_TABLE.getInstance().enter(ID, t);
+        return null;
+    }
 }

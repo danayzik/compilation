@@ -1,5 +1,6 @@
 package AST;
 import TYPES.*;
+import SYMBOL_TABLE.*;
 public class AST_STMT_WHILE extends AST_STMT
 {
 	public AST_EXP cond;
@@ -32,5 +33,10 @@ public class AST_STMT_WHILE extends AST_STMT
 		body.semantMe();
 		SYMBOL_TABLE.getInstance().endScope();
 		return null;
+	}
+
+	@Override
+	public void matchReturnType(TYPE t) {
+		body.matchReturnType(t);
 	}
 }

@@ -32,5 +32,9 @@ public class AST_STMT_LIST extends AST_Node
 		if(tail != null) tail.semantMe();
 		return null;
 	}
+	public void matchReturnType(TYPE t){
+		if(head != null) head.matchReturnType(t);
+		if(tail != null) tail.matchReturnType(t);
+	}
 	
 }

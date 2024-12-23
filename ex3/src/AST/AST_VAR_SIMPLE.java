@@ -1,5 +1,6 @@
 package AST;
 import TYPES.*;
+import SYMBOL_TABLE.*;
 public class AST_VAR_SIMPLE extends AST_VAR
 {
 
@@ -11,7 +12,6 @@ public class AST_VAR_SIMPLE extends AST_VAR
 		this.name = name;
 	}
 
-
 	public void PrintMe()
 	{
 		System.out.format("AST NODE SIMPLE VAR( %s )\n",name);
@@ -21,6 +21,9 @@ public class AST_VAR_SIMPLE extends AST_VAR
 	}
 	public TYPE semantMe()
 	{
-		return null;
+		TYPE t = SYMBOL_TABLE.getInstance().findInAllScopes(name);
+		if(t == null)
+			throw new SemanticError("");
+		return t;
 	}
 }

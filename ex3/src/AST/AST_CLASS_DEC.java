@@ -34,14 +34,14 @@ public class AST_CLASS_DEC extends AST_DEC
         if(inst.findInInnerScope(ID) != null)
             throw new SemanticError("");
         if(inherits){
-            father = (TYPE_CLASS) inst.findInInnerScope(parentID);
+            father = (TYPE_CLASS) TYPE_TABLE.getInstance().find(parentID);
             if(father == null)
                 throw new SemanticError("");
             if (!father.isClass())
                 throw new SemanticError("");
         }
         TYPE_CLASS t = new TYPE_CLASS(father, ID);
-        SYMBOL_TABLE.getInstance().enter(ID, t);
+        TYPE_TABLE.getInstance().enter(ID, t);
         SYMBOL_TABLE.getInstance().beginScope();
         t.setDataMembers(cfieldList.semantMeList());
         SYMBOL_TABLE.getInstance().endScope();
