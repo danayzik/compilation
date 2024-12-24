@@ -1,5 +1,6 @@
 package SYMBOL_TABLE;
 import TYPES.TYPE;
+import TYPES.TYPE_CLASS;
 
 public class SYMBOL_TABLE_SCOPE {
 
@@ -7,11 +8,14 @@ public class SYMBOL_TABLE_SCOPE {
 	SYMBOL_TABLE_ENTRY head;
 	SYMBOL_TABLE_ENTRY tail;
 
+	public boolean isClassScope;
+
 
 	public SYMBOL_TABLE_SCOPE(SYMBOL_TABLE_SCOPE parent) {
 		this.prev = parent;
 		this.head = null;
 		this.tail = null;
+		this.isClassScope = false;
 	}
 
 	public void addEntry(SYMBOL_TABLE_ENTRY e) {
@@ -33,6 +37,10 @@ public class SYMBOL_TABLE_SCOPE {
 		}
 		return null;
 	}
+	public TYPE findInClass(String name){
+		TYPE_CLASS owner = TYPE_TABLE.getInstance().getCurrentClassType();
+		return owner.findMember(name);
+	}
 
 	public TYPE findInAllScopes(String name){
 		TYPE target;
@@ -41,9 +49,15 @@ public class SYMBOL_TABLE_SCOPE {
 			target = currScope.findInScope(name);
 			if (target != null)
 				return target;
+			if (isClassScope)
+				target = findInClass(name);
+			if (target != null)
+				return target;
 			currScope = currScope.prev;
 		}
 		return null;
-
+	}
+	public void setAsClassScope(){
+		isClassScope = true;
 	}
 }

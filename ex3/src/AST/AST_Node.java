@@ -9,4 +9,5 @@ public abstract class AST_Node
 	{
 		System.out.print("AST NODE UNKNOWN\n");
 	}
+	public String line;
 }

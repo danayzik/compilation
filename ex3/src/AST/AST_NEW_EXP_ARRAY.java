@@ -30,8 +30,13 @@ public class AST_NEW_EXP_ARRAY extends AST_NEW_EXP
 		if (t == null)
 			throw new SemanticError("");
 		TYPE sizeExpType = sizeExp.semantMe();
-		if(sizeExpType == TYPE_INT.getInstance())
+		if(sizeExpType != TYPE_INT.getInstance())
 			throw new SemanticError("");
+		if (sizeExp instanceof AST_EXP_INT){
+			if(((AST_EXP_INT) sizeExp).value == 0){
+				throw new SemanticError("");
+			}
+		}
 		return t;
 	}
 }

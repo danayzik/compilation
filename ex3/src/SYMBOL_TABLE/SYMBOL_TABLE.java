@@ -75,5 +75,12 @@ public class SYMBOL_TABLE
 		}
 		return instance;
 	}
+	public void setAsClassScope(){
+		tailScope.setAsClassScope();
+	}
+
+	public boolean isClassScope(){
+		return tailScope.isClassScope;
+	}
 
 }
