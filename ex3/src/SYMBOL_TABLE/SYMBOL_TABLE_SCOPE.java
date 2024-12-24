@@ -49,8 +49,9 @@ public class SYMBOL_TABLE_SCOPE {
 			target = currScope.findInScope(name);
 			if (target != null)
 				return target;
-			if (isClassScope)
+			if (currScope.isClassScope) {
 				target = findInClass(name);
+			}
 			if (target != null)
 				return target;
 			currScope = currScope.prev;

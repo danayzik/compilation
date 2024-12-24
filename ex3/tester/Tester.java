@@ -1,5 +1,8 @@
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -55,6 +58,10 @@ public class Tester {
 				System.out.println("Running: " + command);
 				Process process = Runtime.getRuntime().exec(command);
 
+				// Consume stdout and stderr to prevent blocking
+				consumeStream(process.getInputStream(), "OUTPUT");
+				consumeStream(process.getErrorStream(), "ERROR");
+
 				// Wait for the process to finish
 				int exitCode = process.waitFor();
 				if (exitCode == 0) {
@@ -88,6 +95,20 @@ public class Tester {
 				e.printStackTrace();
 			}
 		}
-		System.out.println("Total numbers of tests not passed: " + counter);
+		System.out.println("Total numbers of tests not passed: "+counter);
+	}
+
+
+	private static void consumeStream(InputStream stream, String streamName) {
+		new Thread(() -> {
+			try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
+				String line;
+				while ((line = reader.readLine()) != null) {
+
+				}
+			} catch (IOException e) {
+
+			}
+		}).start();
 	}
 }

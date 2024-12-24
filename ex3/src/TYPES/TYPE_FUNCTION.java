@@ -13,14 +13,18 @@ public class TYPE_FUNCTION extends TYPE
 		this.returnType = returnType;
 		this.params = null;
 	}
-	public boolean matchingTypes(TYPE t){
-		return t == returnType;
-	}
-	public boolean matchingParams(TYPE_LIST pList){
-		return params.matchingList(pList);
-	}
+
 
 	public void setParams(TYPE_LIST params){
 		this.params = params;
+	}
+
+	public boolean canAssignToArgs(TYPE_LIST args){
+		boolean onlyOneIsNull = (args == null) != (params == null);
+		if (args == null && params == null)
+			return true;
+		if (onlyOneIsNull)
+			return false;
+		return this.params.canAssignList(args);
 	}
 }

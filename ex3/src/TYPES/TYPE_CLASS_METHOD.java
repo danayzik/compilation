@@ -15,4 +15,13 @@ public class TYPE_CLASS_METHOD extends TYPE_CLASS_MEMBER
 		this.args=args;
 	}
 	public boolean isMethod(){return true;}
+
+	public boolean canAssignToArgs(TYPE_LIST params){
+		boolean onlyOneIsNull = (args == null) != (params == null);
+		if (args == null && params == null)
+			return true;
+		if (onlyOneIsNull)
+			return false;
+		return this.args.canAssignList(params);
+	}
 }

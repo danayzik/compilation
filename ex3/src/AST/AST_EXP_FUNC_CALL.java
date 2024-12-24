@@ -39,7 +39,6 @@ public class AST_EXP_FUNC_CALL extends AST_EXP
 		TYPE owner;
 		TYPE finalType;
 		TYPE_LIST argTypes = null;
-		TYPE_LIST paramTypes;
 		TYPE_CLASS_MEMBER method;
 		if (argList != null)
 			argTypes = argList.semantMeList();
@@ -48,24 +47,17 @@ public class AST_EXP_FUNC_CALL extends AST_EXP
 			if (funcType == null)
 				throw new SemanticError(line);
 			if (funcType instanceof TYPE_FUNCTION) {
-				paramTypes = ((TYPE_FUNCTION)funcType).params;
-				if (!paramTypes.canAssignList(argTypes))
+				if (!((TYPE_FUNCTION)funcType).canAssignToArgs(argTypes))
 					throw new SemanticError(line);
 				finalType = ((TYPE_FUNCTION)funcType).returnType;
 			} else if (funcType instanceof TYPE_CLASS_METHOD) {
-				paramTypes = ((TYPE_CLASS_METHOD)funcType).args;
-				if (paramTypes != null) {
-					if (!paramTypes.canAssignList(argTypes))
-						throw new SemanticError(line);
-				} else if (argTypes != null) {
+				if (!((TYPE_CLASS_METHOD)funcType).canAssignToArgs(argTypes))
 					throw new SemanticError(line);
-				}
 				finalType = ((TYPE_CLASS_METHOD)funcType).t;
 			}
 			else {
 				throw new SemanticError(line);
 			}
-
 		}
 		else {
 			owner = ownerVar.semantMe();
@@ -78,8 +70,7 @@ public class AST_EXP_FUNC_CALL extends AST_EXP
 				throw new SemanticError(line);
 			if (!method.isMethod())
 				throw new SemanticError(line);
-			paramTypes = ((TYPE_CLASS_METHOD)method).args;
-			if (!paramTypes.canAssignList(argTypes))
+			if (!((TYPE_CLASS_METHOD)method).canAssignToArgs(argTypes))
 				throw new SemanticError(line);
 			finalType = method.t;
 		}

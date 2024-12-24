@@ -53,7 +53,8 @@ public class AST_CLASS_VAR_DEC extends AST_CFIELD
             rightType = assignedExp.semantMe();
             checkLegalAssignment(leftType, rightType, line);
         }
-        return new TYPE_CLASS_FIELD(leftType, ID);
+        semanticType = new TYPE_CLASS_FIELD(leftType, ID);
+        return semanticType;
     }
 
 }

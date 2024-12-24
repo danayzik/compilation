@@ -35,7 +35,6 @@ public class TYPE_CLASS extends TYPE
 		TYPE_CLASS_MEMBER_LIST ancestorMembers;
 		TYPE_CLASS_MEMBER currMember;
 		TYPE superType;
-		TYPE_LIST superParams;
 		while(ancestor != null){
 			ancestorMembers = ancestor.data_members;
 			while(ancestorMembers != null) {
@@ -44,10 +43,9 @@ public class TYPE_CLASS extends TYPE
 					if (currMember.isField())
 						return true;
 					superType = currMember.t;
-					superParams = ((TYPE_CLASS_METHOD) currMember).args;
 					if (funcType != superType)
 						return true;
-					if (!superParams.matchingList(funcParams))
+					if (!((TYPE_CLASS_METHOD) currMember).canAssignToArgs(funcParams))
 						return true;
 				}
 				ancestorMembers = ancestorMembers.tail;

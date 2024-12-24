@@ -47,6 +47,7 @@ public class AST_CLASS_FUNC_DEC extends AST_CFIELD
         if (overrideError)
             throw new SemanticError(line);
         SYMBOL_TABLE.getInstance().endScope();
+        semanticType = func;
         return func;
     }
 }

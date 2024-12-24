@@ -29,11 +29,15 @@ public class AST_VAR_FIELD extends AST_VAR
 	}
 	public TYPE semantMe(){
 		TYPE owner = var.semantMe();
+		TYPE_CLASS_MEMBER field;
 		if(owner == null)
 			throw new SemanticError(line);
 		if (!owner.isClass())
 			throw new SemanticError(line);
-		TYPE t = ((TYPE_CLASS)owner).findMember(fieldName).t;
+		field = ((TYPE_CLASS)owner).findMember(fieldName);
+		if (field == null)
+			throw new SemanticError(line);
+		TYPE t = field.t;
 		if (t == null)
 			throw new SemanticError(line);
 		return t;

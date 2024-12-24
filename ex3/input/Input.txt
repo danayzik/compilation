@@ -1,12 +1,18 @@
-int foo(string s) { return 800;}
-class Father
+array IntArray = int[];
+array Mat      = IntArray[];
+
+
+
+void main()
 {
-    string foo(string s)
-    {
-        return s;
-    }
-    void Print()
-    {
-        PrintString(foo("Jerry"));
-    }
+	IntArray row0 := new int[3];
+	IntArray row1 := new int[3];
+	IntArray row2 := new int[3];
+
+	Mat A := new IntArray[3];
+
+	A[0] :=2;
+
+
+
 }

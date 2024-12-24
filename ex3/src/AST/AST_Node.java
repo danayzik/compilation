@@ -3,7 +3,7 @@ import TYPES.*;
 public abstract class AST_Node
 {
 	public int SerialNumber;
-
+	public TYPE semanticType = null;
 	public TYPE semantMe(){return null;}
 	public void PrintMe()
 	{
