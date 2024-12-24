@@ -9,11 +9,12 @@ public class AST_DEC_ARRAY_TYPE_DEF extends AST_DEC
 {
     public String ID;
     public AST_TYPE type;
-    public AST_DEC_ARRAY_TYPE_DEF(String ID, AST_TYPE type)
+    public AST_DEC_ARRAY_TYPE_DEF(int line, String ID, AST_TYPE type)
     {
         SerialNumber = AST_Node_Serial_Number.getFresh();
         this.ID = ID;
         this.type = type;
+        this.line = String.valueOf(line);
     }
     public void PrintMe()
     {
@@ -28,15 +29,15 @@ public class AST_DEC_ARRAY_TYPE_DEF extends AST_DEC
     {
         TYPE arrayType;
         if (type.type.equals("void"))
-            throw new SemanticError("");
+            throw new SemanticError(line);
         if (SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
         {
-            throw new SemanticError("");
+            throw new SemanticError(line);
         }
         arrayType = TYPE_TABLE.getInstance().find(type.type);
         if (arrayType == null)
         {
-            throw new SemanticError("");
+            throw new SemanticError(line);
         }
 
         TYPE_TABLE.getInstance().enter(ID, new TYPE_ARRAY(arrayType, ID));

@@ -3,10 +3,11 @@ import TYPES.*;
 public class AST_EXP_PAREN extends AST_EXP
 {
     public AST_EXP childExp;
-    public AST_EXP_PAREN(AST_EXP child)
+    public AST_EXP_PAREN(int line, AST_EXP child)
     {
         SerialNumber = AST_Node_Serial_Number.getFresh();
         this.childExp = child;
+        this.line = String.valueOf(line);
     }
     public void PrintMe()
     {

@@ -29,6 +29,7 @@ public class AST_CFIELD_LIST extends AST_Node
 
 	public TYPE_CLASS_MEMBER_LIST semantMeList()
 	{
+		TYPE_CLASS_MEMBER headType;
 		if (tail == null)
 		{
 			return new TYPE_CLASS_MEMBER_LIST(
@@ -37,8 +38,9 @@ public class AST_CFIELD_LIST extends AST_Node
 		}
 		else
 		{
+			headType = (TYPE_CLASS_MEMBER) head.semantMe();
 			return new TYPE_CLASS_MEMBER_LIST(
-					(TYPE_CLASS_MEMBER) head.semantMe(),
+					headType,
 					tail.semantMeList());
 		}
 	}

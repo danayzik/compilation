@@ -7,10 +7,11 @@ public class AST_NEW_EXP_SIMPLE extends AST_NEW_EXP
 {
 	public AST_TYPE type;
 
-	public AST_NEW_EXP_SIMPLE(AST_TYPE type)
+	public AST_NEW_EXP_SIMPLE(int line, AST_TYPE type)
 	{
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 		this.type = type;
+		this.line = String.valueOf(line);
 	}
 
 
@@ -27,9 +28,9 @@ public class AST_NEW_EXP_SIMPLE extends AST_NEW_EXP
 		TYPE t;
 		t = TYPE_TABLE.getInstance().find(type.type);
 		if (t == null)
-			throw new SemanticError("");
+			throw new SemanticError(line);
 		if(!t.isClass())
-			throw new SemanticError("");
+			throw new SemanticError(line);
 		return t;
 	}
 }

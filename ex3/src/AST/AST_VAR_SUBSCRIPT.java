@@ -7,11 +7,12 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 	public AST_VAR var;
 	public AST_EXP subscript;
 
-	public AST_VAR_SUBSCRIPT(AST_VAR var,AST_EXP subscript)
+	public AST_VAR_SUBSCRIPT(int line, AST_VAR var,AST_EXP subscript)
 	{
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 		this.var = var;
 		this.subscript = subscript;
+		this.line = String.valueOf(line);
 	}
 
 	public void PrintMe()
@@ -30,9 +31,9 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		TYPE varType = var.semantMe();
 		TYPE subscriptType = subscript.semantMe();
 		if (!varType.isArray())
-			throw new SemanticError("");
+			throw new SemanticError(line);
 		if (subscriptType != TYPE_INT.getInstance())
-			throw new SemanticError("");
+			throw new SemanticError(line);
 		return ((TYPE_ARRAY)varType).arrayType;
 	}
 }

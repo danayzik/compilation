@@ -75,6 +75,8 @@ public class TYPE_CLASS extends TYPE
 	}
 
 	public TYPE_CLASS_MEMBER findMember(String ID){
+		System.out.println(this.name);
+		System.out.println(this.data_members.head.name);
 		TYPE_CLASS ancestor = this;
 		TYPE_CLASS_MEMBER_LIST currMembers;
 		TYPE_CLASS_MEMBER currMember;
@@ -82,8 +84,10 @@ public class TYPE_CLASS extends TYPE
 			currMembers = ancestor.data_members;
 			while(currMembers != null){
 				currMember = currMembers.head;
-				if (currMember.name.equals(ID))
-					return currMember;
+				if (currMember != null) {
+					if (currMember.name.equals(ID))
+						return currMember;
+				}
 				currMembers = currMembers.tail;
 			}
 			ancestor = ancestor.father;

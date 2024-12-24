@@ -4,10 +4,11 @@ public class AST_EXP_VAR extends AST_EXP
 {
 	public AST_VAR var;
 
-	public AST_EXP_VAR(AST_VAR var)
+	public AST_EXP_VAR(int line, AST_VAR var)
 	{
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 		this.var = var;
+		this.line = String.valueOf(line);
 	}
 
 	public void PrintMe()

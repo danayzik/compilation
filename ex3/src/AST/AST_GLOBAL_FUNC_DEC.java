@@ -8,13 +8,14 @@ public class AST_GLOBAL_FUNC_DEC extends AST_DEC {
     public AST_STMT_LIST body;
     public AST_FUNC_ARG_LIST argList;
 
-    public AST_GLOBAL_FUNC_DEC(AST_TYPE type,String id,AST_STMT_LIST stLst, AST_FUNC_ARG_LIST argList)
+    public AST_GLOBAL_FUNC_DEC(int line, AST_TYPE type,String id,AST_STMT_LIST stLst, AST_FUNC_ARG_LIST argList)
     {
         SerialNumber = AST_Node_Serial_Number.getFresh();
         this.type = type;
         this.ID = id;
         this.body = stLst;
         this.argList = argList;
+        this.line = String.valueOf(line);
     }
     public void PrintMe()
     {
@@ -33,9 +34,9 @@ public class AST_GLOBAL_FUNC_DEC extends AST_DEC {
     public TYPE semantMe(){
         TYPE t = TYPE_TABLE.getInstance().find(type.type);
         if(t == null)
-            throw new SemanticError("");
+            throw new SemanticError(line);
         if(SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
-            throw new SemanticError("");
+            throw new SemanticError(line);
         TYPE_FUNCTION func = new TYPE_FUNCTION(t, ID);
         SYMBOL_TABLE.getInstance().enter(ID, func);
         SYMBOL_TABLE.getInstance().beginScope();

@@ -7,11 +7,12 @@ public class AST_FUNC_ARG extends AST_Node
     AST_TYPE type;
     String ID;
 
-    public AST_FUNC_ARG(AST_TYPE type, String ID)
+    public AST_FUNC_ARG(int line, AST_TYPE type, String ID)
     {
         SerialNumber = AST_Node_Serial_Number.getFresh();
         this.type = type;
         this.ID = ID;
+        this.line = String.valueOf(line);
     }
     public void PrintMe()
     {
@@ -23,12 +24,12 @@ public class AST_FUNC_ARG extends AST_Node
     }
     public TYPE semantMe(){
         if(type.type.equals("void"))
-            throw new SemanticError("");
+            throw new SemanticError(line);
         TYPE t = TYPE_TABLE.getInstance().find(type.type);
         if(t == null)
-            throw new SemanticError("");
+            throw new SemanticError(line);
         if(SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
-            throw new SemanticError("");
+            throw new SemanticError(line);
         SYMBOL_TABLE.getInstance().enter(ID, t);
         return t;
     }

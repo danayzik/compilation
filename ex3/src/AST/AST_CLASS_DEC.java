@@ -9,13 +9,14 @@ public class AST_CLASS_DEC extends AST_DEC
     public boolean inherits;
     public AST_CFIELD_LIST cfieldList;
 
-    public AST_CLASS_DEC(String ID, AST_CFIELD_LIST cfieldList, String parentID)
+    public AST_CLASS_DEC(int line, String ID, AST_CFIELD_LIST cfieldList, String parentID)
     {
         SerialNumber = AST_Node_Serial_Number.getFresh();
         this.ID = ID;
         this.cfieldList = cfieldList;
         this.inherits = (parentID != null);
         this.parentID = parentID;
+        this.line = String.valueOf(line);
     }
 
     public void PrintMe()
@@ -32,13 +33,13 @@ public class AST_CLASS_DEC extends AST_DEC
         TYPE_CLASS father = null;
         SYMBOL_TABLE inst = SYMBOL_TABLE.getInstance();
         if(inst.findInInnerScope(ID) != null)
-            throw new SemanticError("");
+            throw new SemanticError(line);
         if(inherits){
             father = (TYPE_CLASS) TYPE_TABLE.getInstance().find(parentID);
             if(father == null)
-                throw new SemanticError("");
+                throw new SemanticError(line);
             if (!father.isClass())
-                throw new SemanticError("");
+                throw new SemanticError(line);
         }
         TYPE_CLASS t = new TYPE_CLASS(father, ID);
         TYPE_TABLE.getInstance().enter(ID, t);

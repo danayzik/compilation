@@ -26,12 +26,13 @@ public class AST_EXP_BINOP extends AST_EXP
 		}
 	}
 
-	public AST_EXP_BINOP(AST_EXP left,AST_EXP right,int OP)
+	public AST_EXP_BINOP(int line, AST_EXP left,AST_EXP right,int OP)
 	{
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 		this.left = left;
 		this.right = right;
 		this.OP = OP;
+		this.line = String.valueOf(line);
 	}
 
 	public void PrintMe()
@@ -90,7 +91,7 @@ public class AST_EXP_BINOP extends AST_EXP
 				if(bothInts){
 					if (right instanceof AST_EXP_INT){
 						if(((AST_EXP_INT) right).value == 0){
-							throw new SemanticError("");
+							throw new SemanticError(line);
 						}
 					}
 				}
@@ -101,7 +102,7 @@ public class AST_EXP_BINOP extends AST_EXP
 					return TYPE_INT.getInstance();
 				}
 		}
-		throw new SemanticError("");
+		throw new SemanticError(line);
 
 	}
 }

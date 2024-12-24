@@ -8,18 +8,19 @@ public class AST_STMT_FUNC_CALL extends AST_STMT
 	public AST_VAR ownerVar;
 	public String funcID;
 
-	public AST_STMT_FUNC_CALL(AST_VAR ownerVar, String funcID, AST_EXP_LIST argList)
+	public AST_STMT_FUNC_CALL(int line, AST_VAR ownerVar, String funcID, AST_EXP_LIST argList)
 	{
 		this.ownerVar = ownerVar;
 		this.funcID = funcID;
 		this.argList = argList;
 		this.classMethodCall = (ownerVar != null);
 		SerialNumber = AST_Node_Serial_Number.getFresh();
+		this.line = String.valueOf(line);
 
 	}
-	public AST_STMT_FUNC_CALL(String funcID, AST_EXP_LIST argList)
+	public AST_STMT_FUNC_CALL(int line, String funcID, AST_EXP_LIST argList)
 	{
-		this(null, funcID, argList);
+		this(line, null, funcID, argList);
 	}
 
 
@@ -45,26 +46,26 @@ public class AST_STMT_FUNC_CALL extends AST_STMT
 		if (!classMethodCall){
 			funcType = (TYPE_FUNCTION) SYMBOL_TABLE.getInstance().findInAllScopes(funcID);
 			if (funcType == null)
-				throw new SemanticError("");
+				throw new SemanticError(line);
 			paramTypes = funcType.params;
 			if(!paramTypes.canAssignList(argTypes))
-				throw new SemanticError("");
+				throw new SemanticError(line);
 			finalType = funcType.returnType;
 		}
 		else {
 			owner = ownerVar.semantMe();
 			if (owner == null)
-				throw new SemanticError("");
+				throw new SemanticError(line);
 			if (!owner.isClass())
-				throw new SemanticError("");
+				throw new SemanticError(line);
 			method = ((TYPE_CLASS)owner).findMember(funcID);
 			if (method == null)
-				throw new SemanticError("");
+				throw new SemanticError(line);
 			if (!method.isMethod())
-				throw new SemanticError("");
+				throw new SemanticError(line);
 			paramTypes = ((TYPE_CLASS_METHOD)method).args;
 			if (!paramTypes.canAssignList(argTypes))
-				throw new SemanticError("");
+				throw new SemanticError(line);
 			finalType = method.t;
 		}
 		return finalType;

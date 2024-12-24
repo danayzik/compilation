@@ -6,11 +6,12 @@ public class AST_NEW_EXP_ARRAY extends AST_NEW_EXP
 {
 	public AST_TYPE type;
 	public AST_EXP sizeExp;
-	public AST_NEW_EXP_ARRAY(AST_TYPE type, AST_EXP sizeExp)
+	public AST_NEW_EXP_ARRAY(int line, AST_TYPE type, AST_EXP sizeExp)
 	{
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 		this.type = type;
 		this.sizeExp = sizeExp;
+		this.line = String.valueOf(line);
 	}
 
 
@@ -28,13 +29,13 @@ public class AST_NEW_EXP_ARRAY extends AST_NEW_EXP
 		TYPE t;
 		t = TYPE_TABLE.getInstance().find(type.type);
 		if (t == null)
-			throw new SemanticError("");
+			throw new SemanticError(line);
 		TYPE sizeExpType = sizeExp.semantMe();
 		if(sizeExpType != TYPE_INT.getInstance())
-			throw new SemanticError("");
+			throw new SemanticError(line);
 		if (sizeExp instanceof AST_EXP_INT){
 			if(((AST_EXP_INT) sizeExp).value == 0){
-				throw new SemanticError("");
+				throw new SemanticError(line);
 			}
 		}
 		return t;

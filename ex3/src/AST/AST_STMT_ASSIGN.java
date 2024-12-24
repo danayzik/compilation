@@ -8,11 +8,12 @@ public class AST_STMT_ASSIGN extends AST_STMT
 	public AST_VAR var;
 	public AST_EXP exp;
 
-	public AST_STMT_ASSIGN(AST_VAR var,AST_EXP exp)
+	public AST_STMT_ASSIGN(int line, AST_VAR var,AST_EXP exp)
 	{
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 		this.var = var;
 		this.exp = exp;
+		this.line = String.valueOf(line);
 	}
 
 	public void PrintMe()
@@ -36,7 +37,7 @@ public class AST_STMT_ASSIGN extends AST_STMT
 		TYPE t2;
 		t1 = var.semantMe();
 		t2 = exp.semantMe();
-		checkLegalAssignment(t1,t2,"");
+		checkLegalAssignment(t1,t2,line);
 		return null;
 	}
 }

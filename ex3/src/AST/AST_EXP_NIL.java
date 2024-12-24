@@ -3,10 +3,11 @@ import TYPES.*;
 public class AST_EXP_NIL extends AST_EXP
 {
 	public String str;
-	public AST_EXP_NIL()
+	public AST_EXP_NIL(int line)
 	{
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 		this.str = "NIL";
+		this.line = String.valueOf(line);
 	}
 
 

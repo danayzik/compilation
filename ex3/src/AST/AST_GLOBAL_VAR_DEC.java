@@ -9,16 +9,17 @@ public class AST_GLOBAL_VAR_DEC extends AST_DEC
     public AST_TYPE type;
     public String ID;
 
-    public AST_GLOBAL_VAR_DEC(AST_TYPE varType, String ID, AST_EXP assignedExp) {
+    public AST_GLOBAL_VAR_DEC(int line, AST_TYPE varType, String ID, AST_EXP assignedExp) {
         SerialNumber = AST_Node_Serial_Number.getFresh();
         this.ID = ID;
         this.type = varType;
         this.assignedExp = assignedExp;
         this.assigned = (assignedExp != null);
+        this.line = String.valueOf(line);
     }
 
-    public AST_GLOBAL_VAR_DEC(AST_TYPE varType, String ID) {
-        this(varType, ID, null);
+    public AST_GLOBAL_VAR_DEC(int line, AST_TYPE varType, String ID) {
+        this(line, varType, ID, null);
     }
 
     public void PrintMe()
@@ -36,20 +37,20 @@ public class AST_GLOBAL_VAR_DEC extends AST_DEC
         TYPE leftType;
         TYPE rightType;
         if (type.type.equals("void"))
-            throw new SemanticError("");
+            throw new SemanticError(line);
         leftType = TYPE_TABLE.getInstance().find(type.type);
         if (leftType == null)
         {
-            throw new SemanticError("");
+            throw new SemanticError(line);
         }
         if (SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
         {
-            throw new SemanticError("");
+            throw new SemanticError(line);
         }
         SYMBOL_TABLE.getInstance().enter(ID, leftType);
         if(assigned) {
             rightType = assignedExp.semantMe();
-            checkLegalAssignment(leftType, rightType, "");
+            checkLegalAssignment(leftType, rightType, line);
         }
         return null;
     }

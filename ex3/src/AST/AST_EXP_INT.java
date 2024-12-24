@@ -4,10 +4,11 @@ public class AST_EXP_INT extends AST_EXP
 {
 	public int value;
 
-	public AST_EXP_INT(int value)
+	public AST_EXP_INT(int line, int value)
 	{
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 		this.value = value;
+		this.line = String.valueOf(line);
 	}
 
 	public void PrintMe()

@@ -5,7 +5,7 @@ BASEDIR = $(shell echo %cd%)
 JFlex_DIR         = ${BASEDIR}/jflex
 CUP_DIR           = ${BASEDIR}/cup
 SRC_DIR           = ${BASEDIR}/src
-BIN_DIR           = ${BASEDIR}/bin
+BIN_DIR           = ${BASEDIR}\bin
 INPUT_DIR         = ${BASEDIR}/input
 OUTPUT_DIR        = ${BASEDIR}/output
 EXTERNAL_JARS_DIR = ${BASEDIR}/jar_files
@@ -20,7 +20,7 @@ JFlex_CUP_GENERATED_FILES = ${JFlex_GENERATED_FILE} ${CUP_GENERATED_FILES}
 SRC_FILES := $(wildcard ${SRC_DIR}/*.java) \
             $(wildcard ${SRC_DIR}/AST/*.java) \
             $(wildcard ${SRC_DIR}/TYPES/*.java) \
-            $(wildcard ${SRC_DIR}/SYMBOL_TABLE/*.java) \
+            $(wildcard ${SRC_DIR}/SYMBOL_TABLE/*.java)
 EXTERNAL_JAR_FILES        = ${EXTERNAL_JARS_DIR}/java-cup-11b-runtime.jar
 MANIFEST_FILE             = ${MANIFEST_DIR}/MANIFEST.MF
 
@@ -85,7 +85,7 @@ compile:
 	@echo "*                                                      *"
 	@echo "*                                                      *"
 	@echo "********************************************************"
-	javac -cp ${EXTERNAL_JAR_FILES} -d ${BIN_DIR} ${SRC_FILES}
+	@javac -cp ${EXTERNAL_JAR_FILES} -d ${BIN_DIR} ${SRC_FILES}
 	@echo "\n"
 	@echo "***********************************************************"
 	@echo "*                                                         *"
@@ -95,6 +95,10 @@ compile:
 	@echo "*                                                         *"
 	@echo "***********************************************************"
 	@jar cfm COMPILER ${MANIFEST_FILE} -C ${BIN_DIR} .
+	cls
+	@java -jar COMPILER ${INPUT} ${OUTPUT}
+	@dot -Tjpeg -o${OUTPUT_DIR}/AST.jpeg ${OUTPUT_DIR}/AST_IN_GRAPHVIZ_DOT_FORMAT.txt
+	@cmd /c start ${OUTPUT_DIR}/AST.jpeg
 
 debug:
 	cls
@@ -124,7 +128,7 @@ debug:
 	@echo "*                                                      *"
 	@echo "*                                                      *"
 	@echo "********************************************************"
-	javac -cp ${EXTERNAL_JAR_FILES} -d ${BIN_DIR} ${SRC_FILES}
+	@javac -cp ${EXTERNAL_JAR_FILES} -d ${BIN_DIR} ${SRC_FILES}
 	@echo "\n"
 	@echo "***********************************************************"
 	@echo "*                                                         *"
@@ -160,7 +164,7 @@ debug:
 	@echo "*                                              *"
 	@echo "*                                              *"
 	@echo "************************************************"
-	cmd /c start ${OUTPUT_DIR}/AST.jpeg
+	@cmd /c start ${OUTPUT_DIR}/AST.jpeg
 	@echo "*********************************************************"
 	@echo "*                                                       *"
 	@echo "*                                                       *"

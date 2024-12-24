@@ -6,10 +6,11 @@ public class AST_VAR_SIMPLE extends AST_VAR
 
 	public String name;
 
-	public AST_VAR_SIMPLE(String name)
+	public AST_VAR_SIMPLE(int line, String name)
 	{
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 		this.name = name;
+		this.line = String.valueOf(line);
 	}
 
 	public void PrintMe()
@@ -23,7 +24,7 @@ public class AST_VAR_SIMPLE extends AST_VAR
 	{
 		TYPE t = SYMBOL_TABLE.getInstance().findInAllScopes(name);
 		if(t == null)
-			throw new SemanticError("");
+			throw new SemanticError(line);
 		return t;
 	}
 }

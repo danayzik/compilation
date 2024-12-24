@@ -3,8 +3,6 @@ import java.io.*;
 import java.io.PrintWriter;
 import java_cup.runtime.Symbol;
 import AST.*;
-// TODO
-// Make sure variables can't be void, and array types cant be void
 
 public class Main
 {
@@ -60,10 +58,17 @@ public class Main
 				return;
 			}
 
-			/*************************/
-			/* [6] Print the AST ... */
-			/*************************/
 			AST.PrintMe();
+			AST_GRAPHVIZ.getInstance().finalizeFile();
+			try{
+				AST.semantMe();
+			}
+			catch (SemanticError se){
+				file_writer.println(String.format("ERROR(%s)", se.getMessage()));
+				System.out.println("Caught Semantic Error");
+				file_writer.close();
+				return;
+			}
 			
 			/*************************/
 			/* [7] Close output file */
@@ -74,7 +79,7 @@ public class Main
 			/*************************************/
 			/* [8] Finalize AST GRAPHIZ DOT file */
 			/*************************************/
-			AST_GRAPHVIZ.getInstance().finalizeFile();
+
     	}
 			     
 		catch (Exception e)

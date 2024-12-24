@@ -4,10 +4,11 @@ public class AST_STMT_RETURN extends AST_STMT
 {
 	public AST_EXP returnExp;
 
-	public AST_STMT_RETURN(AST_EXP returnExp)
+	public AST_STMT_RETURN(int line, AST_EXP returnExp)
 	{
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 		this.returnExp = returnExp;
+		this.line = String.valueOf(line);
 	}
 	public void PrintMe()
 	{
@@ -28,7 +29,7 @@ public class AST_STMT_RETURN extends AST_STMT
 	}
 	public void matchReturnType(TYPE t){
 		if(t != semanticType)
-			throw new SemanticError("");
+			throw new SemanticError(line);
 	}
 
 

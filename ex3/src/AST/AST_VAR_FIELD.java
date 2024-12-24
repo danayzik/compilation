@@ -7,11 +7,12 @@ public class AST_VAR_FIELD extends AST_VAR
 	public AST_VAR var;
 	public String fieldName;
 
-	public AST_VAR_FIELD(AST_VAR var,String fieldName)
+	public AST_VAR_FIELD(int line, AST_VAR var,String fieldName)
 	{
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 		this.var = var;
 		this.fieldName = fieldName;
+		this.line = String.valueOf(line);
 	}
 
 	public void PrintMe()
@@ -29,12 +30,12 @@ public class AST_VAR_FIELD extends AST_VAR
 	public TYPE semantMe(){
 		TYPE owner = var.semantMe();
 		if(owner == null)
-			throw new SemanticError("");
+			throw new SemanticError(line);
 		if (!owner.isClass())
-			throw new SemanticError("");
+			throw new SemanticError(line);
 		TYPE t = ((TYPE_CLASS)owner).findMember(fieldName).t;
 		if (t == null)
-			throw new SemanticError("");
+			throw new SemanticError(line);
 		return t;
 	}
 }

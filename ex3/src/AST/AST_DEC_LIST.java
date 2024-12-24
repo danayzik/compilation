@@ -10,6 +10,7 @@ public class AST_DEC_LIST extends AST_Node
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 		this.head = head;
 		this.tail = tail;
+
 	}
 
 	public void PrintMe()

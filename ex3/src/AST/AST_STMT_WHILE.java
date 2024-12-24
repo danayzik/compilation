@@ -6,11 +6,12 @@ public class AST_STMT_WHILE extends AST_STMT
 	public AST_EXP cond;
 	public AST_STMT_LIST body;
 
-	public AST_STMT_WHILE(AST_EXP cond,AST_STMT_LIST body)
+	public AST_STMT_WHILE(int line, AST_EXP cond,AST_STMT_LIST body)
 	{
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 		this.cond = cond;
 		this.body = body;
+		this.line = String.valueOf(line);
 	}
 	public void PrintMe()
 	{
@@ -27,7 +28,7 @@ public class AST_STMT_WHILE extends AST_STMT
 	{
 		if (cond.semantMe() != TYPE_INT.getInstance())
 		{
-			throw new SemanticError("");
+			throw new SemanticError(line);
 		}
 		SYMBOL_TABLE.getInstance().beginScope();
 		body.semantMe();
