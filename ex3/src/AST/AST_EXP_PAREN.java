@@ -20,6 +20,7 @@ public class AST_EXP_PAREN extends AST_EXP
     }
     public TYPE semantMe()
     {
-        return childExp.semantMe();
+        semanticType = childExp.semantMe();
+        return semanticType;
     }
 }

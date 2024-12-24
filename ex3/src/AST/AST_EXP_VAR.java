@@ -22,6 +22,7 @@ public class AST_EXP_VAR extends AST_EXP
 	}
 	public TYPE semantMe()
 	{
-		return var.semantMe();
+		semanticType = var.semantMe();
+		return semanticType;
 	}
 }

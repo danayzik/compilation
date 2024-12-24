@@ -40,6 +40,7 @@ public class AST_VAR_FIELD extends AST_VAR
 		TYPE t = field.t;
 		if (t == null)
 			throw new SemanticError(line);
+		semanticType = t;
 		return t;
 	}
 }

@@ -68,20 +68,24 @@ public class AST_EXP_BINOP extends AST_EXP
 		switch (OP) {
 			case 0:
 				if(bothStrings){
+					semanticType = TYPE_STRING.getInstance();
 					return TYPE_STRING.getInstance();
 				}
 				if(bothInts){
+					semanticType = TYPE_INT.getInstance();
 					return TYPE_INT.getInstance();
 				}
 				break;
 			case 6:
 				if(t1 == t2 || comparable){
+					semanticType = TYPE_INT.getInstance();
 					return TYPE_INT.getInstance();
 				}
 				if(bothObjects){
 					assert t1 instanceof TYPE_CLASS;
 					assert t2 instanceof TYPE_CLASS;
 					if(((TYPE_CLASS)t1).isAncestor(((TYPE_CLASS)t2)) || ((TYPE_CLASS)t2).isAncestor(((TYPE_CLASS)t1))){
+						semanticType = TYPE_INT.getInstance();
 						return TYPE_INT.getInstance();
 					}
 				}
@@ -99,6 +103,7 @@ public class AST_EXP_BINOP extends AST_EXP
 
 			default:
 				if(bothInts){
+					semanticType = TYPE_INT.getInstance();
 					return TYPE_INT.getInstance();
 				}
 		}

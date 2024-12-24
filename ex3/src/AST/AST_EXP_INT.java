@@ -20,6 +20,7 @@ public class AST_EXP_INT extends AST_EXP
 	}
 	public TYPE semantMe()
 	{
-		return TYPE_INT.getInstance();
+		semanticType = TYPE_INT.getInstance();
+		return semanticType;
 	}
 }

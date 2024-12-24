@@ -74,6 +74,7 @@ public class AST_EXP_FUNC_CALL extends AST_EXP
 				throw new SemanticError(line);
 			finalType = method.t;
 		}
+		semanticType = finalType;
 		return finalType;
 	}
 }

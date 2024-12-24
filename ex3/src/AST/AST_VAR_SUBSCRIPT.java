@@ -34,7 +34,7 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 			throw new SemanticError(line);
 		if (subscriptType != TYPE_INT.getInstance())
 			throw new SemanticError(line);
-
-		return ((TYPE_ARRAY)varType).arrayType;
+		semanticType = ((TYPE_ARRAY)varType).arrayType;
+		return semanticType;
 	}
 }

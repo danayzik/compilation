@@ -36,6 +36,7 @@ public class AST_NEW_EXP_ARRAY extends AST_NEW_EXP
 				throw new SemanticError(line);
 			}
 		}
+		semanticType = t;
 		return t;
 	}
 }

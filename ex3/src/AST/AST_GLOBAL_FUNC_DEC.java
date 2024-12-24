@@ -44,7 +44,8 @@ public class AST_GLOBAL_FUNC_DEC extends AST_DEC {
         body.semantMe();
         body.matchReturnType(t);
         SYMBOL_TABLE.getInstance().endScope();
-        return null;
+        semanticType = func;
+        return semanticType;
     }
 
 }

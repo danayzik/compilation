@@ -27,6 +27,7 @@ public class AST_FUNC_ARG extends AST_Node
         if(SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
             throw new SemanticError(line);
         SYMBOL_TABLE.getInstance().enter(ID, t);
+        semanticType = t;
         return t;
     }
 }

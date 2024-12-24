@@ -31,6 +31,7 @@ public class AST_TYPE extends AST_Node
         TYPE t = TYPE_TABLE.getInstance().find(type);
         if (t == null)
             throw new SemanticError(line);
+        semanticType = t;
         return t;
     }
 }

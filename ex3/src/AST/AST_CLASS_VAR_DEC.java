@@ -51,7 +51,7 @@ public class AST_CLASS_VAR_DEC extends AST_CFIELD
             if (!(assignedExp instanceof AST_EXP_INT || assignedExp instanceof AST_EXP_STRING || assignedExp instanceof AST_EXP_NIL))
                 throw new SemanticError(line);
             rightType = assignedExp.semantMe();
-            checkLegalAssignment(leftType, rightType, line);
+            checkLegalAssignment(type, assignedExp, line);
         }
         semanticType = new TYPE_CLASS_FIELD(leftType, ID);
         return semanticType;

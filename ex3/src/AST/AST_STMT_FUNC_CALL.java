@@ -75,6 +75,7 @@ public class AST_STMT_FUNC_CALL extends AST_STMT
 				throw new SemanticError(line);
 			finalType = method.t;
 		}
+		semanticType = finalType;
 		return finalType;
 	}
 }

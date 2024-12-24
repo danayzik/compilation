@@ -19,6 +19,7 @@ public class AST_EXP_NIL extends AST_EXP
 	}
 
 	public TYPE semantMe(){
-		return TYPE_NIL.getInstance();
+		semanticType = TYPE_NIL.getInstance();
+		return semanticType;
 	}
 }
