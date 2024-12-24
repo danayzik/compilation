@@ -23,11 +23,7 @@ public class AST_FUNC_ARG extends AST_Node
         if (type != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,type.SerialNumber);
     }
     public TYPE semantMe(){
-        if(type.type.equals("void"))
-            throw new SemanticError(line);
-        TYPE t = TYPE_TABLE.getInstance().find(type.type);
-        if(t == null)
-            throw new SemanticError(line);
+        TYPE t = type.semantMe();
         if(SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
             throw new SemanticError(line);
         SYMBOL_TABLE.getInstance().enter(ID, t);

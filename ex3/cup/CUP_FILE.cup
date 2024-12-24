@@ -5,6 +5,7 @@
 import java_cup.runtime.*;
 import AST.*;
 
+
 parser code 
 {:
 
@@ -54,7 +55,7 @@ scan with
 /*************/
 /* TERMINALS */
 /*************/
-terminal IF;
+
 terminal EQ;
 terminal LT;
 terminal GT;
@@ -62,22 +63,18 @@ terminal DOT;
 terminal PLUS;
 terminal MINUS;
 terminal TIMES;
-terminal WHILE;
 terminal DIVIDE;
-terminal LPAREN;
 terminal RPAREN;
 terminal LBRACK;
 terminal RBRACK;
 terminal LBRACE;
 terminal RBRACE;
-terminal SEMICOLON;
 terminal ASSIGN;
 terminal TYPE_INT;
 terminal TYPE_STRING;
 terminal TYPE_VOID;
 terminal COMMA;
 terminal ARRAY;
-terminal CLASS;
 terminal NIL;
 terminal NEW;
 terminal EXTENDS;
@@ -85,13 +82,18 @@ terminal RETURN;
 terminal ERROR;
 
 
+
 /*************/
 /* TERMINALS */
 /*************/
+terminal Integer SEMICOLON;
 terminal Integer INT;
 terminal String ID;
 terminal String STRING;
-
+terminal Integer CLASS;
+terminal Integer LPAREN;
+terminal Integer IF;
+terminal Integer WHILE;
 /*****************/
 /* NON TERMINALS */
 /*****************/
@@ -152,21 +154,21 @@ var			::=		ID:name								{: RESULT = new AST_VAR_SIMPLE(parser.lexer.getLine(),
 					| var:v LBRACK exp:e RBRACK			{: RESULT = new AST_VAR_SUBSCRIPT(parser.lexer.getLine(), v,e);     :}
 					;
 					
-stmt		::=		  type:t ID:id ASSIGN newExp:e SEMICOLON				    {: RESULT = new AST_LOCAL_VAR_DEC(parser.lexer.getLine(), t, id, e); :}
-                    | type:t ID:id SEMICOLON	                                {: RESULT = new AST_LOCAL_VAR_DEC(parser.lexer.getLine(), t, id); :}
-                    | type:t ID:id ASSIGN exp:e SEMICOLON	                    {: RESULT = new AST_LOCAL_VAR_DEC(parser.lexer.getLine(), t, id, e); :}
-                    | var:v ASSIGN exp:e SEMICOLON								{: RESULT = new AST_STMT_ASSIGN(parser.lexer.getLine(), v,e); :}
-                    | var:v ASSIGN newExp:e SEMICOLON								{: RESULT = new AST_STMT_ASSIGN(parser.lexer.getLine(), v,e); :}
-                    | RETURN SEMICOLON                                      {: RESULT = new AST_STMT_RETURN(parser.lexer.getLine(), null); :}
-                    | RETURN exp:e SEMICOLON                                      {: RESULT = new AST_STMT_RETURN(parser.lexer.getLine(), e); :}
-					| IF LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_IF(parser.lexer.getLine(), cond,body); :}
-					| WHILE LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_WHILE(parser.lexer.getLine(), cond,body); :}
-					| ID:funcID LPAREN RPAREN SEMICOLON          {: RESULT = new AST_STMT_FUNC_CALL(parser.lexer.getLine(), funcID, null);:}
-					| ID:funcID LPAREN exp:e expList:argList RPAREN SEMICOLON          {: RESULT = new AST_STMT_FUNC_CALL(parser.lexer.getLine(), funcID, new AST_EXP_LIST(e, argList));:}
-					| var:v DOT ID:funcID LPAREN RPAREN SEMICOLON          {: RESULT = new AST_STMT_FUNC_CALL(parser.lexer.getLine(), v, funcID, null);:}
-                    | ID:funcID LPAREN exp:e RPAREN SEMICOLON          {: RESULT = new AST_STMT_FUNC_CALL(parser.lexer.getLine(), funcID, new AST_EXP_LIST(e,null));:}
-					| var:v DOT ID:funcID LPAREN exp:e RPAREN SEMICOLON  {: RESULT = new AST_STMT_FUNC_CALL(parser.lexer.getLine(), v, funcID, new AST_EXP_LIST(e,null));:}
-                    | var:v DOT ID:funcID LPAREN exp:e expList:argList RPAREN SEMICOLON  {: RESULT = new AST_STMT_FUNC_CALL(parser.lexer.getLine(), v, funcID, new AST_EXP_LIST(e, argList));:}
+stmt		::=		  type:t ID:id ASSIGN newExp:e SEMICOLON:line				    {: RESULT = new AST_LOCAL_VAR_DEC(line, t, id, e); :}
+                    | type:t ID:id SEMICOLON:line	                                {: RESULT = new AST_LOCAL_VAR_DEC(line, t, id); :}
+                    | type:t ID:id ASSIGN exp:e SEMICOLON:line                    {: RESULT = new AST_LOCAL_VAR_DEC(line, t, id, e); :}
+                    | var:v ASSIGN exp:e SEMICOLON:line								{: RESULT = new AST_STMT_ASSIGN(line, v,e); :}
+                    | var:v ASSIGN newExp:e SEMICOLON:line								{: RESULT = new AST_STMT_ASSIGN(line, v,e); :}
+                    | RETURN SEMICOLON:line                                      {: RESULT = new AST_STMT_RETURN(line, null); :}
+                    | RETURN exp:e SEMICOLON:line                                      {: RESULT = new AST_STMT_RETURN(line, e); :}
+					| IF:line LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_IF(line, cond,body); :}
+					| WHILE:line LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_WHILE(line, cond,body); :}
+					| ID:funcID LPAREN:line RPAREN SEMICOLON          {: RESULT = new AST_STMT_FUNC_CALL(line, funcID, null);:}
+					| ID:funcID LPAREN:line exp:e expList:argList RPAREN SEMICOLON          {: RESULT = new AST_STMT_FUNC_CALL(line, funcID, new AST_EXP_LIST(e, argList));:}
+					| var:v DOT ID:funcID LPAREN:line RPAREN SEMICOLON          {: RESULT = new AST_STMT_FUNC_CALL(line, v, funcID, null);:}
+                    | ID:funcID LPAREN:line exp:e RPAREN SEMICOLON          {: RESULT = new AST_STMT_FUNC_CALL(line, funcID, new AST_EXP_LIST(e,null));:}
+					| var:v DOT ID:funcID LPAREN:line exp:e RPAREN SEMICOLON  {: RESULT = new AST_STMT_FUNC_CALL(line, v, funcID, new AST_EXP_LIST(e,null));:}
+                    | var:v DOT ID:funcID LPAREN:line exp:e expList:argList RPAREN SEMICOLON  {: RESULT = new AST_STMT_FUNC_CALL(line, v, funcID, new AST_EXP_LIST(e, argList));:}
 					;
 
 exp			::=		INT:i						        {: RESULT = new AST_EXP_INT(parser.lexer.getLine(), i); :}
@@ -180,43 +182,43 @@ exp			::=		INT:i						        {: RESULT = new AST_EXP_INT(parser.lexer.getLine()
 					| exp:e1 LT  exp:e2				    {: RESULT = new AST_EXP_BINOP(parser.lexer.getLine(), e1, e2, 4);:}
 					| exp:e1 GT  exp:e2				    {: RESULT = new AST_EXP_BINOP(parser.lexer.getLine(), e1, e2, 5);:}
 					| exp:e1 EQ  exp:e2				    {: RESULT = new AST_EXP_BINOP(parser.lexer.getLine(), e1, e2, 6);:}
-					| STRING:s1				            {: RESULT = new AST_EXP_STRING(parser.lexer.getLine(), s1);:}
+					| STRING:s1				            {: RESULT = new AST_EXP_STRING(parser.lexer.getLine(), s1.substring(1, s1.length() - 1));:}
 					| NIL			                    {: RESULT = new AST_EXP_NIL(parser.lexer.getLine());:}
-					| ID:funcID LPAREN RPAREN           {: RESULT = new AST_EXP_FUNC_CALL(parser.lexer.getLine(), funcID, null);:}
-					| ID:funcID LPAREN exp:e expList:argList RPAREN           {: RESULT = new AST_EXP_FUNC_CALL(parser.lexer.getLine(), funcID, new AST_EXP_LIST(e, argList));:}
-					| var:v DOT ID:funcID LPAREN RPAREN           {: RESULT = new AST_EXP_FUNC_CALL(parser.lexer.getLine(), v, funcID, null);:}
-                    | ID:funcID LPAREN exp:e RPAREN           {: RESULT = new AST_EXP_FUNC_CALL(parser.lexer.getLine(), funcID, new AST_EXP_LIST(e,null));:}
-					| var:v DOT ID:funcID LPAREN exp:e RPAREN   {: RESULT = new AST_EXP_FUNC_CALL(parser.lexer.getLine(), v, funcID, new AST_EXP_LIST(e,null));:}
-                    | var:v DOT ID:funcID LPAREN exp:e expList:argList RPAREN   {: RESULT = new AST_EXP_FUNC_CALL(parser.lexer.getLine(), v, funcID, new AST_EXP_LIST(e, argList));:}
+					| ID:funcID LPAREN:line RPAREN           {: RESULT = new AST_EXP_FUNC_CALL(line, funcID, null);:}
+					| ID:funcID LPAREN:line exp:e expList:argList RPAREN           {: RESULT = new AST_EXP_FUNC_CALL(line, funcID, new AST_EXP_LIST(e, argList));:}
+					| var:v DOT ID:funcID LPAREN:line RPAREN           {: RESULT = new AST_EXP_FUNC_CALL(line, v, funcID, null);:}
+                    | ID:funcID LPAREN:line exp:e RPAREN           {: RESULT = new AST_EXP_FUNC_CALL(line, funcID, new AST_EXP_LIST(e,null));:}
+					| var:v DOT ID:funcID LPAREN:line exp:e RPAREN   {: RESULT = new AST_EXP_FUNC_CALL(line, v, funcID, new AST_EXP_LIST(e,null));:}
+                    | var:v DOT ID:funcID LPAREN:line exp:e expList:argList RPAREN   {: RESULT = new AST_EXP_FUNC_CALL(line, v, funcID, new AST_EXP_LIST(e, argList));:}
 					;
 
 dec		  ::=		  type:t ID:id ASSIGN newExp:e SEMICOLON				    {: RESULT = new AST_GLOBAL_VAR_DEC(parser.lexer.getLine(), t, id, e); :}
                     | type:t ID:id SEMICOLON	                                {: RESULT = new AST_GLOBAL_VAR_DEC(parser.lexer.getLine(), t, id); :}
                     | type:t ID:id ASSIGN exp:e SEMICOLON	                    {: RESULT = new AST_GLOBAL_VAR_DEC(parser.lexer.getLine(), t, id, e); :}
 					| ARRAY ID:id EQ type:t LBRACK RBRACK SEMICOLON	            {: RESULT = new AST_DEC_ARRAY_TYPE_DEF(parser.lexer.getLine(), id, t); :}
-					| type:funcType ID:funcName LPAREN RPAREN LBRACE stmtList:body RBRACE {: RESULT = new AST_GLOBAL_FUNC_DEC(parser.lexer.getLine(), funcType, funcName, body, null); :}
-                    | type:funcType ID:funcName LPAREN type:argType ID:argID RPAREN LBRACE stmtList:body RBRACE  {: RESULT = new AST_GLOBAL_FUNC_DEC(parser.lexer.getLine(), funcType, funcName, body, new AST_FUNC_ARG_LIST(new AST_FUNC_ARG(parser.lexer.getLine(), argType, argID), null)); :}
-                    | type:funcType ID:funcName LPAREN type:argType ID:argID funcArgList:fArgLst RPAREN LBRACE stmtList:body RBRACE  {: RESULT = new AST_GLOBAL_FUNC_DEC(parser.lexer.getLine(), funcType, funcName, body, new AST_FUNC_ARG_LIST(new AST_FUNC_ARG(parser.lexer.getLine(), argType, argID), fArgLst)); :}
-					| CLASS ID:id LBRACE cFieldList:flist RBRACE {: RESULT = new AST_CLASS_DEC(parser.lexer.getLine(), id, flist, null); :}
-					| CLASS ID:id EXTENDS ID:parentID LBRACE cFieldList:flist RBRACE  {: RESULT = new AST_CLASS_DEC(parser.lexer.getLine(), id, flist, parentID); :}
+					| type:funcType ID:funcName LPAREN:line RPAREN LBRACE stmtList:body RBRACE {: RESULT = new AST_GLOBAL_FUNC_DEC(line, funcType, funcName, body, null); :}
+                    | type:funcType ID:funcName LPAREN:line type:argType ID:argID RPAREN LBRACE stmtList:body RBRACE  {: RESULT = new AST_GLOBAL_FUNC_DEC(line, funcType, funcName, body, new AST_FUNC_ARG_LIST(new AST_FUNC_ARG(parser.lexer.getLine(), argType, argID), null)); :}
+                    | type:funcType ID:funcName LPAREN:line type:argType ID:argID funcArgList:fArgLst RPAREN LBRACE stmtList:body RBRACE  {: RESULT = new AST_GLOBAL_FUNC_DEC(line, funcType, funcName, body, new AST_FUNC_ARG_LIST(new AST_FUNC_ARG(parser.lexer.getLine(), argType, argID), fArgLst)); :}
+					| CLASS:line ID:id LBRACE cFieldList:flist RBRACE {: RESULT = new AST_CLASS_DEC(line, id, flist, null); :}
+					| CLASS:line ID:id EXTENDS ID:parentID LBRACE cFieldList:flist RBRACE  {: RESULT = new AST_CLASS_DEC(line, id, flist, parentID); :}
 					;
 
-type	::=		    TYPE_INT								{: RESULT = new AST_TYPE("int"); :}
-					| TYPE_STRING 	                        {: RESULT = new AST_TYPE("string"); :}
-					| TYPE_VOID	                            {: RESULT = new AST_TYPE("void"); :}
-					| ID:s	                                {: RESULT = new AST_TYPE(s); :}
+type	::=		    TYPE_INT								{: RESULT = new AST_TYPE(parser.lexer.getLine(), "int"); :}
+					| TYPE_STRING 	                        {: RESULT = new AST_TYPE(parser.lexer.getLine(), "string"); :}
+					| TYPE_VOID	                            {: RESULT = new AST_TYPE(parser.lexer.getLine(), "void"); :}
+					| ID:s	                                {: RESULT = new AST_TYPE(parser.lexer.getLine(), s); :}
 					;
 
 newExp	::=		    NEW type:t1								{: RESULT = new AST_NEW_EXP_SIMPLE(parser.lexer.getLine(), t1); :}
 					| NEW type:t LBRACK exp:e RBRACK 	    {: RESULT = new AST_NEW_EXP_ARRAY(parser.lexer.getLine(), t, e); :}
 					;
 
-cField	::=		      type:t ID:id ASSIGN newExp:e SEMICOLON				    {: RESULT = new AST_CLASS_VAR_DEC(parser.lexer.getLine(), t, id, e); :}
-                    | type:t ID:id SEMICOLON	                                {: RESULT = new AST_CLASS_VAR_DEC(parser.lexer.getLine(), t, id); :}
-                    | type:t ID:id ASSIGN exp:e SEMICOLON	                    {: RESULT = new AST_CLASS_VAR_DEC(parser.lexer.getLine(), t, id, e); :}
-					| type:funcType ID:funcName LPAREN RPAREN LBRACE stmtList:body RBRACE {: RESULT = new AST_CLASS_FUNC_DEC(parser.lexer.getLine(), funcType, funcName, body, null); :}
-                    | type:funcType ID:funcName LPAREN type:argType ID:argID RPAREN LBRACE stmtList:body RBRACE  {: RESULT = new AST_CLASS_FUNC_DEC(parser.lexer.getLine(), funcType, funcName, body, new AST_FUNC_ARG_LIST(new AST_FUNC_ARG(parser.lexer.getLine(), argType, argID), null)); :}
-                    | type:funcType ID:funcName LPAREN type:argType ID:argID funcArgList:fArgLst RPAREN LBRACE stmtList:body RBRACE  {: RESULT = new AST_CLASS_FUNC_DEC(parser.lexer.getLine(), funcType, funcName, body, new AST_FUNC_ARG_LIST(new AST_FUNC_ARG(parser.lexer.getLine(), argType, argID), fArgLst)); :}
+cField	::=		      type:t ID:id ASSIGN newExp:e SEMICOLON:line				    {: RESULT = new AST_CLASS_VAR_DEC(line, t, id, e); :}
+                    | type:t ID:id SEMICOLON:line                               {: RESULT = new AST_CLASS_VAR_DEC(line, t, id); :}
+                    | type:t ID:id ASSIGN exp:e SEMICOLON:line	                    {: RESULT = new AST_CLASS_VAR_DEC(line, t, id, e); :}
+					| type:funcType ID:funcName LPAREN:line RPAREN LBRACE stmtList:body RBRACE {: RESULT = new AST_CLASS_FUNC_DEC(line, funcType, funcName, body, null); :}
+                    | type:funcType ID:funcName LPAREN:line type:argType ID:argID RPAREN LBRACE stmtList:body RBRACE  {: RESULT = new AST_CLASS_FUNC_DEC(line, funcType, funcName, body, new AST_FUNC_ARG_LIST(new AST_FUNC_ARG(parser.lexer.getLine(), argType, argID), null)); :}
+                    | type:funcType ID:funcName LPAREN:line type:argType ID:argID funcArgList:fArgLst RPAREN LBRACE stmtList:body RBRACE  {: RESULT = new AST_CLASS_FUNC_DEC(line, funcType, funcName, body, new AST_FUNC_ARG_LIST(new AST_FUNC_ARG(parser.lexer.getLine(), argType, argID), fArgLst)); :}
 					;
 
 

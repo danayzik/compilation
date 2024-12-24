@@ -37,7 +37,7 @@ public class TYPE_LIST
 
 		while (leftTypes != null && leftTypes != null) {
 
-			if (canAssignTypes(leftTypes.head, rightTypes.head)) {
+			if (!canAssignTypes(leftTypes.head, rightTypes.head)) {
 				return false;
 			}
 			leftTypes = leftTypes.tail;

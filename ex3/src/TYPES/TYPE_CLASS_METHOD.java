@@ -11,7 +11,7 @@ public class TYPE_CLASS_METHOD extends TYPE_CLASS_MEMBER
 		this.name = name;
 		this.args = null;
 	}
-	public void setArgs(TYPE_LIST args){
+	public void setParams(TYPE_LIST args){
 		this.args=args;
 	}
 	public boolean isMethod(){return true;}

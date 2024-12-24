@@ -58,8 +58,7 @@ public class Main
 				return;
 			}
 
-			AST.PrintMe();
-			AST_GRAPHVIZ.getInstance().finalizeFile();
+
 			try{
 				AST.semantMe();
 			}

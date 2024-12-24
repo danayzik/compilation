@@ -30,19 +30,14 @@ public class AST_GLOBAL_VAR_DEC extends AST_DEC
                 String.format("VAR\nDEC\nID: %s\nAssigned: %b", ID, assigned));
         AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,type.SerialNumber);
         type.PrintMe();
+        if (assignedExp != null) assignedExp.PrintMe();
         if (assignedExp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,assignedExp.SerialNumber);
     }
     public TYPE semantMe()
     {
         TYPE leftType;
         TYPE rightType;
-        if (type.type.equals("void"))
-            throw new SemanticError(line);
-        leftType = TYPE_TABLE.getInstance().find(type.type);
-        if (leftType == null)
-        {
-            throw new SemanticError(line);
-        }
+        leftType = type.semantMe();
         if (SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
         {
             throw new SemanticError(line);

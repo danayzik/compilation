@@ -27,9 +27,7 @@ public class AST_NEW_EXP_ARRAY extends AST_NEW_EXP
 
 	public TYPE semantMe() {
 		TYPE t;
-		t = TYPE_TABLE.getInstance().find(type.type);
-		if (t == null)
-			throw new SemanticError(line);
+		t = type.semantMe();
 		TYPE sizeExpType = sizeExp.semantMe();
 		if(sizeExpType != TYPE_INT.getInstance())
 			throw new SemanticError(line);

@@ -104,11 +104,11 @@ SLASH = \/
 {LEADING_ZEROES_INT}        {return symbol(TokenNames.ERROR);}
 "nil"               { return symbol(TokenNames.NIL, "NIL");}
 "array"             { return symbol(TokenNames.ARRAY, "ARRAY");}
-"class"             { return symbol(TokenNames.CLASS, "CLASS");}
+"class"             { return symbol(TokenNames.CLASS, yyline+1);}
 "extends"           { return symbol(TokenNames.EXTENDS, "EXTENDS");}
 "return"            { return symbol(TokenNames.RETURN, "RETURN");}
-"while"             { return symbol(TokenNames.WHILE, "WHILE");}
-"if"                { return symbol(TokenNames.IF, "IF");}
+"while"             { return symbol(TokenNames.WHILE, yyline+1);}
+"if"                { return symbol(TokenNames.IF, yyline+1);}
 "new"               { return symbol(TokenNames.NEW, "NEW");}
 "int"               { return symbol(TokenNames.TYPE_INT, "TYPE_INT");}
 "void"              { return symbol(TokenNames.TYPE_VOID, "TYPE_VOID");}
@@ -117,7 +117,7 @@ SLASH = \/
 "-"					{ return symbol(TokenNames.MINUS, "MINUS");}
 "*"				    { return symbol(TokenNames.TIMES, "TIMES");}
 "/"					{ return symbol(TokenNames.DIVIDE, "DIVIDE");}
-"("					{ return symbol(TokenNames.LPAREN, "LPAREN");}
+"("					{ return symbol(TokenNames.LPAREN, yyline+1);}
 ")"					{ return symbol(TokenNames.RPAREN, "RPAREN");}
 {INTEGER}			{ if(Integer.valueOf(yytext()) > 32767){return symbol(TokenNames.ERROR);}return symbol(TokenNames.INT, Integer.valueOf(yytext()));}
 {STRING}            { return symbol(TokenNames.STRING, yytext());}
@@ -129,7 +129,7 @@ SLASH = \/
 "}"                 { return symbol(TokenNames.RBRACE, "RBRACE");}
 ","                 { return symbol(TokenNames.COMMA, "COMMA");}
 "."                 { return symbol(TokenNames.DOT, "DOT");}
-";"                 { return symbol(TokenNames.SEMICOLON, "SEMICOLON");}
+";"                 { return symbol(TokenNames.SEMICOLON, yyline+1);}
 ":="                { return symbol(TokenNames.ASSIGN, "ASSIGN");}
 "="                 { return symbol(TokenNames.EQ, "EQ");}
 "<"                 { return symbol(TokenNames.LT, "LT");}

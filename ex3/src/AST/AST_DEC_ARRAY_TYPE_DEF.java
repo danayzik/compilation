@@ -28,18 +28,11 @@ public class AST_DEC_ARRAY_TYPE_DEF extends AST_DEC
     public TYPE semantMe()
     {
         TYPE arrayType;
-        if (type.type.equals("void"))
-            throw new SemanticError(line);
         if (SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
         {
             throw new SemanticError(line);
         }
-        arrayType = TYPE_TABLE.getInstance().find(type.type);
-        if (arrayType == null)
-        {
-            throw new SemanticError(line);
-        }
-
+        arrayType = type.semantMe();
         TYPE_TABLE.getInstance().enter(ID, new TYPE_ARRAY(arrayType, ID));
         return null;
     }

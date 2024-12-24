@@ -36,21 +36,37 @@ public class AST_STMT_FUNC_CALL extends AST_STMT
 		if (argList != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,argList.SerialNumber);
 	}
 	public TYPE semantMe(){
-		TYPE_FUNCTION funcType;
+		TYPE funcType;
 		TYPE owner;
 		TYPE finalType;
-		TYPE_LIST argTypes;
+		TYPE_LIST argTypes = null;
 		TYPE_LIST paramTypes;
 		TYPE_CLASS_MEMBER method;
-		argTypes = argList.semantMeList();
+		if (argList != null)
+			argTypes = argList.semantMeList();
 		if (!classMethodCall){
-			funcType = (TYPE_FUNCTION) SYMBOL_TABLE.getInstance().findInAllScopes(funcID);
+			funcType = SYMBOL_TABLE.getInstance().findInAllScopes(funcID);
 			if (funcType == null)
 				throw new SemanticError(line);
-			paramTypes = funcType.params;
-			if(!paramTypes.canAssignList(argTypes))
+			if (funcType instanceof TYPE_FUNCTION) {
+				paramTypes = ((TYPE_FUNCTION)funcType).params;
+				if (!paramTypes.canAssignList(argTypes))
+					throw new SemanticError(line);
+				finalType = ((TYPE_FUNCTION)funcType).returnType;
+			} else if (funcType instanceof TYPE_CLASS_METHOD) {
+				paramTypes = ((TYPE_CLASS_METHOD)funcType).args;
+				if (paramTypes != null) {
+					if (!paramTypes.canAssignList(argTypes))
+						throw new SemanticError(line);
+				} else if (argTypes != null) {
+					throw new SemanticError(line);
+				}
+				finalType = ((TYPE_CLASS_METHOD)funcType).t;
+			}
+			else {
 				throw new SemanticError(line);
-			finalType = funcType.returnType;
+			}
+
 		}
 		else {
 			owner = ownerVar.semantMe();

@@ -16,6 +16,7 @@ public class AST_CLASS_FUNC_DEC extends AST_CFIELD
         this.body = stLst;
         this.argList = argList;
         this.line = String.valueOf(line);
+        type.isFuncType = true;
     }
     public void PrintMe()
     {
@@ -31,22 +32,21 @@ public class AST_CLASS_FUNC_DEC extends AST_CFIELD
     }
 
     public TYPE semantMe(){
-        TYPE t = TYPE_TABLE.getInstance().find(type.type);
-        if(t == null)
-            throw new SemanticError(line);
+        TYPE t = type.semantMe();
         if(SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
             throw new SemanticError(line);
         TYPE_CLASS owner = TYPE_TABLE.getInstance().getCurrentClassType();
-        TYPE_FUNCTION func = new TYPE_FUNCTION(t, ID);
+        TYPE_CLASS_METHOD func = new TYPE_CLASS_METHOD(t, ID);
         SYMBOL_TABLE.getInstance().enter(ID, func);
         SYMBOL_TABLE.getInstance().beginScope();
-        func.setParams(argList.semantMeList());
+        if (argList != null)
+            func.setParams(argList.semantMeList());
         body.semantMe();
         body.matchReturnType(t);
-        boolean overrideError = owner.isOverrideError(t, ID, func.params);
+        boolean overrideError = owner.isOverrideError(t, ID, func.args);
         if (overrideError)
             throw new SemanticError(line);
         SYMBOL_TABLE.getInstance().endScope();
-        return null;
+        return func;
     }
 }

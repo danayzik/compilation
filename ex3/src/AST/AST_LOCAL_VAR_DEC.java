@@ -39,13 +39,9 @@ public class AST_LOCAL_VAR_DEC extends AST_STMT
     {
         TYPE leftType;
         TYPE rightType;
-        if (type.type.equals("void"))
-            throw new SemanticError(line);
-        leftType = TYPE_TABLE.getInstance().find(type.type);
-        if (leftType == null)
-        {
-            throw new SemanticError(line);
-        }
+
+        leftType = type.semantMe();
+
         if (SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
         {
             throw new SemanticError(line);

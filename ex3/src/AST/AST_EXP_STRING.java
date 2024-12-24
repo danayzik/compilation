@@ -12,10 +12,10 @@ public class AST_EXP_STRING extends AST_EXP
 
 	public void PrintMe()
 	{
+		System.out.println(str);
 		System.out.format("AST NODE STRING( %s )\n",str);
 		AST_GRAPHVIZ.getInstance().logNode(
-			SerialNumber,
-			String.format("STRING(%s)",str));
+			SerialNumber, String.format("String:%s", str));
 	}
 
 	public TYPE semantMe()

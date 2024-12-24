@@ -97,8 +97,7 @@ compile:
 	@jar cfm COMPILER ${MANIFEST_FILE} -C ${BIN_DIR} .
 	cls
 	@java -jar COMPILER ${INPUT} ${OUTPUT}
-	@dot -Tjpeg -o${OUTPUT_DIR}/AST.jpeg ${OUTPUT_DIR}/AST_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@cmd /c start ${OUTPUT_DIR}/AST.jpeg
+
 
 debug:
 	cls

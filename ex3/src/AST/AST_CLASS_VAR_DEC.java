@@ -31,6 +31,7 @@ public class AST_CLASS_VAR_DEC extends AST_CFIELD
                 String.format("CLASS\nDEC\nID: %s\nAssigned: %b", ID, assigned));
         AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,type.SerialNumber);
         type.PrintMe();
+        if (assignedExp != null) assignedExp.PrintMe();
         if (assignedExp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,assignedExp.SerialNumber);
     }
 
@@ -38,11 +39,7 @@ public class AST_CLASS_VAR_DEC extends AST_CFIELD
     {
         TYPE leftType;
         TYPE rightType;
-        if (type.type.equals("void"))
-            throw new SemanticError(line);
-        leftType = TYPE_TABLE.getInstance().find(type.type);
-        if (leftType == null)
-            throw new SemanticError(line);
+        leftType = type.semantMe();
         if (SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
             throw new SemanticError(line);
         TYPE_CLASS owner = TYPE_TABLE.getInstance().getCurrentClassType();
@@ -51,6 +48,8 @@ public class AST_CLASS_VAR_DEC extends AST_CFIELD
             throw new SemanticError(line);
         SYMBOL_TABLE.getInstance().enter(ID, leftType);
         if(assigned) {
+            if (!(assignedExp instanceof AST_EXP_INT || assignedExp instanceof AST_EXP_STRING || assignedExp instanceof AST_EXP_NIL))
+                throw new SemanticError(line);
             rightType = assignedExp.semantMe();
             checkLegalAssignment(leftType, rightType, line);
         }

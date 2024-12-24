@@ -14,8 +14,8 @@ public class AST_CLASS_DEC extends AST_DEC
         SerialNumber = AST_Node_Serial_Number.getFresh();
         this.ID = ID;
         this.cfieldList = cfieldList;
-        this.inherits = (parentID != null);
         this.parentID = parentID;
+        this.inherits = (parentID != null);
         this.line = String.valueOf(line);
     }
 
