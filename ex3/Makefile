@@ -1,15 +1,15 @@
 ###############
 # DIRECTORIES #
 ###############
-BASEDIR = $(shell echo %cd%)
-JFlex_DIR         = ${BASEDIR}/jflex
-CUP_DIR           = ${BASEDIR}/cup
-SRC_DIR           = ${BASEDIR}/src
-BIN_DIR           = ${BASEDIR}\bin
-INPUT_DIR         = ${BASEDIR}/input
-OUTPUT_DIR        = ${BASEDIR}/output
-EXTERNAL_JARS_DIR = ${BASEDIR}/jar_files
-MANIFEST_DIR      = ${BASEDIR}/manifest
+BASEDIR           := $(shell pwd)
+JFlex_DIR         := ${BASEDIR}/jflex
+CUP_DIR           := ${BASEDIR}/cup
+SRC_DIR           := ${BASEDIR}/src
+BIN_DIR           := ${BASEDIR}/bin
+INPUT_DIR         := ${BASEDIR}/input
+OUTPUT_DIR        := ${BASEDIR}/output
+EXTERNAL_JARS_DIR := ${BASEDIR}/jar_files
+MANIFEST_DIR      := ${BASEDIR}/manifest
 
 #########
 # FILES #
@@ -17,10 +17,10 @@ MANIFEST_DIR      = ${BASEDIR}/manifest
 JFlex_GENERATED_FILE      = ${SRC_DIR}/Lexer.java
 CUP_GENERATED_FILES       = ${SRC_DIR}/Parser.java ${SRC_DIR}/TokenNames.java
 JFlex_CUP_GENERATED_FILES = ${JFlex_GENERATED_FILE} ${CUP_GENERATED_FILES}
-SRC_FILES := $(wildcard ${SRC_DIR}/*.java) \
-            $(wildcard ${SRC_DIR}/AST/*.java) \
-            $(wildcard ${SRC_DIR}/TYPES/*.java) \
-            $(wildcard ${SRC_DIR}/SYMBOL_TABLE/*.java)
+SRC_FILES                 = ${SRC_DIR}/*.java              \
+                            ${SRC_DIR}/AST/*.java          \
+                            ${SRC_DIR}/TYPES/*.java        \
+                            ${SRC_DIR}/SYMBOL_TABLE/*.java
 EXTERNAL_JAR_FILES        = ${EXTERNAL_JARS_DIR}/java-cup-11b-runtime.jar
 MANIFEST_FILE             = ${MANIFEST_DIR}/MANIFEST.MF
 
@@ -57,9 +57,29 @@ OUTPUT   = ${OUTPUT_DIR}/SemanticStatus.txt
 ##########
 # TARGET #
 ##########
-
 compile:
-	cls
+	clear
+	@echo "*******************************"
+	@echo "*                             *"
+	@echo "*                             *"
+	@echo "* [0] Remove COMPILER program *"
+	@echo "*                             *"
+	@echo "*                             *"
+	@echo "*******************************"
+	rm -rf COMPILER
+	@echo "\n"
+	@echo "************************************************************"
+	@echo "*                                                          *"
+	@echo "*                                                          *"
+	@echo "* [1] Remove *.class files and JFlex-CUP generated files:  *"
+	@echo "*                                                          *"
+	@echo "*     Lexer.java                                           *"
+	@echo "*     Parser.java                                          *"
+	@echo "*     TokenNames.java                                      *"
+	@echo "*                                                          *"
+	@echo "************************************************************"
+	rm -rf ${JFlex_CUP_GENERATED_FILES} ${BIN_DIR}/*.class ${BIN_DIR}/AST/*.class
+	@echo "\n"
 	@echo "************************************************************"
 	@echo "*                                                          *"
 	@echo "*                                                          *"
@@ -67,7 +87,7 @@ compile:
 	@echo "*                                                          *"
 	@echo "*                                                          *"
 	@echo "************************************************************"
-	@$(JFlex_PROGRAM) ${JFlex_FLAGS} -d ${JFlex_DEST_DIR} ${JFlex_FILE}
+	$(JFlex_PROGRAM) ${JFlex_FLAGS} -d ${JFlex_DEST_DIR} ${JFlex_FILE}
 	@echo "\n"
 	@echo "*******************************************************************************"
 	@echo "*                                                                             *"
@@ -76,7 +96,7 @@ compile:
 	@echo "*                                                                             *"
 	@echo "*                                                                             *"
 	@echo "*******************************************************************************"
-	@$(CUP_PROGRAM) ${CUP_FLAGS} -destdir ${SRC_DIR} ${CUP_FILE}
+	$(CUP_PROGRAM) ${CUP_FLAGS} -destdir ${SRC_DIR} ${CUP_FILE}
 	@echo "\n"
 	@echo "********************************************************"
 	@echo "*                                                      *"
@@ -85,7 +105,7 @@ compile:
 	@echo "*                                                      *"
 	@echo "*                                                      *"
 	@echo "********************************************************"
-	@javac -cp ${EXTERNAL_JAR_FILES} -d ${BIN_DIR} ${SRC_FILES}
+	javac -cp ${EXTERNAL_JAR_FILES} -d ${BIN_DIR} ${SRC_FILES}
 	@echo "\n"
 	@echo "***********************************************************"
 	@echo "*                                                         *"
@@ -94,14 +114,31 @@ compile:
 	@echo "*                                                         *"
 	@echo "*                                                         *"
 	@echo "***********************************************************"
-	@jar cfm COMPILER ${MANIFEST_FILE} -C ${BIN_DIR} .
-	cls
-	@java -jar COMPILER ${INPUT} ${OUTPUT}
-
-
+	jar cfm COMPILER ${MANIFEST_FILE} -C ${BIN_DIR} .
+	
 debug:
-	cls
-
+	clear
+	@echo "*****************************"
+	@echo "*                           *"
+	@echo "*                           *"
+	@echo "* [0] Remove PARSER program *"
+	@echo "*                           *"
+	@echo "*                           *"
+	@echo "*****************************"
+	rm -rf COMPILER
+	@echo "\n"
+	@echo "************************************************************"
+	@echo "*                                                          *"
+	@echo "*                                                          *"
+	@echo "* [1] Remove *.class files and JFlex-CUP generated files:  *"
+	@echo "*                                                          *"
+	@echo "*     Lexer.java                                           *"
+	@echo "*     Parser.java                                          *"
+	@echo "*     TokenNames.java                                      *"
+	@echo "*                                                          *"
+	@echo "************************************************************"
+	rm -rf ${JFlex_CUP_GENERATED_FILES} ${BIN_DIR}/*.class ${BIN_DIR}/AST/*.class
+	@echo "\n"
 	@echo "************************************************************"
 	@echo "*                                                          *"
 	@echo "*                                                          *"
@@ -109,7 +146,7 @@ debug:
 	@echo "*                                                          *"
 	@echo "*                                                          *"
 	@echo "************************************************************"
-	@$(JFlex_PROGRAM) ${JFlex_FLAGS} -d ${JFlex_DEST_DIR} ${JFlex_FILE}
+	$(JFlex_PROGRAM) ${JFlex_FLAGS} -d ${JFlex_DEST_DIR} ${JFlex_FILE}
 	@echo "\n"
 	@echo "*******************************************************************************"
 	@echo "*                                                                             *"
@@ -118,7 +155,7 @@ debug:
 	@echo "*                                                                             *"
 	@echo "*                                                                             *"
 	@echo "*******************************************************************************"
-	@$(CUP_PROGRAM) ${CUP_FLAGS} -destdir ${SRC_DIR} ${CUP_FILE}
+	$(CUP_PROGRAM) ${CUP_FLAGS} -destdir ${SRC_DIR} ${CUP_FILE}
 	@echo "\n"
 	@echo "********************************************************"
 	@echo "*                                                      *"
@@ -127,7 +164,7 @@ debug:
 	@echo "*                                                      *"
 	@echo "*                                                      *"
 	@echo "********************************************************"
-	@javac -cp ${EXTERNAL_JAR_FILES} -d ${BIN_DIR} ${SRC_FILES}
+	javac -cp ${EXTERNAL_JAR_FILES} -d ${BIN_DIR} ${SRC_FILES}
 	@echo "\n"
 	@echo "***********************************************************"
 	@echo "*                                                         *"
@@ -136,7 +173,7 @@ debug:
 	@echo "*                                                         *"
 	@echo "*                                                         *"
 	@echo "***********************************************************"
-	@jar cfm COMPILER ${MANIFEST_FILE} -C ${BIN_DIR} .
+	jar cfm COMPILER ${MANIFEST_FILE} -C ${BIN_DIR} .
 	@echo "\n"
 	@echo "*****************************"
 	@echo "*                           *"
@@ -145,7 +182,7 @@ debug:
 	@echo "*                           *"
 	@echo "*                           *"
 	@echo "*****************************"
-	@java -jar COMPILER ${INPUT} ${OUTPUT}
+	java -jar COMPILER ${INPUT} ${OUTPUT}
 	@echo "\n"
 	@echo "***************************************"
 	@echo "*                                     *"
@@ -154,7 +191,7 @@ debug:
 	@echo "*                                     *"
 	@echo "*                                     *"
 	@echo "***************************************"
-	@dot -Tjpeg -o${OUTPUT_DIR}/AST.jpeg ${OUTPUT_DIR}/AST_IN_GRAPHVIZ_DOT_FORMAT.txt
+	dot -Tjpeg -o${OUTPUT_DIR}/AST.jpeg ${OUTPUT_DIR}/AST_IN_GRAPHVIZ_DOT_FORMAT.txt
 	@echo "\n"
 	@echo "************************************************"
 	@echo "*                                              *"
@@ -163,7 +200,7 @@ debug:
 	@echo "*                                              *"
 	@echo "*                                              *"
 	@echo "************************************************"
-	@cmd /c start ${OUTPUT_DIR}/AST.jpeg
+	eog ${OUTPUT_DIR}/AST.jpeg &
 	@echo "*********************************************************"
 	@echo "*                                                       *"
 	@echo "*                                                       *"
@@ -171,7 +208,7 @@ debug:
 	@echo "*                                                       *"
 	@echo "*                                                       *"
 	@echo "*********************************************************"
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_0.jpeg  ${OUTPUT_DIR}/SYMBOL_TABLE_0_IN_GRAPHVIZ_DOT_FORMAT.txt
+	dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_0.jpeg  ${OUTPUT_DIR}/SYMBOL_TABLE_0_IN_GRAPHVIZ_DOT_FORMAT.txt
 	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_1.jpeg  ${OUTPUT_DIR}/SYMBOL_TABLE_1_IN_GRAPHVIZ_DOT_FORMAT.txt
 	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_2.jpeg  ${OUTPUT_DIR}/SYMBOL_TABLE_2_IN_GRAPHVIZ_DOT_FORMAT.txt
 	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_3.jpeg  ${OUTPUT_DIR}/SYMBOL_TABLE_3_IN_GRAPHVIZ_DOT_FORMAT.txt
@@ -209,4 +246,5 @@ debug:
 	@echo "*                                                                *"
 	@echo "*                                                                *"
 	@echo "******************************************************************"
-	@cmd /c start ${OUTPUT_DIR}/SYMBOL_TABLE_0.jpeg
+	eog ${OUTPUT_DIR}/SYMBOL_TABLE_0.jpeg &
+	
