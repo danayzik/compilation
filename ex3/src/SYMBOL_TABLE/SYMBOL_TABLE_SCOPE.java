@@ -39,7 +39,7 @@ public class SYMBOL_TABLE_SCOPE {
 	}
 	public TYPE findInClass(String name){
 		TYPE_CLASS owner = TYPE_TABLE.getInstance().getCurrentClassType();
-		return owner.findMember(name);
+		return owner.findMemberType(name);
 	}
 
 	public TYPE findInAllScopes(String name){
@@ -58,6 +58,7 @@ public class SYMBOL_TABLE_SCOPE {
 		}
 		return null;
 	}
+
 	public void setAsClassScope(){
 		isClassScope = true;
 	}

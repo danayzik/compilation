@@ -192,10 +192,10 @@ exp			::=		INT:i						        {: RESULT = new AST_EXP_INT(parser.lexer.getLine()
                     | var:v DOT ID:funcID LPAREN:line exp:e expList:argList RPAREN   {: RESULT = new AST_EXP_FUNC_CALL(line, v, funcID, new AST_EXP_LIST(e, argList));:}
 					;
 
-dec		  ::=		  type:t ID:id ASSIGN newExp:e SEMICOLON				    {: RESULT = new AST_GLOBAL_VAR_DEC(parser.lexer.getLine(), t, id, e); :}
-                    | type:t ID:id SEMICOLON	                                {: RESULT = new AST_GLOBAL_VAR_DEC(parser.lexer.getLine(), t, id); :}
-                    | type:t ID:id ASSIGN exp:e SEMICOLON	                    {: RESULT = new AST_GLOBAL_VAR_DEC(parser.lexer.getLine(), t, id, e); :}
-					| ARRAY ID:id EQ type:t LBRACK RBRACK SEMICOLON	            {: RESULT = new AST_DEC_ARRAY_TYPE_DEF(parser.lexer.getLine(), id, t); :}
+dec		  ::=		  type:t ID:id ASSIGN newExp:e SEMICOLON:line				    {: RESULT = new AST_GLOBAL_VAR_DEC(line, t, id, e); :}
+                    | type:t ID:id SEMICOLON:line	                                {: RESULT = new AST_GLOBAL_VAR_DEC(line, t, id); :}
+                    | type:t ID:id ASSIGN exp:e SEMICOLON:line	                    {: RESULT = new AST_GLOBAL_VAR_DEC(line, t, id, e); :}
+					| ARRAY ID:id EQ type:t LBRACK RBRACK SEMICOLON:line	            {: RESULT = new AST_DEC_ARRAY_TYPE_DEF(line, id, t); :}
 					| type:funcType ID:funcName LPAREN:line RPAREN LBRACE stmtList:body RBRACE {: RESULT = new AST_GLOBAL_FUNC_DEC(line, funcType, funcName, body, null); :}
                     | type:funcType ID:funcName LPAREN:line type:argType ID:argID RPAREN LBRACE stmtList:body RBRACE  {: RESULT = new AST_GLOBAL_FUNC_DEC(line, funcType, funcName, body, new AST_FUNC_ARG_LIST(new AST_FUNC_ARG(parser.lexer.getLine(), argType, argID), null)); :}
                     | type:funcType ID:funcName LPAREN:line type:argType ID:argID funcArgList:fArgLst RPAREN LBRACE stmtList:body RBRACE  {: RESULT = new AST_GLOBAL_FUNC_DEC(line, funcType, funcName, body, new AST_FUNC_ARG_LIST(new AST_FUNC_ARG(parser.lexer.getLine(), argType, argID), fArgLst)); :}

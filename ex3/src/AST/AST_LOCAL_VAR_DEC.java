@@ -1,7 +1,7 @@
 package AST;
 import TYPES.*;
 import SYMBOL_TABLE.*;
-import static AST.SemanticUtils.checkLegalAssignment;
+import static AST.SemanticUtils.isLegalAssignment;
 
 public class AST_LOCAL_VAR_DEC extends AST_STMT
 {
@@ -46,7 +46,8 @@ public class AST_LOCAL_VAR_DEC extends AST_STMT
         SYMBOL_TABLE.getInstance().enter(ID, leftType);
         if(assigned) {
             rightType = assignedExp.semantMe();
-            checkLegalAssignment(leftType, rightType, line);
+            if(!isLegalAssignment(leftType, rightType))
+                throw new SemanticError(String.format("%s illegal assignment", line));
         }
         return null;
     }

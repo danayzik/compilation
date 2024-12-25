@@ -32,6 +32,7 @@ public class AST_CLASS_FUNC_DEC extends AST_CFIELD
     }
 
     public TYPE semantMe(){
+
         TYPE t = type.semantMe();
         if(SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
             throw new SemanticError(String.format("%s %s already exists in this scope", line, ID));
@@ -46,6 +47,7 @@ public class AST_CLASS_FUNC_DEC extends AST_CFIELD
         boolean overrideError = owner.isOverrideError(t, ID, func.args);
         if (overrideError)
             throw new SemanticError(String.format("%s override error", line));
+        owner.addDataMember(func);
         SYMBOL_TABLE.getInstance().endScope();
         semanticType = func;
         return func;

@@ -79,8 +79,5 @@ public class SYMBOL_TABLE
 		tailScope.setAsClassScope();
 	}
 
-	public boolean isClassScope(){
-		return tailScope.isClassScope;
-	}
 
 }

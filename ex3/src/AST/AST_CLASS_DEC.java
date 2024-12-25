@@ -45,7 +45,8 @@ public class AST_CLASS_DEC extends AST_DEC
         TYPE_TABLE.getInstance().enter(ID, t);
         SYMBOL_TABLE.getInstance().beginScope();
         SYMBOL_TABLE.getInstance().setAsClassScope();
-        t.setDataMembers(cfieldList.semantMeList());
+        if (cfieldList != null)
+            cfieldList.semantMeList();
         SYMBOL_TABLE.getInstance().endScope();
         return null;
     }

@@ -1,7 +1,7 @@
 package AST;
 import TYPES.*;
 import SYMBOL_TABLE.*;
-import static AST.SemanticUtils.checkLegalAssignment;
+import static AST.SemanticUtils.isLegalAssignment;
 
 public class AST_CLASS_VAR_DEC extends AST_CFIELD
 {
@@ -39,6 +39,7 @@ public class AST_CLASS_VAR_DEC extends AST_CFIELD
     {
         TYPE leftType;
         TYPE rightType;
+        TYPE_CLASS_MEMBER field;
         leftType = type.semantMe();
         if (SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
             throw new SemanticError(String.format("%s %s already exists in this scope", line, ID));
@@ -47,13 +48,16 @@ public class AST_CLASS_VAR_DEC extends AST_CFIELD
         if (shadowingError)
             throw new SemanticError(String.format("%s shadowing error", line));
         SYMBOL_TABLE.getInstance().enter(ID, leftType);
+        field = new TYPE_CLASS_FIELD(leftType, ID);
+        owner.addDataMember(field);
         if(assigned) {
             if (!(assignedExp instanceof AST_EXP_INT || assignedExp instanceof AST_EXP_STRING || assignedExp instanceof AST_EXP_NIL))
                 throw new SemanticError(String.format("%s Can only accept basic assignments for a field" , line));
             rightType = assignedExp.semantMe();
-            checkLegalAssignment(leftType, rightType, line);
+            if (!isLegalAssignment(leftType, rightType))
+                throw new SemanticError(String.format("%s illegal assignment", line));
         }
-        semanticType = new TYPE_CLASS_FIELD(leftType, ID);
+        semanticType = field;
         return semanticType;
     }
 

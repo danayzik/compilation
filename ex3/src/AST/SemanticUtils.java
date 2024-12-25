@@ -4,26 +4,24 @@ import TYPES.*;
 public class SemanticUtils {
     private SemanticUtils() {}
 
-    public static void checkLegalAssignment(TYPE leftType, TYPE rightType, String line){
-        if (leftType instanceof TYPE_CLASS_MEMBER)
-            leftType = ((TYPE_CLASS_MEMBER) leftType).t;
-        if (rightType instanceof TYPE_CLASS_MEMBER)
-            rightType = ((TYPE_CLASS_MEMBER) rightType).t;
+    public static boolean isLegalAssignment(TYPE leftType, TYPE rightType){
+        System.out.println(leftType);
+        System.out.println(rightType);
         if(leftType == rightType){
-            return;
+            return true;
         }
         boolean bothObjects = leftType.isClass() && rightType.isClass();
         if(bothObjects){
             if(((TYPE_CLASS)rightType).isAncestor(((TYPE_CLASS)leftType))){
-                return;
+                return true;
             }
         }
         if (rightType.isNil() && (leftType.isArray() || leftType.isClass()))
-            return;
+            return true;
         if(leftType.isArray() && rightType.isNewArray()){
             if (((TYPE_ARRAY)leftType).arrayType == ((TYPE_NEW_ARRAY)rightType).arrayType)
-                return;
+                return true;
         }
-        throw new SemanticError(String.format("%s illegal assignment", line));
+        return false;
     }
 }

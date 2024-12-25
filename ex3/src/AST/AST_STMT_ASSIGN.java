@@ -1,6 +1,6 @@
 package AST;
 import TYPES.*;
-import static AST.SemanticUtils.checkLegalAssignment;
+import static AST.SemanticUtils.isLegalAssignment;
 
 public class AST_STMT_ASSIGN extends AST_STMT
 {
@@ -35,7 +35,8 @@ public class AST_STMT_ASSIGN extends AST_STMT
 	{
 		TYPE t1 = var.semantMe();
 		TYPE t2 = exp.semantMe();
-		checkLegalAssignment(t1, t2, line);
+		if(!isLegalAssignment(t1, t2))
+			throw new SemanticError(String.format("%s illegal assignment", line));
 		return null;
 	}
 }
