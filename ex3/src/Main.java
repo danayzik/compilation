@@ -63,8 +63,13 @@ public class Main
 				AST.semantMe();
 			}
 			catch (SemanticError se){
-				file_writer.println(String.format("ERROR(%s)", se.getMessage()));
-				System.out.println("Caught Semantic Error");
+				String msg = se.getMessage();
+				String line;
+				int spaceIndex = msg.indexOf(' ');
+				line = msg.substring(0, spaceIndex);
+				String messagePart = msg.substring(spaceIndex + 1);
+				file_writer.println(String.format("ERROR(%s)", line));
+				System.out.format("Caught Semantic Error: %s", messagePart);
 				file_writer.close();
 				return;
 			}

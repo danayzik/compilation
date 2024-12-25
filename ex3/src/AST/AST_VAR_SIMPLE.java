@@ -24,7 +24,7 @@ public class AST_VAR_SIMPLE extends AST_VAR
 	{
 		TYPE t = SYMBOL_TABLE.getInstance().findInAllScopes(name);
 		if(t == null)
-			throw new SemanticError(line);
+			throw new SemanticError(String.format("%s can not find %s", line, name));
 		semanticType = t;
 		return t;
 	}

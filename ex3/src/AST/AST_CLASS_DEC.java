@@ -37,9 +37,9 @@ public class AST_CLASS_DEC extends AST_DEC
         if(inherits){
             father = (TYPE_CLASS) TYPE_TABLE.getInstance().find(parentID);
             if(father == null)
-                throw new SemanticError(line);
+                throw new SemanticError(String.format("%s couldn't find %s", line, parentID));
             if (!father.isClass())
-                throw new SemanticError(line);
+                throw new SemanticError(String.format("%s %s Can not be extended, it is not a class", line, parentID));
         }
         TYPE_CLASS t = new TYPE_CLASS(father, ID);
         TYPE_TABLE.getInstance().enter(ID, t);

@@ -27,9 +27,8 @@ public class AST_STMT_IF extends AST_STMT
 	public TYPE semantMe()
 	{
 		if (cond.semantMe() != TYPE_INT.getInstance())
-		{
-			throw new SemanticError(line);
-		}
+			throw new SemanticError(String.format("%s condition needs to be of type integer", line));
+
 		SYMBOL_TABLE.getInstance().beginScope();
 		body.semantMe();
 		SYMBOL_TABLE.getInstance().endScope();

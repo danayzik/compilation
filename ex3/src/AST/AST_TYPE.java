@@ -26,11 +26,11 @@ public class AST_TYPE extends AST_Node
     public TYPE semantMe() {
         if (!isFuncType){
             if (type.equals("void"))
-                throw new SemanticError(line);
+                throw new SemanticError(String.format("%s non function type can't be void", line));
         }
         TYPE t = TYPE_TABLE.getInstance().find(type);
         if (t == null)
-            throw new SemanticError(line);
+            throw new SemanticError(String.format("%s can not find type %s", line, type));
         semanticType = t;
         return t;
     }

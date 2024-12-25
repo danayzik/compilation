@@ -26,14 +26,15 @@ public class AST_NEW_EXP_ARRAY extends AST_NEW_EXP
 	}
 
 	public TYPE semantMe() {
-		TYPE t;
-		t = type.semantMe();
+		TYPE arrayType;
+		arrayType = type.semantMe();
+		TYPE_NEW_ARRAY t = new TYPE_NEW_ARRAY(arrayType);
 		TYPE sizeExpType = sizeExp.semantMe();
 		if(sizeExpType != TYPE_INT.getInstance())
-			throw new SemanticError(line);
+			throw new SemanticError(String.format("%s size expression is not an integer", line));
 		if (sizeExp instanceof AST_EXP_INT){
 			if(((AST_EXP_INT) sizeExp).value == 0){
-				throw new SemanticError(line);
+				throw new SemanticError(String.format("%s size expression can't be 0", line));
 			}
 		}
 		semanticType = t;

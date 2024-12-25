@@ -3,7 +3,7 @@ class Grandfather
 	int WALK := 8;
 	string RUN := "RUN";
 }
-
+array test = int[];
 class Father extends Grandfather
 {
 	Father g := nil;
@@ -13,8 +13,11 @@ class Son extends Father
 {
 	Son swim;
 	int iii;
-	void main(){
-	    WALK := 6;
-	}
 }
 
+array WisePeople = Grandfather[];
+
+void main(test x)
+{
+	main(5);
+}

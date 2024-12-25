@@ -24,8 +24,10 @@ public class AST_FUNC_ARG extends AST_Node
     }
     public TYPE semantMe(){
         TYPE t = type.semantMe();
+        if (type.type.equals("void"))
+            throw new SemanticError(String.format("%s argument type can't be void", line));
         if(SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
-            throw new SemanticError(line);
+            throw new SemanticError(String.format("%s Type %s not defined", line, type.type));
         SYMBOL_TABLE.getInstance().enter(ID, t);
         semanticType = t;
         return t;

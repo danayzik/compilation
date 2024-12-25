@@ -33,9 +33,9 @@ public class AST_STMT_ASSIGN extends AST_STMT
 	}
 	public TYPE semantMe()
 	{
-		var.semantMe();
-		exp.semantMe();
-		checkLegalAssignment(var, exp, line);
+		TYPE t1 = var.semantMe();
+		TYPE t2 = exp.semantMe();
+		checkLegalAssignment(t1, t2, line);
 		return null;
 	}
 }

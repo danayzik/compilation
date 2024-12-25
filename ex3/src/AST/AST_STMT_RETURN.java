@@ -29,7 +29,7 @@ public class AST_STMT_RETURN extends AST_STMT
 	}
 	public void matchReturnType(TYPE t){
 		if(t != semanticType)
-			throw new SemanticError(line);
+			throw new SemanticError(String.format("%s Non matching return type", line));
 	}
 
 

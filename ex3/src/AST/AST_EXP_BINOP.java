@@ -95,7 +95,7 @@ public class AST_EXP_BINOP extends AST_EXP
 				if(bothInts){
 					if (right instanceof AST_EXP_INT){
 						if(((AST_EXP_INT) right).value == 0){
-							throw new SemanticError(line);
+							throw new SemanticError(String.format("%s division by zero", line));
 						}
 					}
 				}
@@ -107,7 +107,7 @@ public class AST_EXP_BINOP extends AST_EXP
 					return TYPE_INT.getInstance();
 				}
 		}
-		throw new SemanticError(line);
+		throw new SemanticError(String.format("%s Invalid binary operation", line));
 
 	}
 }

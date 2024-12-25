@@ -34,7 +34,7 @@ public class AST_CLASS_FUNC_DEC extends AST_CFIELD
     public TYPE semantMe(){
         TYPE t = type.semantMe();
         if(SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
-            throw new SemanticError(line);
+            throw new SemanticError(String.format("%s %s already exists in this scope", line, ID));
         TYPE_CLASS owner = TYPE_TABLE.getInstance().getCurrentClassType();
         TYPE_CLASS_METHOD func = new TYPE_CLASS_METHOD(t, ID);
         SYMBOL_TABLE.getInstance().enter(ID, func);
@@ -45,7 +45,7 @@ public class AST_CLASS_FUNC_DEC extends AST_CFIELD
         body.matchReturnType(t);
         boolean overrideError = owner.isOverrideError(t, ID, func.args);
         if (overrideError)
-            throw new SemanticError(line);
+            throw new SemanticError(String.format("%s override error", line));
         SYMBOL_TABLE.getInstance().endScope();
         semanticType = func;
         return func;

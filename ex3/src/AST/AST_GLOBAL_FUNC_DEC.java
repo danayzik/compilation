@@ -35,7 +35,7 @@ public class AST_GLOBAL_FUNC_DEC extends AST_DEC {
     public TYPE semantMe(){
         TYPE t = type.semantMe();
         if(SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
-            throw new SemanticError(line);
+            throw new SemanticError(String.format("%s %s already exists in this scope", line, ID));
         TYPE_FUNCTION func = new TYPE_FUNCTION(t, ID);
         SYMBOL_TABLE.getInstance().enter(ID, func);
         SYMBOL_TABLE.getInstance().beginScope();

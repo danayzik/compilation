@@ -10,4 +10,5 @@ public abstract class TYPE
 
 	public boolean isArray(){ return false;}
 	public boolean isNil(){ return false;}
+	public boolean isNewArray(){return false;}
 }

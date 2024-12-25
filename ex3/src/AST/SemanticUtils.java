@@ -4,9 +4,11 @@ import TYPES.*;
 public class SemanticUtils {
     private SemanticUtils() {}
 
-    public static void checkLegalAssignment(AST_Node leftNode, AST_Node rightNode, String line){
-        TYPE leftType = leftNode.semanticType;
-        TYPE rightType = rightNode.semanticType;
+    public static void checkLegalAssignment(TYPE leftType, TYPE rightType, String line){
+        if (leftType instanceof TYPE_CLASS_MEMBER)
+            leftType = ((TYPE_CLASS_MEMBER) leftType).t;
+        if (rightType instanceof TYPE_CLASS_MEMBER)
+            rightType = ((TYPE_CLASS_MEMBER) rightType).t;
         if(leftType == rightType){
             return;
         }
@@ -18,10 +20,10 @@ public class SemanticUtils {
         }
         if (rightType.isNil() && (leftType.isArray() || leftType.isClass()))
             return;
-        if(leftType.isArray()){
-            if (((TYPE_ARRAY)leftType).arrayType == rightType && rightNode instanceof AST_NEW_EXP)
+        if(leftType.isArray() && rightType.isNewArray()){
+            if (((TYPE_ARRAY)leftType).arrayType == ((TYPE_NEW_ARRAY)rightType).arrayType)
                 return;
         }
-        throw new SemanticError(line);
+        throw new SemanticError(String.format("%s illegal assignment", line));
     }
 }

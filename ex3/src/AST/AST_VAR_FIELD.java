@@ -31,15 +31,15 @@ public class AST_VAR_FIELD extends AST_VAR
 		TYPE owner = var.semantMe();
 		TYPE_CLASS_MEMBER field;
 		if(owner == null)
-			throw new SemanticError(line);
+			throw new SemanticError(String.format("%s can not find owner", line));
 		if (!owner.isClass())
-			throw new SemanticError(line);
+			throw new SemanticError(String.format("%s owner is not of type class", line));
 		field = ((TYPE_CLASS)owner).findMember(fieldName);
 		if (field == null)
-			throw new SemanticError(line);
+			throw new SemanticError(String.format("%s can not find member %s", line, fieldName));;
 		TYPE t = field.t;
 		if (t == null)
-			throw new SemanticError(line);
+			throw new SemanticError(String.format("%s undefined type for member %s", line, fieldName));
 		semanticType = t;
 		return t;
 	}

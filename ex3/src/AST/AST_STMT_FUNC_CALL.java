@@ -46,33 +46,33 @@ public class AST_STMT_FUNC_CALL extends AST_STMT
 		if (!classMethodCall){
 			funcType = SYMBOL_TABLE.getInstance().findInAllScopes(funcID);
 			if (funcType == null)
-				throw new SemanticError(line);
+				throw new SemanticError(String.format("%s can not find %s", line, funcID));
 			if (funcType instanceof TYPE_FUNCTION) {
 				if (!((TYPE_FUNCTION)funcType).canAssignToArgs(argTypes))
-					throw new SemanticError(line);
+					throw new SemanticError(String.format("%s Invalid function arguments", line));
 				finalType = ((TYPE_FUNCTION)funcType).returnType;
 			} else if (funcType instanceof TYPE_CLASS_METHOD) {
 				if (!((TYPE_CLASS_METHOD)funcType).canAssignToArgs(argTypes))
-					throw new SemanticError(line);
+					throw new SemanticError(String.format("%s Invalid function arguments", line));
 				finalType = ((TYPE_CLASS_METHOD)funcType).t;
 			}
 			else {
-				throw new SemanticError(line);
+				throw new SemanticError(String.format("%s %s is not callable", line, funcID));
 			}
 		}
 		else {
 			owner = ownerVar.semantMe();
 			if (owner == null)
-				throw new SemanticError(line);
+				throw new SemanticError(String.format("%s can not find owner", line));
 			if (!owner.isClass())
-				throw new SemanticError(line);
+				throw new SemanticError(String.format("%s owner is not of type class", line));
 			method = ((TYPE_CLASS)owner).findMember(funcID);
 			if (method == null)
-				throw new SemanticError(line);
+				throw new SemanticError(String.format("%s can not find %s in class", line, funcID));
 			if (!method.isMethod())
-				throw new SemanticError(line);
+				throw new SemanticError(String.format("%s %s is not callable", line, funcID));
 			if (!((TYPE_CLASS_METHOD)method).canAssignToArgs(argTypes))
-				throw new SemanticError(line);
+				throw new SemanticError(String.format("%s Invalid function arguments", line));
 			finalType = method.t;
 		}
 		semanticType = finalType;

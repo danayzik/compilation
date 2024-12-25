@@ -38,15 +38,15 @@ public class AST_LOCAL_VAR_DEC extends AST_STMT
     public TYPE semantMe()
     {
         TYPE leftType;
+        TYPE rightType;
         leftType = type.semantMe();
         if (SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
-        {
-            throw new SemanticError(line);
-        }
+            throw new SemanticError(String.format("%s %s already exists in this scope", line, ID));
+
         SYMBOL_TABLE.getInstance().enter(ID, leftType);
         if(assigned) {
-            assignedExp.semantMe();
-            checkLegalAssignment(type, assignedExp, line);
+            rightType = assignedExp.semantMe();
+            checkLegalAssignment(leftType, rightType, line);
         }
         return null;
     }

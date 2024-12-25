@@ -13,8 +13,6 @@ class Son extends Father
 {
 	Son swim;
 	int iii;
-	void main(){
-	    WALK := 6;
-	}
+	int WALK := 6;
 }
 

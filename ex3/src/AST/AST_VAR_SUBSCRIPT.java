@@ -31,9 +31,9 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		TYPE varType = var.semantMe();
 		TYPE subscriptType = subscript.semantMe();
 		if (!varType.isArray())
-			throw new SemanticError(line);
+			throw new SemanticError(String.format("%s non array type variable can not be indexed", line));
 		if (subscriptType != TYPE_INT.getInstance())
-			throw new SemanticError(line);
+			throw new SemanticError(String.format("%s index expression must be type int", line));
 		semanticType = ((TYPE_ARRAY)varType).arrayType;
 		return semanticType;
 	}

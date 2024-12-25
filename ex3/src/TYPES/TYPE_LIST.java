@@ -1,5 +1,4 @@
 package TYPES;
-
 import AST.SemanticError;
 
 public class TYPE_LIST
@@ -15,6 +14,10 @@ public class TYPE_LIST
 		this.tail = tail;
 	}
 	public static boolean canAssignTypes(TYPE leftType, TYPE rightType){
+		if (leftType instanceof TYPE_CLASS_MEMBER)
+			leftType = ((TYPE_CLASS_MEMBER) leftType).t;
+		if (rightType instanceof TYPE_CLASS_MEMBER)
+			rightType = ((TYPE_CLASS_MEMBER) rightType).t;
 		if(leftType == rightType){
 			return true;
 		}
@@ -26,8 +29,8 @@ public class TYPE_LIST
 		}
 		if (rightType.isNil() && (leftType.isArray() || leftType.isClass()))
 			return true;
-		if(leftType.isArray()){
-			if(((TYPE_ARRAY)leftType).arrayType == rightType)
+		if(leftType.isArray() && rightType.isNewArray()){
+			if(((TYPE_ARRAY)leftType).arrayType == ((TYPE_NEW_ARRAY)rightType).arrayType)
 				return true;
 		}
 		return false;
@@ -35,7 +38,7 @@ public class TYPE_LIST
 	public boolean canAssignList(TYPE_LIST rightTypes){
 		TYPE_LIST leftTypes = this;
 
-		while (leftTypes != null && leftTypes != null) {
+		while (leftTypes != null && rightTypes != null) {
 
 			if (!canAssignTypes(leftTypes.head, rightTypes.head)) {
 				return false;
@@ -46,16 +49,5 @@ public class TYPE_LIST
 		return leftTypes == null && rightTypes == null;
 	}
 
-	public boolean matchingList(TYPE_LIST list2) {
-		TYPE_LIST list1 = this;
-		while (list1 != null && list2 != null) {
 
-			if (list1.head != list2.head) {
-				return false;
-			}
-			list1 = list1.tail;
-			list2 = list2.tail;
-		}
-		return list1 == null && list2 == null;
-	}
 }

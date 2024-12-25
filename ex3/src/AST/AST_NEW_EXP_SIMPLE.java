@@ -28,7 +28,7 @@ public class AST_NEW_EXP_SIMPLE extends AST_NEW_EXP
 		TYPE t;
 		t = type.semantMe();
 		if(!t.isClass())
-			throw new SemanticError(line);
+			throw new SemanticError(String.format("%s new expression needs to be of type class", line));
 		semanticType = t;
 		return t;
 	}

@@ -30,7 +30,7 @@ public class AST_DEC_ARRAY_TYPE_DEF extends AST_DEC
         TYPE arrayType;
         if (SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
         {
-            throw new SemanticError(line);
+            throw new SemanticError(String.format("%s %s already exists in this scope", line, ID));
         }
         arrayType = type.semantMe();
         TYPE_TABLE.getInstance().enter(ID, new TYPE_ARRAY(arrayType, ID));
