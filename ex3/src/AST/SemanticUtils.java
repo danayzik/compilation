@@ -5,8 +5,6 @@ public class SemanticUtils {
     private SemanticUtils() {}
 
     public static boolean isLegalAssignment(TYPE leftType, TYPE rightType){
-        System.out.println(leftType);
-        System.out.println(rightType);
         if(leftType == rightType){
             return true;
         }
