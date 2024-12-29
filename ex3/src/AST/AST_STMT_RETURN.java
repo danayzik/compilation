@@ -1,5 +1,6 @@
 package AST;
 import TYPES.*;
+import static AST.SemanticUtils.isLegalAssignment;
 public class AST_STMT_RETURN extends AST_STMT
 {
 	public AST_EXP returnExp;
@@ -28,7 +29,12 @@ public class AST_STMT_RETURN extends AST_STMT
 		return semanticType;
 	}
 	public void matchReturnType(TYPE t){
-		if(t != semanticType)
+		if (semanticType == TYPE_VOID.getInstance()){
+			if (t != TYPE_VOID.getInstance())
+				throw new SemanticError(String.format("%s Non matching return type", line));
+			return;
+		}
+		if(!isLegalAssignment(t, semanticType))
 			throw new SemanticError(String.format("%s Non matching return type", line));
 	}
 
