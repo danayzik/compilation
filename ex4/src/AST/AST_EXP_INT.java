@@ -1,0 +1,26 @@
+package AST;
+import TYPES.*;
+public class AST_EXP_INT extends AST_EXP
+{
+	public int value;
+
+	public AST_EXP_INT(int line, int value)
+	{
+		SerialNumber = AST_Node_Serial_Number.getFresh();
+		this.value = value;
+		this.line = String.valueOf(line);
+	}
+
+	public void PrintMe()
+	{
+		System.out.format("AST NODE INT( %d )\n",value);
+		AST_GRAPHVIZ.getInstance().logNode(
+			SerialNumber,
+			String.format("INT(%d)",value));
+	}
+	public TYPE semantMe()
+	{
+		semanticType = TYPE_INT.getInstance();
+		return semanticType;
+	}
+}
