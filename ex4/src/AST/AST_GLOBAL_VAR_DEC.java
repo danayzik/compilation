@@ -2,6 +2,8 @@ package AST;
 import TYPES.*;
 import SYMBOL_TABLE.*;
 import static AST.SemanticUtils.isLegalAssignment;
+import TEMP.*;
+import IR.*;
 public class AST_GLOBAL_VAR_DEC extends AST_DEC
 {
     public boolean assigned;
@@ -45,6 +47,17 @@ public class AST_GLOBAL_VAR_DEC extends AST_DEC
             rightType = assignedExp.semantMe();
             if(!isLegalAssignment(leftType, rightType))
                 throw new SemanticError(String.format("%s illegal assignment", line));
+        }
+        return null;
+    }
+
+    public TEMP IRme()
+    {
+        IR.getInstance().Add_IRcommand(new IRcommand_Allocate(ID));
+
+        if (assigned)
+        {
+            IR.getInstance().Add_IRcommand(new IRcommand_Store(ID, assignedExp.IRme()));
         }
         return null;
     }

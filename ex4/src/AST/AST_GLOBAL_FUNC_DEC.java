@@ -1,7 +1,8 @@
 package AST;
 import SYMBOL_TABLE.*;
 import TYPES.*;
-
+import TEMP.*;
+import IR.*;
 public class AST_GLOBAL_FUNC_DEC extends AST_DEC {
     public AST_TYPE type;
     public String ID;
@@ -46,6 +47,15 @@ public class AST_GLOBAL_FUNC_DEC extends AST_DEC {
         SYMBOL_TABLE.getInstance().endScope();
         semanticType = func;
         return semanticType;
+    }
+
+    //just for main
+    public TEMP IRme()
+    {
+        IR.getInstance().Add_IRcommand(new IRcommand_Label("define main"));
+        if (body != null) body.IRme();
+        IR.getInstance().Add_IRcommand(new IRcommand_Jump_Label("end"));
+        return null;
     }
 
 }

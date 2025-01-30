@@ -1,6 +1,8 @@
 package AST;
 import TYPES.*;
 import static AST.SemanticUtils.isLegalAssignment;
+import TEMP.*;
+import IR.*;
 public class AST_STMT_RETURN extends AST_STMT
 {
 	public AST_EXP returnExp;
@@ -36,6 +38,13 @@ public class AST_STMT_RETURN extends AST_STMT
 		}
 		if(!isLegalAssignment(t, semanticType))
 			throw new SemanticError(String.format("%s Non matching return type", line));
+	}
+
+	public TEMP IRme(){
+		TEMP t = null;
+		if(returnExp!=null)t = returnExp.IRme();
+		IR.getInstance().Add_IRcommand(new IRcommand_Return(t));
+		return t;
 	}
 
 

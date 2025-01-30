@@ -26,8 +26,16 @@ public class IR
 			it.tail = new IRcommandList(cmd,null);
 		}
 	}
-	
 
+	public void setupCFG(){
+		IRcommand curr = head;
+		IRcommandList currTail = tail;
+		while (currTail != null){
+			if(!curr.isJump())curr.nextCmdInLine = currTail.head;
+			curr = currTail.head;
+			currTail = currTail.tail;
+		}
+	}
 	private static IR instance = null;
 
 	protected IR() {}
@@ -39,5 +47,10 @@ public class IR
 			instance = new IR();
 		}
 		return instance;
+	}
+	public void printMe(){
+
+		if (head!=null)head.printMe();
+		if(tail!=null)tail.printMe();
 	}
 }

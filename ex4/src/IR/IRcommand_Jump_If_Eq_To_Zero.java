@@ -13,4 +13,8 @@ public class IRcommand_Jump_If_Eq_To_Zero extends IRcommand
 		this.t          = t;
 		this.label_name = label_name;
 	}
+
+	public void printMe(){
+		System.out.printf("beq %s %s\n", t, label_name);
+	}
 }

@@ -13,4 +13,8 @@ public class IRcommand_Load extends IRcommand
 		this.dst      = dst;
 		this.var_name = var_name;
 	}
+
+	public void printMe(){
+		System.out.printf("%s = %s\n", dst, var_name);
+	}
 }

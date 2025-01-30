@@ -15,4 +15,11 @@ public class TEMP
 	{
 		return serial;
 	}
+
+	@Override
+	public String toString() {
+		return String.format("t%d", serial);
+	}
+
+
 }

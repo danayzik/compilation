@@ -1,5 +1,7 @@
 package AST;
 import TYPES.*;
+import TEMP.*;
+import IR.*;
 public class AST_EXP_BINOP extends AST_EXP
 {
 	int OP;
@@ -109,5 +111,16 @@ public class AST_EXP_BINOP extends AST_EXP
 		}
 		throw new SemanticError(String.format("%s Invalid binary operation", line));
 
+	}
+	public TEMP IRme()
+	{
+		TEMP t1 = null;
+		TEMP t2 = null;
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+		IR IRInstance = IR.getInstance();
+		if (left  != null) t1 = left.IRme();
+		if (right != null) t2 = right.IRme();
+		IRInstance.Add_IRcommand(new IRcommand_Binop(dst, t1, t2, OP));
+		return dst;
 	}
 }

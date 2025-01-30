@@ -36,19 +36,6 @@ scan with
 	s = lexer.next_token();
 	if (s.sym == TokenNames.ERROR)
 	    throw new LexicalError("");
-	System.out.print("[");
-	System.out.print(lexer.getLine());
-	System.out.print(":");
-	System.out.print(lexer.getTokenStartPosition());
-	System.out.print("] ");
-	System.out.print(TokenNames.terminalNames[s.sym]);
-	if (s.value != null)
-	{
-		System.out.print("( ");
-		System.out.print(s.value);
-		System.out.print(" )");
-	}
-	System.out.print("\n");
 	return s; 
 :};
 
@@ -109,7 +96,7 @@ non terminal AST_FUNC_ARG_LIST funcArgList;
 non terminal AST_CFIELD_LIST cFieldList;
 non terminal AST_EXP_LIST expList;
 non terminal AST_DEC_LIST decList;
-
+non terminal AST_PROGRAM program;
 
 
 /***********************/
@@ -127,11 +114,14 @@ precedence left DOT;
 /************************/
 /* START WITH: stmtList */
 /************************/
-start with decList;
+start with program;
 
 /********************/
 /* DERIVATION RULES */
 /********************/
+
+program	::=		    decList:l		{: RESULT = new AST_PROGRAM(l);    :}
+					;
 
 decList	::=		    dec:d	decList:l		{: RESULT = new AST_DEC_LIST(d,l);    :}
 					| dec:d				{: RESULT = new AST_DEC_LIST(d,null); :}

@@ -1,5 +1,7 @@
 package AST;
 import TYPES.*;
+import TEMP.*;
+
 public class AST_STMT_LIST extends AST_Node
 {
 
@@ -35,6 +37,12 @@ public class AST_STMT_LIST extends AST_Node
 	public void matchReturnType(TYPE t){
 		if(head != null) head.matchReturnType(t);
 		if(tail != null) tail.matchReturnType(t);
+	}
+
+	public TEMP IRme(){
+		if(head!=null) head.IRme();
+		if(tail!=null) tail.IRme();
+		return null;
 	}
 	
 }

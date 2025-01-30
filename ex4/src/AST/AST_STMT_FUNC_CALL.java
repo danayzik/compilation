@@ -1,6 +1,9 @@
 package AST;
 import TYPES.*;
 import SYMBOL_TABLE.*;
+import TEMP.*;
+import IR.*;
+
 public class AST_STMT_FUNC_CALL extends AST_STMT
 {
 	public AST_EXP_LIST argList;
@@ -77,5 +80,12 @@ public class AST_STMT_FUNC_CALL extends AST_STMT
 		}
 		semanticType = finalType;
 		return finalType;
+	}
+
+	//Only for ex4
+	public TEMP IRme(){
+		TEMP t = argList.IRme();
+		IR.getInstance().Add_IRcommand(new IRcommand_PrintInt(t));
+		return null;
 	}
 }

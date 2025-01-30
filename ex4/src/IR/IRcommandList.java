@@ -13,4 +13,9 @@ public class IRcommandList
 		this.head = head;
 		this.tail = tail;
 	}
+	public void printMe(){
+
+		if (head!=null)head.printMe();
+		if(tail!=null)tail.printMe();
+	}
 }

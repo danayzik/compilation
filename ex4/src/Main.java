@@ -3,6 +3,7 @@ import java.io.*;
 import java.io.PrintWriter;
 import java_cup.runtime.Symbol;
 import AST.*;
+import IR.*;
 
 public class Main
 {
@@ -11,7 +12,7 @@ public class Main
 		Lexer l;
 		Parser p;
 		Symbol s;
-		AST_DEC_LIST AST;
+		AST_PROGRAM AST;
 		FileReader file_reader;
 		PrintWriter file_writer;
 		String inputFilename = argv[0];
@@ -43,7 +44,7 @@ public class Main
 			/* [5] 3 ... 2 ... 1 ... Parse !!! */
 			/***********************************/
 			try {
-				AST = (AST_DEC_LIST) p.parse().value;
+				AST = (AST_PROGRAM) p.parse().value;
 			}
 			catch (SyntaxError se){
 				file_writer.println(String.format("ERROR(%s)", se.getMessage()));
@@ -73,6 +74,9 @@ public class Main
 				file_writer.close();
 				return;
 			}
+			AST.IRme();
+			IR.getInstance().printMe();
+			IR.getInstance().setupCFG();
 			
 			/*************************/
 			/* [7] Close output file */

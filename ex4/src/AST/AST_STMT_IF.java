@@ -1,6 +1,8 @@
 package AST;
 import TYPES.*;
 import SYMBOL_TABLE.*;
+import TEMP.*;
+import IR.*;
 public class AST_STMT_IF extends AST_STMT
 {
 	public AST_EXP cond;
@@ -37,5 +39,18 @@ public class AST_STMT_IF extends AST_STMT
 	@Override
 	public void matchReturnType(TYPE t) {
 		body.matchReturnType(t);
+	}
+
+	public TEMP IRme(){
+		String beqLabel = IRcommand.getFreshLabel("");
+		IR IRInstance = IR.getInstance();
+		IRcommand_Label labelCmd= new IRcommand_Label(beqLabel);
+		TEMP condTemp = cond.IRme();
+		IRcommand_Jump_If_Eq_To_Zero beqCmd = new IRcommand_Jump_If_Eq_To_Zero(condTemp, beqLabel);
+		beqCmd.jumpToCmd = labelCmd;
+		IRInstance.Add_IRcommand(beqCmd);
+		body.IRme();
+		IRInstance.Add_IRcommand(labelCmd);
+		return null;
 	}
 }

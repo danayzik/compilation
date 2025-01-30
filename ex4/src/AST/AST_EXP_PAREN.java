@@ -1,5 +1,6 @@
 package AST;
 import TYPES.*;
+import TEMP.*;
 public class AST_EXP_PAREN extends AST_EXP
 {
     public AST_EXP childExp;
@@ -22,5 +23,8 @@ public class AST_EXP_PAREN extends AST_EXP
     {
         semanticType = childExp.semantMe();
         return semanticType;
+    }
+    public TEMP IRme(){
+        return childExp.IRme();
     }
 }

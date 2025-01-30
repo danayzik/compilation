@@ -1,5 +1,6 @@
 package AST;
 import TYPES.*;
+import TEMP.*;
 public class AST_DEC_LIST extends AST_Node
 {
 	public AST_DEC head;
@@ -27,6 +28,12 @@ public class AST_DEC_LIST extends AST_Node
 	public TYPE semantMe(){
 		if(head != null) head.semantMe();
 		if(tail != null) tail.semantMe();
+		return null;
+	}
+
+	public TEMP IRme(){
+		if(head!= null)head.IRme();
+		if(tail!= null)tail.IRme();
 		return null;
 	}
 	

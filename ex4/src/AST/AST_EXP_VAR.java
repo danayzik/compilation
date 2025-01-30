@@ -1,5 +1,6 @@
 package AST;
 import TYPES.*;
+import TEMP.*;
 public class AST_EXP_VAR extends AST_EXP
 {
 	public AST_VAR var;
@@ -25,4 +26,10 @@ public class AST_EXP_VAR extends AST_EXP
 		semanticType = var.semantMe();
 		return semanticType;
 	}
+
+	public TEMP IRme(){
+		return var.IRme();
+	}
+
+
 }

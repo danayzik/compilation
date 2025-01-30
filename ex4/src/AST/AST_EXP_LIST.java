@@ -1,5 +1,6 @@
 package AST;
 import TYPES.*;
+import TEMP.*;
 public class AST_EXP_LIST extends AST_Node
 {
 
@@ -37,6 +38,11 @@ public class AST_EXP_LIST extends AST_Node
 					head.semantMe(),
 					tail.semantMeList());
 		}
+	}
+
+	//Only for ex4
+	public TEMP IRme(){
+		return head.IRme();
 	}
 	
 }

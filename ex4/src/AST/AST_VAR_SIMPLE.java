@@ -1,6 +1,8 @@
 package AST;
 import TYPES.*;
 import SYMBOL_TABLE.*;
+import TEMP.*;
+import IR.*;
 public class AST_VAR_SIMPLE extends AST_VAR
 {
 
@@ -26,6 +28,12 @@ public class AST_VAR_SIMPLE extends AST_VAR
 		if(t == null)
 			throw new SemanticError(String.format("%s can not find %s", line, name));
 		semanticType = t;
+		return t;
+	}
+	public TEMP IRme()
+	{
+		TEMP t = TEMP_FACTORY.getInstance().getFreshTEMP();
+		IR.getInstance().Add_IRcommand(new IRcommand_Load(t,name));
 		return t;
 	}
 }

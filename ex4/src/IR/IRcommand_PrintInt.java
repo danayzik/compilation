@@ -11,4 +11,8 @@ public class IRcommand_PrintInt extends IRcommand
 	{
 		this.t = t;
 	}
+
+	public void printMe(){
+		System.out.printf("call PrintInt %s\n", t);
+	}
 }
