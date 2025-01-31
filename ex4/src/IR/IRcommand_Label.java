@@ -13,6 +13,7 @@ public class IRcommand_Label extends IRcommand
 	}
 
 	public void printMe(){
+		super.printMe();
 		System.out.printf("%s:\n", label_name);
 	}
 }

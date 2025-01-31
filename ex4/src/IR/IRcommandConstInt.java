@@ -15,6 +15,12 @@ public class IRcommandConstInt extends IRcommand
 	}
 
 	public void printMe(){
+		super.printMe();
 		System.out.printf("%s = %d\n", t, value);
+	}
+
+	public void inToOut(unInitSets setsObj){
+		super.inToOut(setsObj);
+		setsObj.uninitTempsOut.remove(t.toString());
 	}
 }

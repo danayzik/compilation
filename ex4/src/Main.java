@@ -1,6 +1,8 @@
    
 import java.io.*;
 import java.io.PrintWriter;
+import java.util.Set;
+
 import java_cup.runtime.Symbol;
 import AST.*;
 import IR.*;
@@ -77,6 +79,8 @@ public class Main
 			AST.IRme();
 			IR.getInstance().printMe();
 			IR.getInstance().setupCFG();
+			Set<String> varSet = IR.getInstance().dataFlowAnalysis();
+			System.out.println(varSet);
 			
 			/*************************/
 			/* [7] Close output file */

@@ -13,6 +13,7 @@ public class IRcommand_PrintInt extends IRcommand
 	}
 
 	public void printMe(){
+		super.printMe();
 		System.out.printf("call PrintInt %s\n", t);
 	}
 }

@@ -13,6 +13,7 @@ public class IRcommand_Jump_Label extends IRcommand
 	}
 
 	public void printMe(){
+		super.printMe();
 		System.out.printf("jump %s\n", label_name);
 	}
 

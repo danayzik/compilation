@@ -12,6 +12,10 @@ public class IRcommand_Return extends IRcommand
 	}
 
 	public void printMe(){
-		System.out.printf("return value = %s\njump ra\n", returnSrc);
+		super.printMe();
+		System.out.printf("jump ra\n", returnSrc);
 	}
+	//No return value for ex4
+
+
 }

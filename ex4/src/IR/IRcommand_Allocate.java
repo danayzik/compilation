@@ -2,7 +2,6 @@
 package IR;
 
 
-import TEMP.*;
 
 public class IRcommand_Allocate extends IRcommand
 {
@@ -14,6 +13,13 @@ public class IRcommand_Allocate extends IRcommand
 	}
 
 	public void printMe(){
+		super.printMe();
 		System.out.printf("Alloc %s\n", var_name);
+	}
+
+	public void inToOut(unInitSets setsObj){
+		super.inToOut(setsObj);
+		setsObj.uninitVariablesOut.add(var_name);
+
 	}
 }
