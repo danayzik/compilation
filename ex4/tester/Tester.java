@@ -3,21 +3,25 @@ import java.nio.file.*;
 import java.util.*;
 
 public class Tester {
-	private static final String BASE_DIR = "C:\\Users\\danay\\IdeaProjects\\compilation\\ex4\\tester";
-	private static final String ANALYZER_DIR = "C:\\Users\\danay\\IdeaProjects\\compilation\\ex4";
+	// Use a system property or an environment variable to get the absolute base directory
+	private static final String LEADING_PATH = System.getProperty("user.dir");  // Or use a custom env var
+	private static final Path BASE_DIR = Paths.get(LEADING_PATH); // Dynamically create path
+	private static final Path ANALYZER_DIR = Paths.get(LEADING_PATH, "..");
 	private static final String ANALYZER_JAR = "ANALYZER";
 
 	public static void main(String[] args) {
-		File inputDir = new File(BASE_DIR + "\\inputs");
-		File outputDir = new File(BASE_DIR + "\\outputs");
-		File expectedDir = new File(BASE_DIR + "\\expected_outputs");
+		Path inputDir = BASE_DIR.resolve("inputs");
+		Path outputDir = BASE_DIR.resolve("outputs");
+		Path expectedDir = BASE_DIR.resolve("expected_outputs");
+		System.out.println(inputDir);
 
-		if (!inputDir.exists() || !outputDir.exists() || !expectedDir.exists()) {
+		if (!Files.exists(inputDir) || !Files.exists(outputDir) || !Files.exists(expectedDir)) {
 			System.err.println("Error: One or more required directories are missing.");
 			return;
 		}
 
-		File[] inputFiles = inputDir.listFiles((dir, name) -> name.matches("input\\d+\\.txt"));
+		// List input files
+		File[] inputFiles = inputDir.toFile().listFiles((dir, name) -> name.matches("input\\d+\\.txt"));
 		if (inputFiles == null || inputFiles.length == 0) {
 			System.err.println("Error: No input files found.");
 			return;
@@ -26,10 +30,10 @@ public class Tester {
 		int failedTests = 0;
 		for (File inputFile : inputFiles) {
 			String fileNumber = inputFile.getName().replaceAll("\\D+", "");
-			File outputFile = new File(outputDir, "output" + fileNumber + ".txt");
-			File expectedFile = new File(expectedDir, "expected_output" + fileNumber + ".txt");
+			Path outputFile = outputDir.resolve("output" + fileNumber + ".txt");
+			Path expectedFile = expectedDir.resolve("expected_output" + fileNumber + ".txt");
 
-			if (!expectedFile.exists()) {
+			if (!Files.exists(expectedFile)) {
 				System.err.println("Warning: Expected output file missing for test " + fileNumber);
 				continue;
 			}
@@ -37,16 +41,14 @@ public class Tester {
 			try {
 				ProcessBuilder processBuilder = new ProcessBuilder(
 						"java", "-jar", ANALYZER_JAR,
-						inputFile.getAbsolutePath(), outputFile.getAbsolutePath()
+						inputFile.getAbsolutePath(), outputFile.toAbsolutePath().toString()
 				);
-				processBuilder.directory(new File(ANALYZER_DIR)); // Set working directory
+				processBuilder.directory(ANALYZER_DIR.toFile()); // Set working directory
 				processBuilder.redirectErrorStream(true);
 				Process process = processBuilder.start();
 				process.waitFor();
 
-
-
-				if (compareFiles(outputFile, expectedFile)) {
+				if (compareFiles(outputFile.toFile(), expectedFile.toFile())) {
 					System.out.println("Test " + fileNumber + " PASSED.");
 				} else {
 					System.out.println("Test " + fileNumber + " FAILED.");
