@@ -54,7 +54,9 @@ public class AST_GLOBAL_FUNC_DEC extends AST_DEC {
     {
         IR.getInstance().Add_IRcommand(new IRcommand_Label("define main"));
         if (body != null) body.IRme();
-        IR.getInstance().Add_IRcommand(new IRcommand_Label("main end"));
+        IRcommand endLabelCommand = new IRcommand_Label("main end");
+        endLabelCommand.isMainEnd = true;
+        IR.getInstance().Add_IRcommand(endLabelCommand);
         return null;
     }
 

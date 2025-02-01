@@ -36,17 +36,46 @@ public class IR
 		}
 	}
 
+	public void connectGlobalDefinitions(){
+		IRcommand curr = head;
+		IRcommand lastBeforeMain = curr;
+		if(curr.isLabel())return;
+		IRcommandList currTail = tail;
+		while (currTail != null){
+			if(currTail.head.isLabel()){
+				lastBeforeMain = curr;
+				break;
+			}
+
+			curr = currTail.head;
+			currTail = currTail.tail;
+		}
+		while (currTail != null){
+			if(curr.isMainEnd){
+				lastBeforeMain.jumpToCmd = currTail.head;
+//				System.out.printf("%d -> %d\n", lastBeforeMain.index, currTail.head.index);
+				break;
+			}
+			curr = currTail.head;
+			currTail = currTail.tail;
+		}
+
+	}
+
 	public void setupCFG(){
 		IRcommand curr = head;
 		IRcommandList currTail = tail;
 		while (currTail != null){
-			if(!curr.isJump())curr.nextCmdInLine = currTail.head;
+			if(!curr.isJump() && !curr.isReturn() && !curr.isMainEnd){
+				curr.nextCmdInLine = currTail.head;
+//				System.out.printf("%d -> %d\n", curr.index, currTail.head.index);
+			}
 			curr = currTail.head;
 			currTail = currTail.tail;
-
 		}
-
+		connectGlobalDefinitions();
 	}
+
 	private static IR instance = null;
 
 	protected IR() {}
@@ -87,7 +116,7 @@ public class IR
 		while(!workSet.isEmpty()){
 
 			workingIndex = workSet.first();
-
+//			System.out.printf("Now working on %d\n", workingIndex);
 			workSet.remove(workingIndex);
 			workingCmd = cmdMap.get(workingIndex);
 			workingSets = setsMap.get(workingIndex);

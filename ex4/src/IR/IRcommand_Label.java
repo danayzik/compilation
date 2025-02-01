@@ -16,4 +16,5 @@ public class IRcommand_Label extends IRcommand
 		super.printMe();
 		System.out.printf("%s:\n", label_name);
 	}
+	public boolean isLabel(){return true;}
 }

@@ -22,6 +22,10 @@ public abstract class IRcommand
 
 	public boolean isJump(){return false;}
 
+	public boolean isReturn(){return false;}
+
+	public boolean isLabel(){return false;}
+
 	public void inToOut(unInitSets setsObj){
 		workedOn = true;
 		setsObj.uninitVariablesOut = new HashSet<>(setsObj.uninitVariablesIn);
@@ -31,4 +35,6 @@ public abstract class IRcommand
 	public void addUninitVariableUse(Set<String> varSet, unInitSets flowSets){}
 
 	public boolean workedOn = false;
+
+	public boolean isMainEnd = false;
 }

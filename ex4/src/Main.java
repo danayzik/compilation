@@ -1,6 +1,9 @@
    
 import java.io.*;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import java_cup.runtime.Symbol;
@@ -80,12 +83,21 @@ public class Main
 			IR.getInstance().printMe();
 			IR.getInstance().setupCFG();
 			Set<String> varSet = IR.getInstance().dataFlowAnalysis();
-			System.out.println(varSet);
+			if(varSet.isEmpty()){
+				file_writer.println("!OK");
+			}
+			else{
+				List<String> sortedList = new ArrayList<>(varSet);
+				Collections.sort(sortedList);
+				for (String str : sortedList) {
+					file_writer.println(str);
+				}
+			}
 			
 			/*************************/
 			/* [7] Close output file */
 			/*************************/
-			file_writer.println("OK");
+
 			file_writer.close();
 			
 			/*************************************/

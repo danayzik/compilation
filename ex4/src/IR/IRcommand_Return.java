@@ -13,9 +13,11 @@ public class IRcommand_Return extends IRcommand
 
 	public void printMe(){
 		super.printMe();
-		System.out.printf("jump ra\n", returnSrc);
+		System.out.printf("return\n", returnSrc);
 	}
 	//No return value for ex4
+
+	public boolean isReturn(){return true;}
 
 
 }
