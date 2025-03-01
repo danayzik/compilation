@@ -1,6 +1,8 @@
 package AST;
 import TYPES.*;
 import SYMBOL_TABLE.*;
+import TEMP.*;
+import IR.*;
 
 public class AST_VAR_FIELD extends AST_VAR
 {
@@ -42,5 +44,11 @@ public class AST_VAR_FIELD extends AST_VAR
 			throw new SemanticError(String.format("%s undefined type for member %s", line, fieldName));
 		semanticType = t;
 		return t;
+	}
+
+	public TEMP IRme(){
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+		IR.getInstance().Add_IRcommand(new IRcommand_Field_Access(dst, var.IRme(), fieldName));
+		return dst;
 	}
 }

@@ -22,7 +22,6 @@ public class AST_PROGRAM extends AST_Node
 
     public TEMP IRme(){
         TEMP t = decList.IRme();
-        IR.getInstance().Add_IRcommand(new IRcommand_Label("end"));
         return t;
     }
 }

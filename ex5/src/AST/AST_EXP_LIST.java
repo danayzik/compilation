@@ -40,9 +40,15 @@ public class AST_EXP_LIST extends AST_Node
 		}
 	}
 
-	//Only for ex4
-	public TEMP IRme(){
-		return head.IRme();
+
+	public TEMP_LIST IRmeList(){
+
+		if(tail == null){
+			return new TEMP_LIST(head.IRme(), null);
+		}
+		else {
+			return new TEMP_LIST(head.IRme(), tail.IRmeList());
+		}
 	}
 	
 }

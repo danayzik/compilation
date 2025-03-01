@@ -7,7 +7,7 @@ import java.util.Set;
 
 public abstract class IRcommand
 {
-	public IRcommand nextCmdInLine = null;
+	public IRcommand next = null;
 	public IRcommand jumpToCmd = null;
 	protected static int label_counter=0;
 
@@ -36,5 +36,5 @@ public abstract class IRcommand
 
 	public boolean workedOn = false;
 
-	public boolean isMainEnd = false;
+
 }

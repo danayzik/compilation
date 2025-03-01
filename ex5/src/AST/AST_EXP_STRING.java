@@ -1,5 +1,8 @@
 package AST;
 import TYPES.*;
+import TEMP.*;
+import IR.*;
+
 public class AST_EXP_STRING extends AST_EXP
 {
 	public String str;
@@ -22,5 +25,11 @@ public class AST_EXP_STRING extends AST_EXP
 	{
 		semanticType = TYPE_STRING.getInstance();
 		return semanticType;
+	}
+	@Override
+	public TEMP IRme() {
+		TEMP t = TEMP_FACTORY.getInstance().getFreshTEMP();
+		IR.getInstance().Add_IRcommand(new IRcommandConstString(t, str));
+		return t;
 	}
 }

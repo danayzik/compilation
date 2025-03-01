@@ -53,11 +53,14 @@ public class AST_GLOBAL_VAR_DEC extends AST_DEC
 
     public TEMP IRme()
     {
-        IR.getInstance().Add_IRcommand(new IRcommand_Allocate(ID));
+        IR IRInstance = IR.getInstance();
+        IRInstance.setGlobalVarsActive();
+        IRInstance.addCommandList(new IRcommandList());
+        IRInstance.Add_IRcommand(new IRcommand_Allocate(ID));
 
         if (assigned)
         {
-            IR.getInstance().Add_IRcommand(new IRcommand_Store(ID, assignedExp.IRme()));
+            IRInstance.Add_IRcommand(new IRcommand_Store(ID, assignedExp.IRme()));
         }
         return null;
     }

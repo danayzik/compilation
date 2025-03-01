@@ -49,14 +49,14 @@ public class AST_GLOBAL_FUNC_DEC extends AST_DEC {
         return semanticType;
     }
 
-    //just for main
+
     public TEMP IRme()
     {
-        IR.getInstance().Add_IRcommand(new IRcommand_Label("define main"));
+        IR IRInstance = IR.getInstance();
+        IRInstance.setFuncsActive();
+        IRInstance.addCommandList(new IRcommandList());
+        IR.getInstance().Add_IRcommand(new IRcommand_Label(ID));
         if (body != null) body.IRme();
-        IRcommand endLabelCommand = new IRcommand_Label("main end");
-        endLabelCommand.isMainEnd = true;
-        IR.getInstance().Add_IRcommand(endLabelCommand);
         return null;
     }
 

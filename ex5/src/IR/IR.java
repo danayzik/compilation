@@ -4,81 +4,59 @@ import java.util.*;
 
 public class IR
 {
-	private IRcommand head=null;
-	private IRcommandList tail=null;
+	private int currentlyActive = 0;
+	private IRcommandListList globalVarDecs;
+	private IRcommandListList globalFuncs;
+	private IRcommandListList classDecs;
+
 
 	private int cmdIndex = 1;
 
 	private Map<Integer, IRcommand> cmdMap = new HashMap<>();
 
-	public void Add_IRcommand(IRcommand cmd)
-	{
-		cmdMap.put(cmdIndex, cmd);
-		cmd.index = cmdIndex++;
-		if ((head == null) && (tail == null))
-		{
-			this.head = cmd;
 
-		}
-		else if ((head != null) && (tail == null))
-		{
-			this.tail = new IRcommandList(cmd,null);
 
-		}
-		else
-		{
-			IRcommandList it = tail;
-			while ((it != null) && (it.tail != null))
-			{
-				it = it.tail;
-			}
-			it.tail = new IRcommandList(cmd,null);
-		}
+	private IRcommandListList activeIndexToIRLL(){
+		return switch (currentlyActive) {
+			case 0 -> globalVarDecs;
+			case 1 -> classDecs;
+			case 2 -> globalFuncs;
+			default -> null;
+		};
 	}
 
-	public void connectGlobalDefinitions(){
-		IRcommand curr = head;
-		IRcommand lastBeforeMain = curr;
-		if(curr.isLabel())return;
-		IRcommandList currTail = tail;
-		while (currTail != null){
-			if(currTail.head.isLabel()){
-				lastBeforeMain = curr;
-				break;
-			}
-
-			curr = currTail.head;
-			currTail = currTail.tail;
-		}
-		while (currTail != null){
-			if(curr.isMainEnd){
-				lastBeforeMain.jumpToCmd = currTail.head;
-//				System.out.printf("%d -> %d\n", lastBeforeMain.index, currTail.head.index);
-				break;
-			}
-			curr = currTail.head;
-			currTail = currTail.tail;
-		}
-
+	public void addCommandList(IRcommandList cmdList){
+		IRcommandListList active = activeIndexToIRLL();
+		active.AddCommandList(cmdList);
 	}
 
-	public void setupCFG(){
-		IRcommand curr = head;
-		IRcommandList currTail = tail;
-		while (currTail != null){
-			if(!curr.isJump() && !curr.isReturn() && !curr.isMainEnd){
-				curr.nextCmdInLine = currTail.head;
-//				System.out.printf("%d -> %d\n", curr.index, currTail.head.index);
-			}
-			curr = currTail.head;
-			currTail = currTail.tail;
-		}
-		connectGlobalDefinitions();
+	public void Add_IRcommand(IRcommand cmd){
+		IRcommandListList active = activeIndexToIRLL();
+		active.getLastList().addCommand(cmd);
 	}
+
+	public void setGlobalVarsActive(){
+		currentlyActive = 0;
+	}
+	public void setFuncsActive(){
+		currentlyActive = 2;
+	}
+	public void setClassDecActive(){
+		currentlyActive = 1;
+	}
+
+
+
+
 
 	private static IR instance = null;
 
-	protected IR() {}
+	protected IR() {
+		globalVarDecs = new IRcommandListList(null, null);
+		globalFuncs = new IRcommandListList(null, null);
+		classDecs = new IRcommandListList(null, null);
+
+	}
 
 	public static IR getInstance()
 	{
@@ -89,9 +67,14 @@ public class IR
 		return instance;
 	}
 	public void printMe(){
+		System.out.println("--------Global variables--------");
+		globalVarDecs.printMe();
+		System.out.println("--------Classes--------");
+		classDecs.printMe();
+		System.out.println("--------Global Functions--------");
+		globalFuncs.printMe();
 
-		if (head!=null)head.printMe();
-		if(tail!=null)tail.printMe();
+
 	}
 
 
@@ -120,7 +103,7 @@ public class IR
 			workSet.remove(workingIndex);
 			workingCmd = cmdMap.get(workingIndex);
 			workingSets = setsMap.get(workingIndex);
-			nextCmd1 = workingCmd.nextCmdInLine;
+			nextCmd1 = workingCmd.next;
 			nextCmd2 = workingCmd.jumpToCmd;
 
 

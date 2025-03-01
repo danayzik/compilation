@@ -2,6 +2,8 @@ package AST;
 
 import SYMBOL_TABLE.*;
 import TYPES.*;
+import TEMP.*;
+import IR.*;
 public class AST_NEW_EXP_ARRAY extends AST_NEW_EXP
 {
 	public AST_TYPE type;
@@ -39,5 +41,12 @@ public class AST_NEW_EXP_ARRAY extends AST_NEW_EXP
 		}
 		semanticType = t;
 		return t;
+	}
+
+	public TEMP IRme(){
+		TEMP size = sizeExp.IRme();
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+		IR.getInstance().Add_IRcommand(new IRcommand_New_Array(size, semanticType, dst));
+		return dst;
 	}
 }

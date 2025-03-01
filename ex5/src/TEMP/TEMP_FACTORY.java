@@ -5,6 +5,8 @@ package TEMP;
 public class TEMP_FACTORY
 {
 	private int counter=0;
+
+
 	
 	public TEMP getFreshTEMP()
 	{
@@ -25,4 +27,5 @@ public class TEMP_FACTORY
 		}
 		return instance;
 	}
+
 }

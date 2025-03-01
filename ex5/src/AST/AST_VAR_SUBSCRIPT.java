@@ -1,5 +1,7 @@
 package AST;
 import TYPES.*;
+import IR.*;
+import TEMP.*;
 
 
 public class AST_VAR_SUBSCRIPT extends AST_VAR
@@ -36,5 +38,13 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 			throw new SemanticError(String.format("%s index expression must be type int", line));
 		semanticType = ((TYPE_ARRAY)varType).arrayType;
 		return semanticType;
+	}
+
+	public TEMP IRme(){
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+		TEMP src = var.IRme();
+		TEMP index = subscript.IRme();
+		IR.getInstance().Add_IRcommand(new IRcommand_Array_Access(dst, src, index));
+		return dst;
 	}
 }

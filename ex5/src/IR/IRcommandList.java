@@ -6,16 +6,31 @@ package IR;
 public class IRcommandList
 {
 	public IRcommand head;
-	public IRcommandList tail;
+	public IRcommand tail;
 
-	IRcommandList(IRcommand head, IRcommandList tail)
+	public IRcommandList()
 	{
-		this.head = head;
-		this.tail = tail;
+		this.head = null;
+		this.tail = null;
 	}
-	public void printMe(){
 
-		if (head!=null)head.printMe();
-		if(tail!=null)tail.printMe();
+	public void addCommand(IRcommand cmd){
+		if (head == null)
+		{
+			this.head = cmd;
+		}
+		else
+		{
+			this.tail.next = cmd;
+		}
+		this.tail = cmd;
+	}
+
+	public void printMe(){
+		IRcommand curr = head;
+		while(curr!=null){
+			curr.printMe();
+			curr = curr.next;
+		}
 	}
 }

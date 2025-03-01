@@ -81,18 +81,7 @@ public class Main
 			}
 			AST.IRme();
 			IR.getInstance().printMe();
-			IR.getInstance().setupCFG();
-			Set<String> varSet = IR.getInstance().dataFlowAnalysis();
-			if(varSet.isEmpty()){
-				file_writer.println("!OK");
-			}
-			else{
-				List<String> sortedList = new ArrayList<>(varSet);
-				Collections.sort(sortedList);
-				for (String str : sortedList) {
-					file_writer.println(str);
-				}
-			}
+
 			
 			/*************************/
 			/* [7] Close output file */

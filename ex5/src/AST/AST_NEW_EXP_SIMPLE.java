@@ -2,6 +2,8 @@ package AST;
 
 import SYMBOL_TABLE.*;
 import TYPES.*;
+import TEMP.*;
+import IR.*;
 
 public class AST_NEW_EXP_SIMPLE extends AST_NEW_EXP
 {
@@ -31,5 +33,11 @@ public class AST_NEW_EXP_SIMPLE extends AST_NEW_EXP
 			throw new SemanticError(String.format("%s new expression needs to be of type class", line));
 		semanticType = t;
 		return t;
+	}
+
+	public TEMP IRme(){
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+		IR.getInstance().Add_IRcommand(new IRcommand_New_Class_Object(semanticType, dst));
+		return dst;
 	}
 }

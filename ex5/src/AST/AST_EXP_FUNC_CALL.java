@@ -1,6 +1,8 @@
 package AST;
 import TYPES.*;
 import SYMBOL_TABLE.*;
+import IR.*;
+import TEMP.*;
 public class AST_EXP_FUNC_CALL extends AST_EXP
 {
 	public AST_EXP_LIST argList;
@@ -77,4 +79,16 @@ public class AST_EXP_FUNC_CALL extends AST_EXP
 		semanticType = finalType;
 		return finalType;
 	}
+	public TEMP IRme(){
+		TEMP t = null;
+		if(!classMethodCall) {
+			t  = TEMP_FACTORY.getInstance().getFreshTEMP();
+			TEMP_LIST tempList = argList.IRmeList();
+			IR.getInstance().Add_IRcommand(new IRcommand_FuncCallExp(funcID, tempList, t));
+		}
+		else{}//later
+		return t;
+	}
+
+
 }
