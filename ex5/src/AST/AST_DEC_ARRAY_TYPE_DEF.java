@@ -2,6 +2,8 @@ package AST;
 
 import SYMBOL_TABLE.*;
 import TYPES.*;
+import TEMP.*;
+import IR.*;
 
 
 
@@ -34,6 +36,11 @@ public class AST_DEC_ARRAY_TYPE_DEF extends AST_DEC
         }
         arrayType = type.semantMe();
         TYPE_TABLE.getInstance().enter(ID, new TYPE_ARRAY(arrayType, ID));
+        return null;
+    }
+
+    public TEMP IRme(){
+        IR.getInstance().Add_IRcommand(new IRcommand_Array_Typedef(ID, type.semanticType));
         return null;
     }
 }

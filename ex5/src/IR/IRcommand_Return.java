@@ -13,7 +13,7 @@ public class IRcommand_Return extends IRcommand
 
 	public void printMe(){
 		super.printMe();
-		System.out.printf("return\n", returnSrc);
+		System.out.printf("return %s\n", returnSrc);
 	}
 	//No return value for ex4
 

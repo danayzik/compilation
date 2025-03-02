@@ -1,2 +1,5 @@
 1) Figure out if var field access needs different IR commands depending on leftside usage or rightside usage
 2) Finish IR building
+
+
+Get fields for a class dec superclass first, get offsets

@@ -84,11 +84,13 @@ public class AST_STMT_FUNC_CALL extends AST_STMT
 
 
 	public TEMP IRme(){
+		TEMP_LIST tempList = argList.IRmeList();
 		if(!classMethodCall) {
-			TEMP_LIST tempList = argList.IRmeList();
 			IR.getInstance().Add_IRcommand(new IRcommand_FuncCall(funcID, tempList));
 		}
-		else{}//later
+		else{
+			IR.getInstance().Add_IRcommand(new IRcommand_MethodCall(funcID, tempList, ownerVar.IRme()));
+		}
 		return null;
 	}
 }

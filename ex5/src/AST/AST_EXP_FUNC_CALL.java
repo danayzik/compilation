@@ -80,13 +80,14 @@ public class AST_EXP_FUNC_CALL extends AST_EXP
 		return finalType;
 	}
 	public TEMP IRme(){
-		TEMP t = null;
+		TEMP t = TEMP_FACTORY.getInstance().getFreshTEMP();
+		TEMP_LIST tempList = argList.IRmeList();
 		if(!classMethodCall) {
-			t  = TEMP_FACTORY.getInstance().getFreshTEMP();
-			TEMP_LIST tempList = argList.IRmeList();
 			IR.getInstance().Add_IRcommand(new IRcommand_FuncCallExp(funcID, tempList, t));
 		}
-		else{}//later
+		else{
+			IR.getInstance().Add_IRcommand(new IRcommand_MethodCallExp(funcID, tempList, t, ownerVar.IRme()));
+		}
 		return t;
 	}
 
