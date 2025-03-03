@@ -1,5 +1,8 @@
 package TYPES;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TYPE_CLASS extends TYPE
 {
 
@@ -7,15 +10,47 @@ public class TYPE_CLASS extends TYPE
 	public TYPE_CLASS_MEMBER tail;
 	public TYPE_CLASS father;
 
+	public int fieldCount = 0;
+	public boolean hasMethod = false;
+
+	public List<TYPE_CLASS_MEMBER> fieldList = new ArrayList<>();
+
 	public TYPE_CLASS(TYPE_CLASS father,String name)
 	{
 		this.name = name;
 		head = null;
 		tail = null;
 		this.father = father;
-
 	}
+	public int getSize(){
+		return fieldCount*4+(hasMethod ? 4 : 0);
+	}
+	public List<TYPE_CLASS_MEMBER> getFieldListCopy() {
+		return new ArrayList<>(this.fieldList);
+	}
+
+	public void setupFieldList(){
+		if(father != null)
+			fieldList = father.getFieldListCopy();
+		TYPE_CLASS_MEMBER curr = head;
+		while(curr != null){
+			fieldList.add(curr);
+			curr = curr.next;
+		}
+		fieldCount = fieldList.size();
+	}
+
+	public int getFieldOffset(String fieldName){
+		for (int i = 0; i < fieldList.size(); i++) {
+			if(fieldList.get(i).name.equals(fieldName))
+				return i*4 + (hasMethod ? 4 : 0);
+		}
+		return -1;
+	}
+
 	public void addDataMember(TYPE_CLASS_MEMBER member){
+		if(member.isMethod())
+			hasMethod = true;
 		if (head == null) {
 			head = member;
 			tail = member;

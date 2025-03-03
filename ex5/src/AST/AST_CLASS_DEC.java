@@ -1,6 +1,8 @@
 package AST;
 import TYPES.*;
 import SYMBOL_TABLE.*;
+import TEMP.*;
+import IR.*;
 
 public class AST_CLASS_DEC extends AST_DEC
 {
@@ -48,7 +50,13 @@ public class AST_CLASS_DEC extends AST_DEC
         if (cfieldList != null)
             cfieldList.semantMeList();
         SYMBOL_TABLE.getInstance().endScope();
+        t.setupFieldList();
         semanticType = t;
         return t;
+    }
+
+    public TEMP IRme(){//Add IR
+        cfieldList.IRme();
+        return null;
     }
 }

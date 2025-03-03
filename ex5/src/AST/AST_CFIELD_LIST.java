@@ -1,5 +1,6 @@
 package AST;
 import TYPES.*;
+import TEMP.*;
 
 public class AST_CFIELD_LIST extends AST_Node
 {
@@ -43,5 +44,11 @@ public class AST_CFIELD_LIST extends AST_Node
 					headType,
 					tail.semantMeList());
 		}
+	}
+
+	public TEMP IRme(){
+		if(head!=null)head.IRme();
+		if(tail!=null)tail.IRme();
+		return null;
 	}
 }

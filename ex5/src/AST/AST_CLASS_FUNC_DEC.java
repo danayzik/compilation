@@ -7,6 +7,7 @@ public class AST_CLASS_FUNC_DEC extends AST_CFIELD
     public String ID;
     public AST_STMT_LIST body;
     public AST_FUNC_ARG_LIST argList;
+    public TYPE_CLASS ownerClass;
 
     public AST_CLASS_FUNC_DEC(int line, AST_TYPE type,String id,AST_STMT_LIST stLst, AST_FUNC_ARG_LIST argList)
     {
@@ -37,6 +38,7 @@ public class AST_CLASS_FUNC_DEC extends AST_CFIELD
         if(SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
             throw new SemanticError(String.format("%s %s already exists in this scope", line, ID));
         TYPE_CLASS owner = TYPE_TABLE.getInstance().getCurrentClassType();
+        ownerClass = owner;
         TYPE_CLASS_METHOD func = new TYPE_CLASS_METHOD(t, ID);
         SYMBOL_TABLE.getInstance().enter(ID, func);
         SYMBOL_TABLE.getInstance().beginScope();

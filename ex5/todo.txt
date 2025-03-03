@@ -3,3 +3,5 @@
 
 
 Get fields for a class dec superclass first, get offsets
+Separate IR for printstring, printint and other functions
+Add nil as initial value for class var dec?

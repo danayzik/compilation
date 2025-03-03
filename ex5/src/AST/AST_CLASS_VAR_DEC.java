@@ -1,4 +1,5 @@
 package AST;
+import TEMP.TEMP;
 import TYPES.*;
 import SYMBOL_TABLE.*;
 import static AST.SemanticUtils.isLegalAssignment;
@@ -9,6 +10,9 @@ public class AST_CLASS_VAR_DEC extends AST_CFIELD
     public AST_EXP assignedExp;
     public AST_TYPE type;
     public String ID;
+    public int intValue;
+    public String stringValue;
+    public TYPE_CLASS ownerClass;
 
     public AST_CLASS_VAR_DEC(int line, AST_TYPE varType, String ID, AST_EXP assignedExp) {
         SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -34,21 +38,36 @@ public class AST_CLASS_VAR_DEC extends AST_CFIELD
         if (assignedExp != null) assignedExp.PrintMe();
         if (assignedExp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,assignedExp.SerialNumber);
     }
+    private void transferInitialValue(TYPE_CLASS_FIELD tField){ //Add nil?
+        if(assigned){
+            if(assignedExp instanceof AST_EXP_INT){
+                int val = ((AST_EXP_INT) assignedExp).value;
+                tField.setInitialInt(val);
+            }
+            if(assignedExp instanceof AST_EXP_STRING){
+                String val = ((AST_EXP_STRING) assignedExp).str;
+                tField.setInitialStringValue(val);
+            }
+        }
+
+    }
 
     public TYPE semantMe()
     {
         TYPE leftType;
         TYPE rightType;
-        TYPE_CLASS_MEMBER field;
+        TYPE_CLASS_FIELD field;
         leftType = type.semantMe();
         if (SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
             throw new SemanticError(String.format("%s %s already exists in this scope", line, ID));
         TYPE_CLASS owner = TYPE_TABLE.getInstance().getCurrentClassType();
+        ownerClass = owner;
         boolean shadowingError = owner.isShadowingError(ID);
         if (shadowingError)
             throw new SemanticError(String.format("%s shadowing error", line));
         SYMBOL_TABLE.getInstance().enter(ID, leftType);
         field = new TYPE_CLASS_FIELD(leftType, ID);
+        transferInitialValue(field);
         owner.addDataMember(field);
         if(assigned) {
             if (!(assignedExp instanceof AST_EXP_INT || assignedExp instanceof AST_EXP_STRING || assignedExp instanceof AST_EXP_NIL))
@@ -60,5 +79,6 @@ public class AST_CLASS_VAR_DEC extends AST_CFIELD
         semanticType = field;
         return semanticType;
     }
+
 
 }
