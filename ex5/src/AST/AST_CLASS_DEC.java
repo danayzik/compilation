@@ -51,11 +51,19 @@ public class AST_CLASS_DEC extends AST_DEC
             cfieldList.semantMeList();
         SYMBOL_TABLE.getInstance().endScope();
         t.setupFieldList();
+        t.setupVTable();
+        t.checkForMethod();
         semanticType = t;
         return t;
     }
 
-    public TEMP IRme(){//Add IR
+    public TEMP IRme(){
+        IR instance = IR.getInstance();
+        instance.activateDataSection();
+        instance.Add_IRcommand(new IRcommand_Label(String.format("%s_vtable", ID)));
+        for(String funcAlias : ((TYPE_CLASS)semanticType).vtable){
+            instance.Add_IRcommand(new IRcommand_vtable_entry(funcAlias));
+        }
         cfieldList.IRme();
         return null;
     }

@@ -42,10 +42,12 @@ public class AST_CLASS_VAR_DEC extends AST_CFIELD
         if(assigned){
             if(assignedExp instanceof AST_EXP_INT){
                 int val = ((AST_EXP_INT) assignedExp).value;
+                intValue = val;
                 tField.setInitialInt(val);
             }
             if(assignedExp instanceof AST_EXP_STRING){
                 String val = ((AST_EXP_STRING) assignedExp).str;
+                stringValue = val;
                 tField.setInitialStringValue(val);
             }
         }

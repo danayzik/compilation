@@ -1,4 +1,6 @@
 package AST;
+import IR.*;
+import TEMP.TEMP;
 import TYPES.*;
 import SYMBOL_TABLE.*;
 public class AST_CLASS_FUNC_DEC extends AST_CFIELD
@@ -53,5 +55,15 @@ public class AST_CLASS_FUNC_DEC extends AST_CFIELD
         SYMBOL_TABLE.getInstance().endScope();
         semanticType = func;
         return func;
+    }
+
+    public TEMP IRme()
+    {
+        IR IRInstance = IR.getInstance();
+        IRInstance.activateFunctionSection();
+        IRInstance.declareNewFunc();
+        IR.getInstance().Add_IRcommand(new IRcommand_Label(String.format("%s_%s", ownerClass.name, ID)));
+        if (body != null) body.IRme();
+        return null;
     }
 }

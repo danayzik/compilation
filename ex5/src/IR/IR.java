@@ -5,9 +5,9 @@ import java.util.*;
 public class IR
 {
 	private int currentlyActive = 0;
-	private IRcommandListList globalVarDecs;
-	private IRcommandListList globalFuncs;
-	private IRcommandListList classDecs;
+	private IRcommandList dataSectionCommands;
+	private IRcommandListList funcSection;
+
 
 
 	private int cmdIndex = 1;
@@ -16,34 +16,30 @@ public class IR
 
 
 
-	private IRcommandListList activeIndexToIRLL(){
-		return switch (currentlyActive) {
-			case 0 -> globalVarDecs;
-			case 1 -> classDecs;
-			case 2 -> globalFuncs;
-			default -> null;
-		};
+	public void declareNewFunc(){
+		funcSection.AddCommandList(new IRcommandList());
 	}
 
-	public void addCommandList(IRcommandList cmdList){
-		IRcommandListList active = activeIndexToIRLL();
-		active.AddCommandList(cmdList);
-	}
 
 	public void Add_IRcommand(IRcommand cmd){
-		IRcommandListList active = activeIndexToIRLL();
-		active.getLastList().addCommand(cmd);
+		switch (currentlyActive){
+			case 0:
+				dataSectionCommands.addCommand(cmd);
+				break;
+			case 1:
+				funcSection.getLastList().addCommand(cmd);
+				break;
+		}
+
 	}
 
-	public void setGlobalVarsActive(){
+	public void activateDataSection(){
 		currentlyActive = 0;
 	}
-	public void setFuncsActive(){
-		currentlyActive = 2;
-	}
-	public void setClassDecActive(){
+	public void activateFunctionSection(){
 		currentlyActive = 1;
 	}
+
 
 
 
@@ -52,9 +48,8 @@ public class IR
 	private static IR instance = null;
 
 	protected IR() {
-		globalVarDecs = new IRcommandListList(null, null);
-		globalFuncs = new IRcommandListList(null, null);
-		classDecs = new IRcommandListList(null, null);
+		dataSectionCommands = new IRcommandList();
+		funcSection = new IRcommandListList(null, null);
 
 	}
 
@@ -67,12 +62,11 @@ public class IR
 		return instance;
 	}
 	public void printMe(){
-		System.out.println("--------Global variables--------");
-		globalVarDecs.printMe();
-		System.out.println("--------Classes--------");
-		classDecs.printMe();
-		System.out.println("--------Global Functions--------");
-		globalFuncs.printMe();
+		System.out.println("--------Data Section--------");
+		dataSectionCommands.printMe();
+
+		System.out.println("--------Functions--------");
+		funcSection.printMe();
 
 
 	}

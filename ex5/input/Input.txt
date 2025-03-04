@@ -1,6 +1,18 @@
 int g0 := 0;
 int g;
 
+class Base{
+    int x;
+    int y := 5;
+    int foo(){return 6;}
+    void moshe(){return;}
+    }
+class Derived extends Base{
+   int z;
+   int foo(){return 7;}
+   void bar(){int pop := 5;}
+
+   }
 int foo(int x, int y){
     int z := x+y;
     return z;
@@ -25,6 +37,6 @@ void main() {
     x := foo(z,w);
 }
 
-int x := g;
+
 
 

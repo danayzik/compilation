@@ -5,18 +5,18 @@ import TEMP.TEMP;
 
 public class IRcommandConstString extends IRcommand
 {
-	TEMP t;
 	String value;
+	String label;
 
-	public IRcommandConstString(TEMP t, String value)
+	public IRcommandConstString(String label, String value)
 	{
-		this.t = t;
+		this.label = label;
 		this.value = value;
 	}
 
 	public void printMe(){
 		super.printMe();
-		System.out.printf("%s = %s\n", t, value);
+		System.out.printf("%s: %s\n", label, value);
 	}
 
 

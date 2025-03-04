@@ -29,7 +29,11 @@ public class AST_EXP_STRING extends AST_EXP
 	@Override
 	public TEMP IRme() {
 		TEMP t = TEMP_FACTORY.getInstance().getFreshTEMP();
-		IR.getInstance().Add_IRcommand(new IRcommandConstString(t, str));
+		String strLabel = IRcommand.getFreshStrLabel();
+		IR.getInstance().activateDataSection();
+		IR.getInstance().Add_IRcommand(new IRcommandConstString(strLabel, str));
+		IR.getInstance().activateFunctionSection();
+		IR.getInstance().Add_IRcommand(new IRcommand_Load_Address(t, strLabel));
 		return t;
 	}
 }

@@ -12,7 +12,8 @@ public class TEMP_FACTORY
 	{
 		return new TEMP(counter++);
 	}
-	
+
+
 
 	private static TEMP_FACTORY instance = null;
 
