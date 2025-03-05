@@ -12,6 +12,7 @@ public class AST_LOCAL_VAR_DEC extends AST_STMT
     public AST_EXP assignedExp;
     public AST_TYPE type;
     public String ID;
+    public int indexInFunc;
 
     public AST_LOCAL_VAR_DEC(int line, AST_TYPE varType, String ID, AST_EXP assignedExp) {
         this.ID = ID;
@@ -46,7 +47,7 @@ public class AST_LOCAL_VAR_DEC extends AST_STMT
         if (SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
             throw new SemanticError(String.format("%s %s already exists in this scope", line, ID));
 
-        SYMBOL_TABLE.getInstance().enter(ID, leftType);
+        indexInFunc = SYMBOL_TABLE.getInstance().enter(ID, leftType);
         if(assigned) {
             rightType = assignedExp.semantMe();
             if(!isLegalAssignment(leftType, rightType))
@@ -61,7 +62,7 @@ public class AST_LOCAL_VAR_DEC extends AST_STMT
 
         if (assigned)
         {
-            IR.getInstance().Add_IRcommand(new IRcommand_Store(ID, assignedExp.IRme()));
+            IR.getInstance().Add_IRcommand(new IRcommand_Store_To_Stack(indexInFunc*4, assignedExp.IRme()));
         }
         return null;
     }

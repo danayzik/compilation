@@ -39,8 +39,5 @@ public class AST_DEC_ARRAY_TYPE_DEF extends AST_DEC
         return null;
     }
 
-    public TEMP IRme(){
-        IR.getInstance().Add_IRcommand(new IRcommand_Array_Typedef(ID, type.semanticType));
-        return null;
-    }
+
 }

@@ -4,13 +4,13 @@ int g;
 class Base{
     int x;
     int y := 5;
-    int foo(){return 6;}
+    int foo(){return y;}
     void moshe(){return;}
     }
 class Derived extends Base{
    int z;
    int foo(){return 7;}
-   void bar(){int pop := 5;}
+   void bar(){int pop := g;}
 
    }
 int foo(int x, int y){
@@ -18,23 +18,11 @@ int foo(int x, int y){
     return z;
 }
 void main() {
-    int x := 2 + 3;
-    int y := 10;
-    int z;
-    int w;
-
-    while (y > 0) {
-        z := x + 1 + y;
-        g := 1;
-        y := y - 1;
-        if(z){
-            int x := g;
-            int w := 5;
-        }
-        y := w;
-    }
-    PrintInt(x);
-    x := foo(z,w);
+    Base b := new Base;
+    int x;
+    b.x := 6;
+    x := b.x;
+    int z := b.y;
 }
 
 

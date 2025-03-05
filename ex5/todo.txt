@@ -1,8 +1,12 @@
-1) Figure out if var field access needs different IR commands depending on leftside usage or rightside usage
-2) Finish IR building
 
 
-Get fields for a class dec superclass first, get offsets
+Make memory access not just through registers(Saves one register)
+
+Readjust stack offsets after knowing what gets put on stack
+
+put func args on stack
+
+
 Separate IR for printstring, printint and other functions
 Add nil as initial value for class var dec?
 Add nil as init value for global var IR?

@@ -1,5 +1,7 @@
 
 package IR;
+import TYPES.TYPE_CLASS;
+
 import java.util.*;
 
 public class IR
@@ -7,6 +9,8 @@ public class IR
 	private int currentlyActive = 0;
 	private IRcommandList dataSectionCommands;
 	private IRcommandListList funcSection;
+
+	public TYPE_CLASS activeClass;
 
 
 

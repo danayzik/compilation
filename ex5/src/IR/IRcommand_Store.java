@@ -5,27 +5,19 @@ import TEMP.*;
 
 public class IRcommand_Store extends IRcommand
 {
-	String var_name;
+	TEMP addr;
 	TEMP src;
 	
-	public IRcommand_Store(String var_name, TEMP src)
+	public IRcommand_Store(TEMP addr, TEMP src)
 	{
 		this.src      = src;
-		this.var_name = var_name;
+		this.addr = addr;
 	}
 
 	public void printMe(){
 		super.printMe();
-		System.out.printf("%s = %s\n", var_name, src);
+		System.out.printf("SW from %s to %s\n", addr, src);
 	}
 
-	public void inToOut(unInitSets setsObj){
-		super.inToOut(setsObj);
-		if(setsObj.uninitTempsIn.contains(src.toString())){
-			setsObj.uninitVariablesOut.add(var_name);
-		}
-		else{
-			setsObj.uninitVariablesOut.remove(var_name);
-		}
-	}
+
 }

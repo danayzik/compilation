@@ -8,7 +8,10 @@ public class SYMBOL_TABLE_SCOPE {
 	SYMBOL_TABLE_ENTRY head;
 	SYMBOL_TABLE_ENTRY tail;
 
+
 	public boolean isClassScope;
+
+	public int varCountInFunc = 0;
 
 
 	public SYMBOL_TABLE_SCOPE(SYMBOL_TABLE_SCOPE parent) {
@@ -27,12 +30,18 @@ public class SYMBOL_TABLE_SCOPE {
 			tail = e;
 		}
 	}
+	public void inheritVarCount(){
+		varCountInFunc = prev.varCountInFunc;
+	}
 
 	public TYPE findInScope(String name){
 		SYMBOL_TABLE_ENTRY curr = head;
 		while(curr != null){
-			if(curr.name.equals(name))
+			if(curr.name.equals(name)) {
+
+				SYMBOL_TABLE.getInstance().lastSearched = curr;
 				return curr.type;
+			}
 			curr = curr.next;
 		}
 		return null;
@@ -43,6 +52,7 @@ public class SYMBOL_TABLE_SCOPE {
 	}
 
 	public TYPE findInAllScopes(String name){
+		SYMBOL_TABLE.getInstance().lastSearched = null;
 		TYPE target;
 		SYMBOL_TABLE_SCOPE currScope = this;
 		while (currScope != null){

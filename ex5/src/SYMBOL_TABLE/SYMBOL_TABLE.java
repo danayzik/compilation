@@ -13,16 +13,32 @@ public class SYMBOL_TABLE
 	private SYMBOL_TABLE_SCOPE tailScope;
 	private static SYMBOL_TABLE instance = null;
 
+	public SYMBOL_TABLE_ENTRY lastSearched = null;
 
 
 
 
-	public void enter(String name,TYPE type)
-	{
-		SYMBOL_TABLE_ENTRY newEntry = new SYMBOL_TABLE_ENTRY(name, type);
+
+	public int enter(String name,TYPE type) {
+		int index = tailScope.varCountInFunc;
+		SYMBOL_TABLE_ENTRY newEntry = new SYMBOL_TABLE_ENTRY(name, type, index);
+		if (tailScope.isClassScope){
+			newEntry.setAsField();
+
+		}
+		else if (tailScope == headScope) {
+			newEntry.setAsGlobal();
+
+		}
+		else{
+			newEntry.setAsLocal();
+
+		}
 		if (tailScope != null) {
+			tailScope.varCountInFunc++;
 			tailScope.addEntry(newEntry);
 		}
+		return index;
 	}
 
 
@@ -45,16 +61,23 @@ public class SYMBOL_TABLE
 			headScope = newScope;
 		}
 	}
+	public void inheritVarCount(){
+		tailScope.inheritVarCount();
+	}
 
 
 	public void endScope()
 	{
 		if (tailScope != null) {
+			tailScope.prev.varCountInFunc = tailScope.varCountInFunc;
 			tailScope = tailScope.prev;
 		}
 
 	}
 
+	public SYMBOL_TABLE_ENTRY getLastSearchedEntry(){
+		return lastSearched;
+	}
 	protected SYMBOL_TABLE() {}
 
 

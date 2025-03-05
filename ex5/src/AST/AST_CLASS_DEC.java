@@ -59,6 +59,7 @@ public class AST_CLASS_DEC extends AST_DEC
 
     public TEMP IRme(){
         IR instance = IR.getInstance();
+        instance.activeClass = (TYPE_CLASS)semanticType;
         instance.activateDataSection();
         instance.Add_IRcommand(new IRcommand_Label(String.format("%s_vtable", ID)));
         for(String funcAlias : ((TYPE_CLASS)semanticType).vtable){

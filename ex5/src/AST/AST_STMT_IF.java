@@ -32,6 +32,7 @@ public class AST_STMT_IF extends AST_STMT
 			throw new SemanticError(String.format("%s condition needs to be of type integer", line));
 
 		SYMBOL_TABLE.getInstance().beginScope();
+		SYMBOL_TABLE.getInstance().inheritVarCount();
 		body.semantMe();
 		SYMBOL_TABLE.getInstance().endScope();
 		return null;

@@ -6,11 +6,30 @@ public class SYMBOL_TABLE_ENTRY {
 	String name;
 	TYPE type;
 	SYMBOL_TABLE_ENTRY next;
+	public int indexInFunc = -1;
+	public boolean isLocal = false;
+	public boolean isField = false;
+	public boolean isGlobal = false;
 
 
-	public SYMBOL_TABLE_ENTRY(String name, TYPE type) {
+	public SYMBOL_TABLE_ENTRY(String name, TYPE type, int index) {
 		this.name = name;
 		this.type = type;
+		this.indexInFunc = index;
 		this.next = null;
+	}
+
+	public void setAsLocal(){
+		this.isLocal = true;
+	}
+	public void setAsGlobal(){
+		this.isGlobal = true;
+	}
+	public void setAsField(){
+		this.isField = true;
+	}
+
+	public String toString(){
+		return String.format("Entry: %s %s", type, name);
 	}
 }

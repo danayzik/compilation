@@ -116,11 +116,19 @@ public class AST_EXP_BINOP extends AST_EXP
 	{
 		TEMP t1 = null;
 		TEMP t2 = null;
-		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+
 		IR IRInstance = IR.getInstance();
 		if (left  != null) t1 = left.IRme();
 		if (right != null) t2 = right.IRme();
-		IRInstance.Add_IRcommand(new IRcommand_Binop(dst, t1, t2, OP));
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+		if(semanticType == TYPE_STRING.getInstance()){
+			IRInstance.Add_IRcommand(new IRcommand_Binop_STR_CONCAT(dst, t1, t2));
+		} else if (left.semanticType == TYPE_STRING.getInstance() && OP == 6) {
+			IRInstance.Add_IRcommand(new IRcommand_Binop_EQ_CHECK(dst, t1, t2));
+		}
+		else {
+			IRInstance.Add_IRcommand(new IRcommand_Binop(dst, t1, t2, OP));
+		}
 		return dst;
 	}
 }
