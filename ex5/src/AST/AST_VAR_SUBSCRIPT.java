@@ -41,17 +41,37 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 	}
 
 	public TEMP IRme(){
-		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
-		TEMP src = var.IRme();
+		IR instance = IR.getInstance();
+		Address arrayAddr = var.getStoreAddr();
 		TEMP index = subscript.IRme();
-		IR.getInstance().Add_IRcommand(new IRcommand_Array_Access(dst, src, index));
+		TEMP arrayAddrTemp = TEMP_FACTORY.getInstance().getFreshTEMP();
+		instance.Add_IRcommand(new IRcommand_Load(arrayAddrTemp, arrayAddr));
+		TEMP arraySize = TEMP_FACTORY.getInstance().getFreshTEMP();
+		instance.Add_IRcommand(new IRcommand_Array_Access(arraySize,
+				arrayAddrTemp, index));
+		TEMP indexOffset = TEMP_FACTORY.getInstance().getFreshTEMP();
+		instance.Add_IRcommand(new IRcommand_SLL(indexOffset, index));
+		TEMP finalAddr = TEMP_FACTORY.getInstance().getFreshTEMP();
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+		Address addr = new Address(arrayAddr.varName, 4, finalAddr);
+		instance.Add_IRcommand(new IRcommand_Load(dst, addr));
 		return dst;
 	}
-	@Override
-	public Triplet<String, String, Integer> getNameAddrOffset(){ //This needs to return temp in some cases. It doesn't make sense to divide into so many cases. Make an address class that has temp and methods to get what's needed
-		Triplet<String, String, Integer> varTrip = var.getNameAddrOffset();
-		TEMP index = subscript.IRme();
-		return null;
 
+	@Override
+	public Address getStoreAddr(){
+		IR instance = IR.getInstance();
+		Address arrayAddr = var.getStoreAddr();
+		TEMP index = subscript.IRme();
+		TEMP arrayAddressTemp = TEMP_FACTORY.getInstance().getFreshTEMP();
+		instance.Add_IRcommand(new IRcommand_Load(arrayAddressTemp, arrayAddr));
+		TEMP arraySize = TEMP_FACTORY.getInstance().getFreshTEMP();
+		instance.Add_IRcommand(new IRcommand_Array_Access(arraySize,
+				arrayAddressTemp, index));
+		TEMP indexOffset = TEMP_FACTORY.getInstance().getFreshTEMP();
+		instance.Add_IRcommand(new IRcommand_SLL(indexOffset, index));
+		TEMP finalAddr = TEMP_FACTORY.getInstance().getFreshTEMP();
+		instance.Add_IRcommand(new IRcommand_Binop(finalAddr, indexOffset, arrayAddressTemp,0));
+        return new Address(arrayAddr.varName, 4, finalAddr);
 	}
 }

@@ -7,19 +7,21 @@ import TEMP.TEMP;
 public class IRcommand_Array_Access extends IRcommand
 {
 	TEMP index;
-	TEMP src;
-	TEMP dst;
+	TEMP firstElemAddr;
+	TEMP sizeTemp;
 
-	public IRcommand_Array_Access(TEMP dst, TEMP src, TEMP index)
+	public IRcommand_Array_Access(TEMP sizeTemp, TEMP firstElemAddr, TEMP index)
 	{
 		this.index = index;
-		this.src = src;
-		this.dst = dst;
+		this.firstElemAddr = firstElemAddr;
 	}
 
+	/* This needs to check if firstElemAddr is 0(null),
+	and then load size then check access
+	*/
 	public void printMe(){
 		super.printMe();
-		System.out.printf("%s = Array access in %s index: %s\n", dst, src, index);
+		System.out.printf("Array access, first element at: %s index: %s\n", firstElemAddr, index);
 	}
 
 

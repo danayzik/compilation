@@ -49,27 +49,32 @@ public class AST_VAR_SIMPLE extends AST_VAR
 		IR instance = IR.getInstance();
 		TEMP t = TEMP_FACTORY.getInstance().getFreshTEMP();
 		int offset;
+		Address varAddr = null;
 		if(isField){
 			offset = instance.activeClass.getFieldOffset(name);
-			instance.Add_IRcommand(new IRcommand_Load_Implicit_Field(t, offset, name));
+			varAddr = new Address(name, offset, true);
 		}
 		else if (isLocal){
 			offset = localIndexInFunc*4;
-			instance.Add_IRcommand(new IRcommand_Load_Local(t, offset, name));
+			varAddr = new Address(name, offset, false);
 		} else if (isGlobal) {
-			instance.Add_IRcommand(new IRcommand_Load_Global(t, name));
+			varAddr = new Address(name, name);
 		}
+		if(varAddr == null){
+			throw new RuntimeException("You're stupid");
+		}
+		instance.Add_IRcommand(new IRcommand_Load(t, varAddr));
 		return t;
 	}
 
 	@Override
-	public Triplet<String, String, Integer> getNameAddrOffset(){
+	public Address getStoreAddr(){
 		if(isLocal)
-			return new Triplet<>(name, "$sp", localIndexInFunc*4);
+			return new Address(name, localIndexInFunc*4 ,false);
 		if(isGlobal)
-			return new Triplet<>(name, name, 0);
+			return new Address(name, name);
 		if(isField)
-			return new Triplet<>(name, "$a0", IR.getInstance().activeClass.getFieldOffset(name));
+			return new Address(name, IR.getInstance().activeClass.getFieldOffset(name), true);
 		throw new RuntimeException("You fucked up stupid");
 	}
 }

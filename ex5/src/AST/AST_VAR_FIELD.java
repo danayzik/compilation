@@ -1,6 +1,5 @@
 package AST;
 import TYPES.*;
-import SYMBOL_TABLE.*;
 import TEMP.*;
 import IR.*;
 
@@ -47,8 +46,27 @@ public class AST_VAR_FIELD extends AST_VAR
 	}
 
 	public TEMP IRme(){
-		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
-		IR.getInstance().Add_IRcommand(new IRcommand_Field_Access(dst, var.IRme(), fieldName));
-		return dst;
+		Address varAddr = var.getStoreAddr();
+		TEMP varPtr = TEMP_FACTORY.getInstance().getFreshTEMP();
+		IR instance = IR.getInstance();
+		instance.Add_IRcommand(new IRcommand_Load(varPtr, varAddr));
+		instance.Add_IRcommand(new IRcommand_Null_Obj_Check(varPtr));
+		TYPE_CLASS varClass = (TYPE_CLASS) var.semanticType;
+		int offset = varClass.getFieldOffset(fieldName);
+		Address fieldAddr = new Address(fieldName, offset, varPtr);
+		TEMP fieldVal = TEMP_FACTORY.getInstance().getFreshTEMP();
+		instance.Add_IRcommand(new IRcommand_Load(fieldVal, fieldAddr));
+		return fieldVal;
+	}
+	public Address getStoreAddr(){
+		Address varAddr = var.getStoreAddr();
+		TEMP varPtr = TEMP_FACTORY.getInstance().getFreshTEMP();
+		IR instance = IR.getInstance();
+		instance.Add_IRcommand(new IRcommand_Load(varPtr, varAddr));
+		instance.Add_IRcommand(new IRcommand_Null_Obj_Check(varPtr));
+		TYPE_CLASS varClass = (TYPE_CLASS) var.semanticType;
+		int offset = varClass.getFieldOffset(fieldName);
+        return new Address(fieldName, offset, varPtr);
+
 	}
 }

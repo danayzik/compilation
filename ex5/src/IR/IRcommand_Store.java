@@ -2,13 +2,14 @@
 package IR;
 
 import TEMP.*;
+import AST.Address;
 
 public class IRcommand_Store extends IRcommand
 {
-	TEMP addr;
+	Address addr;
 	TEMP src;
 	
-	public IRcommand_Store(TEMP addr, TEMP src)
+	public IRcommand_Store(Address addr, TEMP src)
 	{
 		this.src      = src;
 		this.addr = addr;

@@ -19,8 +19,8 @@ public class AST_STMT_FUNC_CALL extends AST_STMT
 		this.classMethodCall = (ownerVar != null);
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 		this.line = String.valueOf(line);
-
 	}
+
 	public AST_STMT_FUNC_CALL(int line, String funcID, AST_EXP_LIST argList)
 	{
 		this(line, null, funcID, argList);
