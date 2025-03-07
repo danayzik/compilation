@@ -6,7 +6,8 @@ Readjust stack offsets after knowing what gets put on stack
 
 put func args on stack
 
+Implicit method calls.
+Add get methodoffset
 
-Separate IR for printstring, printint and other functions
 Add nil as initial value for class var dec?
 Add nil as init value for global var IR?

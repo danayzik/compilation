@@ -51,14 +51,25 @@ public class AST_VAR_SIMPLE extends AST_VAR
 		int offset;
 		if(isField){
 			offset = instance.activeClass.getFieldOffset(name);
-			instance.Add_IRcommand(new IRcommand_Load_FieldAddr_From_SelfObj(t, name, offset));
+			instance.Add_IRcommand(new IRcommand_Load_Implicit_Field(t, offset, name));
 		}
 		else if (isLocal){
 			offset = localIndexInFunc*4;
-			instance.Add_IRcommand(new IRcommand_Load_Stack_Offset(t, offset));
+			instance.Add_IRcommand(new IRcommand_Load_Local(t, offset, name));
 		} else if (isGlobal) {
-			instance.Add_IRcommand(new IRcommand_Load_Address(t, name));
+			instance.Add_IRcommand(new IRcommand_Load_Global(t, name));
 		}
 		return t;
+	}
+
+	@Override
+	public Triplet<String, String, Integer> getNameAddrOffset(){
+		if(isLocal)
+			return new Triplet<>(name, "$sp", localIndexInFunc*4);
+		if(isGlobal)
+			return new Triplet<>(name, name, 0);
+		if(isField)
+			return new Triplet<>(name, "$a0", IR.getInstance().activeClass.getFieldOffset(name));
+		throw new RuntimeException("You fucked up stupid");
 	}
 }

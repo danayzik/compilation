@@ -47,4 +47,11 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		IR.getInstance().Add_IRcommand(new IRcommand_Array_Access(dst, src, index));
 		return dst;
 	}
+	@Override
+	public Triplet<String, String, Integer> getNameAddrOffset(){ //This needs to return temp in some cases. It doesn't make sense to divide into so many cases. Make an address class that has temp and methods to get what's needed
+		Triplet<String, String, Integer> varTrip = var.getNameAddrOffset();
+		TEMP index = subscript.IRme();
+		return null;
+
+	}
 }
