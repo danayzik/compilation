@@ -47,7 +47,6 @@ public class TYPE_CLASS extends TYPE
 				if (index >= 0) {
 					vtable.set(index, String.format("%s_%s", name, curr.name));
 				} else {
-
 					vtable.add(String.format("%s_%s", name, curr.name));
 					methodNamesList.add(curr.name);
 				}
@@ -80,6 +79,13 @@ public class TYPE_CLASS extends TYPE
 		for (int i = 0; i < fieldList.size(); i++) {
 			if(fieldList.get(i).name.equals(fieldName))
 				return i*4 + (hasMethod ? 4 : 0);
+		}
+		return -1;
+	}
+	public int getMethodOffset(String methodID){
+		for (int i = 0; i < methodNamesList.size(); i++) {
+			if(methodNamesList.get(i).equals(methodID))
+				return i*4;
 		}
 		return -1;
 	}

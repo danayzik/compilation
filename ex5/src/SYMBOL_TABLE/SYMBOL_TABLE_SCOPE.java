@@ -52,18 +52,25 @@ public class SYMBOL_TABLE_SCOPE {
 	}
 
 	public TYPE findInAllScopes(String name){
-		SYMBOL_TABLE.getInstance().lastSearched = null;
+		SYMBOL_TABLE instance = SYMBOL_TABLE.getInstance();
+		instance.lastSearched = null;
+		instance.lastSearchedIsMethod = false;
 		TYPE target;
 		SYMBOL_TABLE_SCOPE currScope = this;
 		while (currScope != null){
 			target = currScope.findInScope(name);
-			if (target != null)
+			if (target != null) {
+				if(currScope.isClassScope)
+					instance.lastSearchedIsMethod = true;
 				return target;
+			}
 			if (currScope.isClassScope) {
+				instance.lastSearchedIsMethod = true;
 				target = findInClass(name);
 			}
-			if (target != null)
+			if (target != null) {
 				return target;
+			}
 			currScope = currScope.prev;
 		}
 		return null;

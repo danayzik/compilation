@@ -1,11 +1,9 @@
 
 
 Make some commands use saved registers instead of temp(This is for dataflow part)
-Readjust stack offsets after knowing what gets put on stack
+Read just stack offsets after knowing what gets put on stack
 put func args on stack
 
-Implicit method calls.
-Add get methodoffset
 
 Add nil as initial value for class var dec?
 Add nil as init value for global var IR?

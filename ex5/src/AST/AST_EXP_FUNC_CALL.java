@@ -9,6 +9,7 @@ public class AST_EXP_FUNC_CALL extends AST_EXP
 	public boolean classMethodCall;
 	public AST_VAR ownerVar;
 	public String funcID;
+	public boolean isImplicitMethodCall;
 
 	public AST_EXP_FUNC_CALL(int line, AST_VAR ownerVar, String funcID, AST_EXP_LIST argList)
 	{
@@ -60,6 +61,7 @@ public class AST_EXP_FUNC_CALL extends AST_EXP
 			else {
 				throw new SemanticError(String.format("%s %s is not callable", line, funcID));
 			}
+			isImplicitMethodCall = SYMBOL_TABLE.getInstance().lastSearchedIsMethod;
 		}
 		else {
 			owner = ownerVar.semantMe();
@@ -80,16 +82,32 @@ public class AST_EXP_FUNC_CALL extends AST_EXP
 		return finalType;
 	}
 	public TEMP IRme(){
-		TEMP t = TEMP_FACTORY.getInstance().getFreshTEMP();
+		IR instance = IR.getInstance();
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
 		TEMP_LIST tempList = argList.IRmeList();
+		IRcommand callCommand;
 		if(!classMethodCall) {
-			IR.getInstance().Add_IRcommand(new IRcommand_FuncCallExp(funcID, tempList, t));
+			if (isImplicitMethodCall) {
+				TEMP vtableAddrTemp = TEMP_FACTORY.getInstance().getFreshTEMP();
+				Address vtableAddr = new Address(funcID, 0, true);
+				instance.Add_IRcommand(new IRcommand_Load(vtableAddrTemp, vtableAddr));
+				callCommand = new IRcommand_FunctionCall(funcID, tempList, vtableAddrTemp, instance.activeClass.getMethodOffset(funcID), dst);
+			}
+			else {
+				callCommand = new IRcommand_FunctionCall(funcID, tempList, dst);
+			}
 		}
 		else{
-			IR.getInstance().Add_IRcommand(new IRcommand_MethodCallExp(funcID, tempList, t, ownerVar.IRme()));
+			TYPE_CLASS ownerClass = (TYPE_CLASS) ownerVar.semanticType;
+			int offset = ownerClass.getMethodOffset(funcID);
+			TEMP ownerObj = ownerVar.IRme();
+			TEMP vtableAddrTemp = TEMP_FACTORY.getInstance().getFreshTEMP();
+			Address vtableAddr = new Address(funcID, 0, ownerObj);
+			instance.Add_IRcommand(new IRcommand_Load(vtableAddrTemp, vtableAddr));
+			callCommand = new IRcommand_FunctionCall(funcID, tempList, dst, ownerObj, vtableAddrTemp, offset);
 		}
-		return t;
+		instance.Add_IRcommand(callCommand);
+		return dst;
 	}
-
 
 }

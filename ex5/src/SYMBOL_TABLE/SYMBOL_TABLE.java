@@ -14,6 +14,7 @@ public class SYMBOL_TABLE
 	private static SYMBOL_TABLE instance = null;
 
 	public SYMBOL_TABLE_ENTRY lastSearched = null;
+	public boolean lastSearchedIsMethod = false;
 
 
 
