@@ -10,6 +10,8 @@ public class SYMBOL_TABLE_ENTRY {
 	public boolean isLocal = false;
 	public boolean isField = false;
 	public boolean isGlobal = false;
+	public boolean isLocalArg = false;
+	public int indexInArg = -1;
 
 
 	public SYMBOL_TABLE_ENTRY(String name, TYPE type, int index) {
@@ -28,6 +30,9 @@ public class SYMBOL_TABLE_ENTRY {
 	public void setAsField(){
 		this.isField = true;
 	}
+	public void setAsArg(int indexInArg){
+		this.indexInArg = indexInArg;
+		this.isLocalArg = true;}
 
 	public String toString(){
 		return String.format("Entry: %s %s", type, name);

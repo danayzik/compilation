@@ -41,7 +41,7 @@ public class AST_GLOBAL_FUNC_DEC extends AST_DEC {
         SYMBOL_TABLE.getInstance().enter(ID, func);
         SYMBOL_TABLE.getInstance().beginScope();
         if (argList != null)
-            func.setParams(argList.semantMeList());
+            func.setParams(argList.semantMeList(0));
         body.semantMe();
         body.matchReturnType(t);
         SYMBOL_TABLE.getInstance().endScope();

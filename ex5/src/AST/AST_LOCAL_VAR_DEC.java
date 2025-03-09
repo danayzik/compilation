@@ -62,7 +62,7 @@ public class AST_LOCAL_VAR_DEC extends AST_STMT
 
         if (assigned)
         {
-            IR.getInstance().Add_IRcommand(new IRcommand_Store_To_Stack(indexInFunc*4, assignedExp.IRme()));
+            IR.getInstance().Add_IRcommand(new IRcommand_Store_To_Stack(assignedExp.IRme()));
         }
         return null;
     }

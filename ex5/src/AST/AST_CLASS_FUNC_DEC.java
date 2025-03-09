@@ -45,7 +45,7 @@ public class AST_CLASS_FUNC_DEC extends AST_CFIELD
         SYMBOL_TABLE.getInstance().enter(ID, func);
         SYMBOL_TABLE.getInstance().beginScope();
         if (argList != null)
-            func.setParams(argList.semantMeList());
+            func.setParams(argList.semantMeList(0));
         body.semantMe();
         body.matchReturnType(t);
         boolean overrideError = owner.isOverrideError(t, ID, func.args);

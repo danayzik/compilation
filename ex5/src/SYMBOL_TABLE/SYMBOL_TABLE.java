@@ -42,7 +42,9 @@ public class SYMBOL_TABLE
 		return index;
 	}
 
-
+	public void setLastEntryAsArg(int index){
+		tailScope.tail.setAsArg(index);
+	}
 
 	public TYPE findInInnerScope(String name)
 	{

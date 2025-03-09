@@ -11,6 +11,8 @@ public class AST_VAR_SIMPLE extends AST_VAR
 	public boolean isGlobal = false;
 	public boolean isField = false;
 	public int localIndexInFunc = 0;
+	public boolean isArg = false;
+	public int indexInArgs = 0;
 
 	public AST_VAR_SIMPLE(int line, String name)
 	{
@@ -38,6 +40,7 @@ public class AST_VAR_SIMPLE extends AST_VAR
 			isLocal = entry.isLocal;
 			isGlobal = entry.isGlobal;
 			localIndexInFunc = entry.indexInFunc;
+			isArg = entry.isLocalArg;
 		}
 		isField = (!isGlobal) && (!isLocal);
 
@@ -55,7 +58,10 @@ public class AST_VAR_SIMPLE extends AST_VAR
 			varAddr = new Address(name, offset, true);
 		}
 		else if (isLocal){
-			offset = localIndexInFunc*4;
+			if(isArg)
+				offset = indexInArgs*4+8;
+			else
+				offset = -localIndexInFunc*4-4;
 			varAddr = new Address(name, offset, false);
 		} else if (isGlobal) {
 			varAddr = new Address(name, name);

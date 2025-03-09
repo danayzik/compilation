@@ -27,7 +27,9 @@ public class AST_FUNC_ARG_LIST extends AST_Node
 		if (head != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,head.SerialNumber);
 		if (tail != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,tail.SerialNumber);
 	}
-	public TYPE_LIST semantMeList(){
+	public TYPE_LIST semantMeList(int indexInArgs){
+		head.indexInArgs = indexInArgs;
+		indexInArgs++;
 		if (tail == null)
 		{
 			return new TYPE_LIST(
@@ -38,7 +40,7 @@ public class AST_FUNC_ARG_LIST extends AST_Node
 		{
 			return new TYPE_LIST(
 					head.semantMe(),
-					tail.semantMeList());
+					tail.semantMeList(indexInArgs));
 		}
 	}
 	

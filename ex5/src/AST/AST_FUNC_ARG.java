@@ -6,6 +6,7 @@ public class AST_FUNC_ARG extends AST_Node
 {
     AST_TYPE type;
     String ID;
+    int indexInArgs = 0;
 
     public AST_FUNC_ARG(int line, AST_TYPE type, String ID)
     {
@@ -29,6 +30,7 @@ public class AST_FUNC_ARG extends AST_Node
         if(SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
             throw new SemanticError(String.format("%s Type %s not defined", line, type.type));
         SYMBOL_TABLE.getInstance().enter(ID, t);
+        SYMBOL_TABLE.getInstance().setLastEntryAsArg(indexInArgs);
         semanticType = t;
         return t;
     }
