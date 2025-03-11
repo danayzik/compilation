@@ -3,37 +3,55 @@ import TEMP.*;
 
 public class Address {
     public String varName;
-    public int offset;
+    public int offset =0;
     public String label = null;
     public TEMP tempRegister = null;
 
-    public boolean isOnStack = false;
+    public boolean isLabel = false;
+    public boolean isCustomReg = false;
+    public boolean framePointerAddr = false;
+
+    public boolean stackPointerAddr = false;
     public boolean isFieldOfSelf= false;
 
-    //Global var
-    public Address(String varName, String label) {
+
+    public Address(String varName) {
         this.varName = varName;
+    }
+    public void setAsLabelAddr(String label){
+        this.isLabel = true;
         this.label = label;
     }
 
-    //Local var and Implicit Field
-    public Address(String varName, int offset, boolean isField){
-        this.varName = varName;
-        this.isOnStack = !isField;
-        this.isFieldOfSelf = isField;
+    public void setAsFPAddr(int offset){
         this.offset = offset;
+        this.framePointerAddr = true;
+    }
+    public void setAsSPAddr(int offset){
+        this.offset = offset;
+        this.stackPointerAddr = true;
+    }
+    public void setAsImplicitField(int offset){
+        this.offset = offset;
+        this.isFieldOfSelf = true;
+    }
+    public void setCustomReg(int offset, TEMP reg){
+        this.isCustomReg = true;
+        this.tempRegister = reg;
     }
 
-    public Address(String varName, int offset, TEMP t){
-        this.varName = varName;
-        this.offset = offset;
-        this.tempRegister = t;
-    }
+
 
 
     @Override
     public String toString(){
-        return String.format("Variable: %s, Implicit Field: %b, Local: %b", varName, isFieldOfSelf, isOnStack);
+        String reg = "";
+        if(isLabel)reg = label;
+        if(isCustomReg)reg = tempRegister.toString();
+        if(framePointerAddr)reg = "$FP";
+        if(stackPointerAddr)reg = "$SP";
+        if(isFieldOfSelf)reg = "a0";
+        return String.format("%d(%s)", offset, reg);
     }
 
 

@@ -40,7 +40,7 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		return semanticType;
 	}
 
-	public TEMP IRme(){
+	public TEMP IRme(){//Think
 		IR instance = IR.getInstance();
 		Address arrayAddr = var.getStoreAddr();
 		TEMP index = subscript.IRme();
@@ -53,7 +53,9 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		instance.Add_IRcommand(new IRcommand_SLL(indexOffset, index));
 		TEMP finalAddr = TEMP_FACTORY.getInstance().getFreshTEMP();
 		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
-		Address addr = new Address(arrayAddr.varName, 4, finalAddr);
+		Address addr = new Address(arrayAddr.varName);
+		addr.setCustomReg(4, finalAddr);
+
 		instance.Add_IRcommand(new IRcommand_Load(dst, addr));
 		return dst;
 	}
@@ -72,6 +74,8 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		instance.Add_IRcommand(new IRcommand_SLL(indexOffset, index));
 		TEMP finalAddr = TEMP_FACTORY.getInstance().getFreshTEMP();
 		instance.Add_IRcommand(new IRcommand_Binop(finalAddr, indexOffset, arrayAddressTemp,0));
-        return new Address(arrayAddr.varName, 4, finalAddr);
+		Address addr = new Address(arrayAddr.varName);
+		addr.setCustomReg(4, finalAddr);
+        return addr;
 	}
 }

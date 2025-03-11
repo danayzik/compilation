@@ -1,6 +1,7 @@
 package AST;
 import TYPES.*;
 import TEMP.*;
+import IR.*;
 public class AST_EXP_LIST extends AST_Node
 {
 
@@ -39,16 +40,23 @@ public class AST_EXP_LIST extends AST_Node
 					tail.semantMeList());
 		}
 	}
+	public int getArgCount(){
+		if (tail!= null)return 1+tail.getArgCount();
+		return 1;
+	}
 
 
 	public TEMP_LIST IRmeList(){
+		TEMP t = head.IRme();
+		IR instance = IR.getInstance();
+		Address storeAddr = new Address("");
+		storeAddr.setAsSPAddr(0);
+		instance.Add_IRcommand(new IRcommand_Offset_Stack(4));
+		if(tail == null)
+			return new TEMP_LIST(t, null);
 
-		if(tail == null){
-			return new TEMP_LIST(head.IRme(), null);
-		}
-		else {
-			return new TEMP_LIST(head.IRme(), tail.IRmeList());
-		}
+		else
+			return new TEMP_LIST(t, tail.IRmeList());
 	}
 	
 }

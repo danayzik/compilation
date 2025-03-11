@@ -10,6 +10,7 @@ public class AST_EXP_FUNC_CALL extends AST_EXP
 	public AST_VAR ownerVar;
 	public String funcID;
 	public boolean isImplicitMethodCall;
+	public int argCount = 0;
 
 	public AST_EXP_FUNC_CALL(int line, AST_VAR ownerVar, String funcID, AST_EXP_LIST argList)
 	{
@@ -81,15 +82,24 @@ public class AST_EXP_FUNC_CALL extends AST_EXP
 		semanticType = finalType;
 		return finalType;
 	}
+	public TEMP_LIST setupArgsOnStack(){
+		IR instance = IR.getInstance();
+		if (argList!=null)argCount = argList.getArgCount();
+		instance.Add_IRcommand(new IRcommand_Offset_Stack(-argCount*4));
+		TEMP_LIST tempList = argList.IRmeList();
+		instance.Add_IRcommand(new IRcommand_Offset_Stack(argCount*4));
+		return tempList;
+	}
 	public TEMP IRme(){
 		IR instance = IR.getInstance();
+		TEMP_LIST tempList = setupArgsOnStack();
 		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
-		TEMP_LIST tempList = argList.IRmeList();
 		IRcommand callCommand;
 		if(!classMethodCall) {
 			if (isImplicitMethodCall) {
 				TEMP vtableAddrTemp = TEMP_FACTORY.getInstance().getFreshTEMP();
-				Address vtableAddr = new Address(funcID, 0, true);
+				Address vtableAddr = new Address(funcID);
+				vtableAddr.setAsImplicitField(0);
 				instance.Add_IRcommand(new IRcommand_Load(vtableAddrTemp, vtableAddr));
 				callCommand = new IRcommand_FunctionCall(funcID, tempList, vtableAddrTemp, instance.activeClass.getMethodOffset(funcID), dst);
 			}
@@ -102,7 +112,8 @@ public class AST_EXP_FUNC_CALL extends AST_EXP
 			int offset = ownerClass.getMethodOffset(funcID);
 			TEMP ownerObj = ownerVar.IRme();
 			TEMP vtableAddrTemp = TEMP_FACTORY.getInstance().getFreshTEMP();
-			Address vtableAddr = new Address(funcID, 0, ownerObj);
+			Address vtableAddr = new Address(funcID);
+			vtableAddr.setCustomReg(0, ownerObj);
 			instance.Add_IRcommand(new IRcommand_Load(vtableAddrTemp, vtableAddr));
 			callCommand = new IRcommand_FunctionCall(funcID, tempList, dst, ownerObj, vtableAddrTemp, offset);
 		}

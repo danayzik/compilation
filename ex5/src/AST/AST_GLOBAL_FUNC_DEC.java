@@ -9,6 +9,8 @@ public class AST_GLOBAL_FUNC_DEC extends AST_DEC {
     public AST_STMT_LIST body;
     public AST_FUNC_ARG_LIST argList;
 
+
+
     public AST_GLOBAL_FUNC_DEC(int line, AST_TYPE type,String id,AST_STMT_LIST stLst, AST_FUNC_ARG_LIST argList)
     {
         SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -52,6 +54,7 @@ public class AST_GLOBAL_FUNC_DEC extends AST_DEC {
 
     public TEMP IRme()
     {
+
         IR IRInstance = IR.getInstance();
         IRInstance.activateFunctionSection();
         IRInstance.declareNewFunc();

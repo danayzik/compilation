@@ -18,8 +18,6 @@ public class SYMBOL_TABLE
 
 
 
-
-
 	public int enter(String name,TYPE type) {
 		int index = tailScope.varCountInFunc;
 		SYMBOL_TABLE_ENTRY newEntry = new SYMBOL_TABLE_ENTRY(name, type, index);

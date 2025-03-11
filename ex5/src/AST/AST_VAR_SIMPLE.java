@@ -14,6 +14,7 @@ public class AST_VAR_SIMPLE extends AST_VAR
 	public boolean isArg = false;
 	public int indexInArgs = 0;
 
+
 	public AST_VAR_SIMPLE(int line, String name)
 	{
 		SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -47,40 +48,50 @@ public class AST_VAR_SIMPLE extends AST_VAR
 		semanticType = t;
 		return t;
 	}
+
 	public TEMP IRme()
 	{
 		IR instance = IR.getInstance();
 		TEMP t = TEMP_FACTORY.getInstance().getFreshTEMP();
 		int offset;
-		Address varAddr = null;
+		Address varAddr = new Address(name);
 		if(isField){
 			offset = instance.activeClass.getFieldOffset(name);
-			varAddr = new Address(name, offset, true);
+			varAddr.setAsImplicitField(offset);
 		}
 		else if (isLocal){
 			if(isArg)
 				offset = indexInArgs*4+8;
 			else
 				offset = -localIndexInFunc*4-4;
-			varAddr = new Address(name, offset, false);
+			varAddr.setAsFPAddr(offset);
 		} else if (isGlobal) {
-			varAddr = new Address(name, name);
+			varAddr.setAsLabelAddr(name);
 		}
-		if(varAddr == null){
-			throw new RuntimeException("You're stupid");
-		}
+
 		instance.Add_IRcommand(new IRcommand_Load(t, varAddr));
 		return t;
 	}
 
 	@Override
 	public Address getStoreAddr(){
-		if(isLocal)
-			return new Address(name, localIndexInFunc*4 ,false);
+		Address addr = new Address(name);
+		if(isLocal) {
+			int offset;
+			if(isArg){
+				offset = indexInArgs*4+8;
+			}
+			else{
+				offset = -localIndexInFunc*4-4;
+			}
+			addr.setAsFPAddr(offset);
+
+		}
 		if(isGlobal)
-			return new Address(name, name);
+			addr.setAsLabelAddr(name);
 		if(isField)
-			return new Address(name, IR.getInstance().activeClass.getFieldOffset(name), true);
-		throw new RuntimeException("You fucked up stupid");
+			addr.setAsImplicitField(IR.getInstance().activeClass.getFieldOffset(name));
+		return addr;
+
 	}
 }

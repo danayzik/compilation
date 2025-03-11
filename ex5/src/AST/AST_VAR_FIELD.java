@@ -53,7 +53,8 @@ public class AST_VAR_FIELD extends AST_VAR
 		instance.Add_IRcommand(new IRcommand_Null_Obj_Check(varPtr));
 		TYPE_CLASS varClass = (TYPE_CLASS) var.semanticType;
 		int offset = varClass.getFieldOffset(fieldName);
-		Address fieldAddr = new Address(fieldName, offset, varPtr);
+		Address fieldAddr = new Address(fieldName);
+		fieldAddr.setCustomReg(offset, varPtr);
 		TEMP fieldVal = TEMP_FACTORY.getInstance().getFreshTEMP();
 		instance.Add_IRcommand(new IRcommand_Load(fieldVal, fieldAddr));
 		return fieldVal;
@@ -66,7 +67,9 @@ public class AST_VAR_FIELD extends AST_VAR
 		instance.Add_IRcommand(new IRcommand_Null_Obj_Check(varPtr));
 		TYPE_CLASS varClass = (TYPE_CLASS) var.semanticType;
 		int offset = varClass.getFieldOffset(fieldName);
-        return new Address(fieldName, offset, varPtr);
+		Address addr = new Address(fieldName);
+		addr.setCustomReg(offset, varPtr);
+        return addr;
 
 	}
 }
