@@ -1,7 +1,6 @@
 
 package IR;
-
-import TEMP.TEMP;
+import MIPS.*;
 
 public class IRcommandConstString extends IRcommand
 {
@@ -17,6 +16,10 @@ public class IRcommandConstString extends IRcommand
 	public void printMe(){
 		super.printMe();
 		System.out.printf("%s: %s\n", label, value);
+	}
+	public void mipsMe(){
+		MIPSGenerator.getInstance().addConstStringToData(label, value);
+		super.mipsMe();
 	}
 
 

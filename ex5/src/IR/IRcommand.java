@@ -1,6 +1,6 @@
 
 package IR;
-
+import MIPS.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -38,6 +38,8 @@ public abstract class IRcommand
 	public void addUninitVariableUse(Set<String> varSet, unInitSets flowSets){}
 
 	public boolean workedOn = false;
-
+	public void mipsMe(){
+		if(next!=null)next.mipsMe();
+	}
 
 }

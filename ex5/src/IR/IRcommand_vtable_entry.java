@@ -2,6 +2,7 @@
 package IR;
 
 
+import MIPS.MIPSGenerator;
 
 public class IRcommand_vtable_entry extends IRcommand //Add nil?
 {
@@ -23,5 +24,9 @@ public class IRcommand_vtable_entry extends IRcommand //Add nil?
 		System.out.printf(".word %s\n", label);
 	}
 
-
+	@Override
+	public void mipsMe() {
+		MIPSGenerator.getInstance().addvtableEntry(label);
+		super.mipsMe();
+	}
 }

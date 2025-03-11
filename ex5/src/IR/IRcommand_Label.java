@@ -1,6 +1,7 @@
 
 package IR;
 
+import MIPS.MIPSGenerator;
 import TEMP.*;
 
 public class IRcommand_Label extends IRcommand
@@ -17,4 +18,9 @@ public class IRcommand_Label extends IRcommand
 		System.out.printf("%s:\n", label_name);
 	}
 	public boolean isLabel(){return true;}
+
+	public void mipsMe(){
+		MIPSGenerator.getInstance().writeLabel(label_name);
+		super.mipsMe();
+	}
 }

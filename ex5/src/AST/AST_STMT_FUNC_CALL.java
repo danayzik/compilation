@@ -106,8 +106,12 @@ public class AST_STMT_FUNC_CALL extends AST_STMT
 				vtableAddr.setAsImplicitField(0);
 				instance.Add_IRcommand(new IRcommand_Load(vtableAddrTemp, vtableAddr));
 				callCommand = new IRcommand_FunctionCall(funcID, tempList, vtableAddrTemp, instance.activeClass.getMethodOffset(funcID));
-			}
-			else {
+			} else if (funcID.equals("PrintInt")) {
+				callCommand = new IRcommand_PrintIntCall(tempList);
+
+			} else if (funcID.equals("PrintString")) {
+				callCommand = new IRcommand_PrintStringCall(tempList);
+			} else {
 				callCommand = new IRcommand_FunctionCall(funcID, tempList);
 			}
 		}

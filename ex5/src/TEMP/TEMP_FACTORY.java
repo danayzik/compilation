@@ -13,7 +13,9 @@ public class TEMP_FACTORY
 		return new TEMP(counter++);
 	}
 
-
+	public String tempToRegister(int serial){
+		return String.format("$t%d", serial);
+	}
 
 	private static TEMP_FACTORY instance = null;
 

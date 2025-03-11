@@ -1,6 +1,7 @@
 
 package IR;
 
+import MIPS.MIPSGenerator;
 import TEMP.*;
 import AST.Address;
 
@@ -17,8 +18,17 @@ public class IRcommand_Store extends IRcommand
 
 	public void printMe(){
 		super.printMe();
+
 		System.out.printf("SW from %s to %s\n", addr, src);
 	}
 
+	@Override
+	public void mipsMe() {
+		String srcReg = TEMP_FACTORY.getInstance().tempToRegister(src.getSerialNumber());
+		String address = addr.toString();
+		MIPSGenerator gen = MIPSGenerator.getInstance();
+		gen.storeToAddress(srcReg, address);
+		super.mipsMe();
 
+	}
 }

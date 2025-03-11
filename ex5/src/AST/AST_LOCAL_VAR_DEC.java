@@ -58,7 +58,7 @@ public class AST_LOCAL_VAR_DEC extends AST_STMT
 
     public TEMP IRme()
     {
-        IR.getInstance().Add_IRcommand(new IRcommand_Allocate(ID));
+        IR.getInstance().Add_IRcommand(new IRcommand_Offset_Stack(-4));
 
         if (assigned)
         {

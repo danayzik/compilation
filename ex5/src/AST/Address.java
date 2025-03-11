@@ -45,11 +45,11 @@ public class Address {
 
     @Override
     public String toString(){
-        String reg = "";
-        if(isLabel)reg = label;
-        if(isCustomReg)reg = tempRegister.toString();
-        if(framePointerAddr)reg = "$FP";
-        if(stackPointerAddr)reg = "$SP";
+        String reg = "error";
+        if(isLabel) return label;
+        if(isCustomReg)reg = TEMP_FACTORY.getInstance().tempToRegister(tempRegister.getSerialNumber());
+        if(framePointerAddr)reg = "$fp";
+        if(stackPointerAddr)reg = "$sp";
         if(isFieldOfSelf)reg = "a0";
         return String.format("%d(%s)", offset, reg);
     }

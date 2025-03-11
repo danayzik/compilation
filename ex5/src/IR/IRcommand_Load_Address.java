@@ -1,7 +1,8 @@
 
 package IR;
 
-import TEMP.TEMP;
+import MIPS.MIPSGenerator;
+import TEMP.*;
 
 import java.util.Set;
 
@@ -21,5 +22,10 @@ public class IRcommand_Load_Address extends IRcommand
 		System.out.printf("%s = %s\n", dst, label);
 	}
 
-
+	@Override
+	public void mipsMe() {
+		String reg = TEMP_FACTORY.getInstance().tempToRegister(dst.getSerialNumber());
+		MIPSGenerator.getInstance().loadAddress(reg, label);
+		super.mipsMe();
+	}
 }

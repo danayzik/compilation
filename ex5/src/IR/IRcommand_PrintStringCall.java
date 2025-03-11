@@ -1,23 +1,24 @@
 
 package IR;
 
-import TEMP.TEMP;
+import MIPS.MIPSGenerator;
+import TEMP.*;
 import TEMP.TEMP_LIST;
 
 public class IRcommand_PrintStringCall extends IRcommand
 {
 	TEMP_LIST tempList;
-	String funcName;
 
-	public IRcommand_PrintStringCall(String id, TEMP_LIST t)
+
+	public IRcommand_PrintStringCall(TEMP_LIST t)
 	{
-		this.funcName = id;
+
 		this.tempList = t;
 	}
 
 	public void printMe(){
 		super.printMe();
-		System.out.printf("call %s ", funcName);
+		System.out.print("call PrintString ");
 		TEMP curr;
 		TEMP_LIST currTail = tempList;
 		while (currTail != null){
@@ -26,5 +27,12 @@ public class IRcommand_PrintStringCall extends IRcommand
 			currTail = currTail.tail;
 		}
 		System.out.println();
+	}
+	@Override
+	public void mipsMe() {//Add PrintString to mips
+		TEMP arg = tempList.head;
+		String argReg = TEMP_FACTORY.getInstance().tempToRegister(arg.getSerialNumber());
+
+		super.mipsMe();
 	}
 }

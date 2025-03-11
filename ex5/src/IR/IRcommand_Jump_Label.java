@@ -1,6 +1,7 @@
 
 package IR;
 
+import MIPS.MIPSGenerator;
 import TEMP.*;
 
 public class IRcommand_Jump_Label extends IRcommand
@@ -18,4 +19,10 @@ public class IRcommand_Jump_Label extends IRcommand
 	}
 
 	public boolean isJump(){return true;}
+
+	@Override
+	public void mipsMe() {
+		MIPSGenerator.getInstance().jump(label_name);
+		super.mipsMe();
+	}
 }

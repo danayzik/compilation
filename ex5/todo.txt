@@ -2,8 +2,15 @@
 
 Make some commands use saved registers instead of temp(This is for dataflow part)
 
-Put func args on stack when calling, in order and 1by1
+Do soon:
+Translate to mips with infinite registers
+register allocate
+debug
+???
+profit
 
+Finish mips
+finish PrintString mips
 
 
 
