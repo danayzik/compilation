@@ -65,6 +65,16 @@ public class IRcommand_Binop extends IRcommand
 				gen.add(dstReg, reg1, reg2);
 			case 1:
 				gen.sub(dstReg, reg1, reg2);
+			case 2:
+				gen.mul(dstReg, reg1, reg2);
+			case 3:
+				gen.div(dstReg, reg1, reg2);
+			case 4:
+				gen.slt(dstReg, reg1, reg2);
+			case 5:
+				gen.slt(dstReg, reg2, reg1);
+			case 6:
+				gen.seq(dstReg, reg2, reg1);
 
 		}
 		super.mipsMe();

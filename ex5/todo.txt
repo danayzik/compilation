@@ -1,4 +1,5 @@
 
+Check if array comparison is on reference or by values
 
 Make some commands use saved registers instead of temp(This is for dataflow part)
 Add register backup before IRing function call arguments

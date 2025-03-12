@@ -124,7 +124,7 @@ public class AST_EXP_BINOP extends AST_EXP
 		if(semanticType == TYPE_STRING.getInstance()){
 			IRInstance.Add_IRcommand(new IRcommand_Binop_STR_CONCAT(dst, t1, t2));
 		} else if (left.semanticType == TYPE_STRING.getInstance() && OP == 6) {
-			IRInstance.Add_IRcommand(new IRcommand_Binop_EQ_CHECK(dst, t1, t2));
+			IRInstance.Add_IRcommand(new IRcommand_Binop_STR_EQ_CHECK(dst, t1, t2));
 		}
 		else {
 			IRInstance.Add_IRcommand(new IRcommand_Binop(dst, t1, t2, OP));

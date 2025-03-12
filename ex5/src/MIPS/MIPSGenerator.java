@@ -104,9 +104,23 @@ public class MIPSGenerator
 	{
 		fileWriter.format("\tmul %s, %s, %s\n",dst, oprnd1, oprnd2);
 	}
+	public void slt(String dst,String oprnd1,String oprnd2)
+	{
+		fileWriter.format("\tslt %s, %s, %s\n",dst, oprnd1, oprnd2);
+	}
+	public void div(String dst, String oprnd1, String oprnd2) // Add divide by zero check
+	{
+		fileWriter.format("\tDIV %s, %s\n", oprnd1, oprnd2);
+		fileWriter.format("\tmflo %s\n", dst);
+	}
 	public void sub(String dst,String oprnd1,String oprnd2)//Add overflow checks
 	{
 		fileWriter.format("\tsub %s, %s, %s\n",dst, oprnd1, oprnd2);
+	}
+	public void seq(String dst,String oprnd1,String oprnd2)
+	{
+		fileWriter.format("\txor %s, %s, %s\n",dst, oprnd1, oprnd2);
+		fileWriter.format("\tsltiu %s, %s, 1\n",dst, dst);
 	}
 
 	public void jump(String inlabel)
