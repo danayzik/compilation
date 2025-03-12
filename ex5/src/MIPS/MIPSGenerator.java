@@ -35,6 +35,11 @@ public class MIPSGenerator
 		fileWriter.format("\tli $v0,11\n");
 		fileWriter.format("\tsyscall\n");
 	}
+	public void printString(String argReg){
+		fileWriter.format("\tmove $a0, %s\n",argReg);
+		fileWriter.format("\tli $v0,4\n");
+		fileWriter.format("\tsyscall\n");
+	}
 	//public TEMP addressLocalVar(int serialLocalVarNum)
 	//{
 	//	TEMP t  = TEMP_FACTORY.getInstance().getFreshTEMP();
@@ -72,29 +77,19 @@ public class MIPSGenerator
 	public void add(String dst, String reg1, String reg2){//Add overflow check
 		fileWriter.format("\tadd %s, %s, %s\n", dst, reg1, reg2);
 	}
-	public void addImmediate(String dst, String reg1, String immediate){//Add overflow check
-		fileWriter.format("\taddi %s, %s, %s\n", dst, reg1, immediate);
+	public void addImmediate(String dst, String reg1, int immediate){//Add overflow check
+		fileWriter.format("\taddi %s, %s, %d\n", dst, reg1, immediate);
+	}
+	public void shiftLeft(String dst, String reg, int amount){
+		fileWriter.format("\tsll %s, %s, %d\n", dst, reg, amount);
 	}
 	public void allocate(String var_name)
 	{
 		fileWriter.format(".data\n");
 		fileWriter.format("\tglobal_%s: .word 721\n",var_name);
 	}
-	public void load(TEMP dst,String var_name)
-	{
-		int idxdst=dst.getSerialNumber();
-		fileWriter.format("\tlw Temp_%d,global_%s\n",idxdst,var_name);
-	}
-	public void store(String var_name,TEMP src)
-	{
-		int idxsrc=src.getSerialNumber();
-		fileWriter.format("\tsw Temp_%d,global_%s\n",idxsrc,var_name);		
-	}
-	public void li(TEMP t,int value)
-	{
-		int idx=t.getSerialNumber();
-		fileWriter.format("\tli Temp_%d,%d\n",idx,value);
-	}
+
+
 	public void add(TEMP dst,TEMP oprnd1,TEMP oprnd2)
 	{
 		int i1 =oprnd1.getSerialNumber();
@@ -137,12 +132,10 @@ public class MIPSGenerator
 		
 		fileWriter.format("\tbne Temp_%d,Temp_%d,%s\n",i1,i2,label);				
 	}
-	public void beq(TEMP oprnd1,TEMP oprnd2,String label)
+	public void beq(String reg1, String reg2,String label)
 	{
-		int i1 =oprnd1.getSerialNumber();
-		int i2 =oprnd2.getSerialNumber();
-		
-		fileWriter.format("\tbeq Temp_%d,Temp_%d,%s\n",i1,i2,label);				
+
+		fileWriter.format("\tbeq %s, %s, %s\n", reg1, reg2,label);
 	}
 	public void beqz(TEMP oprnd1,String label)
 	{
@@ -150,6 +143,20 @@ public class MIPSGenerator
 				
 		fileWriter.format("\tbeq Temp_%d,$zero,%s\n",i1,label);				
 	}
+	public void newClassObject(String dstReg, int sizeToAlloc, boolean hasMethod, String vtableLabel){
+		fileWriter.format("\tli $a0, %d\n", sizeToAlloc);
+		fileWriter.format("\tli $v0,9\n");
+		fileWriter.format("\tsyscall\n");
+		fileWriter.format("\tmove %s, $v0\n", dstReg);
+		if(hasMethod){
+			fileWriter.format("\tla $s0, %s\n", vtableLabel);
+			fileWriter.format("\tsw $s0, 0(%s)\n", dstReg);
+		}
+	}
+	public void loadImmediate(String dstReg, String immediate){
+		fileWriter.format("\tli %s, %s\n", dstReg, immediate);
+	}
+
 	
 
 	private static MIPSGenerator instance = null;

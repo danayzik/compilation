@@ -1,7 +1,8 @@
 
 package IR;
+import MIPS.MIPSGenerator;
+import TEMP.TEMP_FACTORY;
 
-import AST.Address;
 import TEMP.TEMP;
 
 public class IRcommand_SLL extends IRcommand
@@ -20,5 +21,13 @@ public class IRcommand_SLL extends IRcommand
 		System.out.printf("SLL %s %s 2\n", dst, indexReg);
 	}
 
-
+	@Override
+	public void mipsMe() {
+		MIPSGenerator gen = MIPSGenerator.getInstance();
+		TEMP_FACTORY fact = TEMP_FACTORY.getInstance();
+		String dstStr = fact.tempToRegister(dst.getSerialNumber());
+		String index = fact.tempToRegister(indexReg.getSerialNumber());
+		gen.shiftLeft(dstStr, index, 2);
+		super.mipsMe();
+	}
 }

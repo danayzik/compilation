@@ -1,9 +1,12 @@
 
 package IR;
+import MIPS.MIPSGenerator;
 
-import TEMP.TEMP;
+import TEMP.*;
 import TYPES.TYPE;
 import TYPES.TYPE_CLASS;
+import TYPES.TYPE_CLASS_FIELD;
+import TYPES.TYPE_CLASS_MEMBER;
 
 public class IRcommand_New_Class_Object extends IRcommand
 {
@@ -24,5 +27,30 @@ public class IRcommand_New_Class_Object extends IRcommand
 		System.out.printf("%s = New object of class %s allocate %d bytes\n", dst, type.name, size);
 	}
 
-
+	@Override
+	public void mipsMe() {
+		MIPSGenerator gen = MIPSGenerator.getInstance();
+		String dstReg = TEMP_FACTORY.getInstance().tempToRegister(dst.getSerialNumber());
+		String vtableLabel = null;
+		boolean hasMethod = type.hasMethod;
+		if(hasMethod){
+			vtableLabel = String.format("vtable_%s", type.name);
+		}
+		gen.newClassObject(dstReg, size, hasMethod, vtableLabel);
+		TYPE_CLASS_FIELD currField;
+		for(TYPE_CLASS_MEMBER currMember : type.fieldList){
+			currField = (TYPE_CLASS_FIELD) currMember;
+			String val = currField.getInitialValue();
+			if(currField.isString){
+				gen.loadAddress("$s0", val);
+			}
+			else{
+				gen.loadImmediate(dstReg, val);
+			}
+			int offset = type.getFieldOffset(currField.name);
+			String address = String.format("%d(%s)", offset, dstReg);
+			gen.storeToAddress("$s0", address);
+		}
+		super.mipsMe();
+	}
 }

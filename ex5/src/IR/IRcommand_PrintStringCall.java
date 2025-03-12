@@ -29,10 +29,10 @@ public class IRcommand_PrintStringCall extends IRcommand
 		System.out.println();
 	}
 	@Override
-	public void mipsMe() {//Add PrintString to mips
+	public void mipsMe() {
 		TEMP arg = tempList.head;
 		String argReg = TEMP_FACTORY.getInstance().tempToRegister(arg.getSerialNumber());
-
+		MIPSGenerator.getInstance().printString(argReg);
 		super.mipsMe();
 	}
 }

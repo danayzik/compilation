@@ -6,6 +6,7 @@ import IR.*;
 public class AST_EXP_STRING extends AST_EXP
 {
 	public String str;
+	public String strLabel;
 	public AST_EXP_STRING(int line, String str)
 	{
 		SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -30,6 +31,7 @@ public class AST_EXP_STRING extends AST_EXP
 	public TEMP IRme() {
 		TEMP t = TEMP_FACTORY.getInstance().getFreshTEMP();
 		String strLabel = IRcommand.getFreshStrLabel();
+		this.strLabel = strLabel;
 		IR.getInstance().activateDataSection();
 		IR.getInstance().Add_IRcommand(new IRcommandConstString(strLabel, str));
 		IR.getInstance().activateFunctionSection();

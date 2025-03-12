@@ -1,6 +1,7 @@
 
 package IR;
 
+import MIPS.MIPSGenerator;
 import TEMP.*;
 
 public class IRcommand_Jump_If_Eq_To_Zero extends IRcommand
@@ -19,5 +20,11 @@ public class IRcommand_Jump_If_Eq_To_Zero extends IRcommand
 		System.out.printf("beq %s %s\n", t, label_name);
 	}
 
-
+	@Override
+	public void mipsMe() {
+		String reg1 = TEMP_FACTORY.getInstance().tempToRegister(t.getSerialNumber());
+		String reg2 = "$zero";
+		MIPSGenerator.getInstance().beq(reg1, reg2, label_name);
+		super.mipsMe();
+	}
 }

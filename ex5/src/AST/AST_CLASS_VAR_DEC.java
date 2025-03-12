@@ -46,7 +46,7 @@ public class AST_CLASS_VAR_DEC extends AST_CFIELD
                 tField.setInitialInt(val);
             }
             if(assignedExp instanceof AST_EXP_STRING){
-                String val = ((AST_EXP_STRING) assignedExp).str;
+                String val = ((AST_EXP_STRING) assignedExp).strLabel;
                 stringValue = val;
                 tField.setInitialStringValue(val);
             }
