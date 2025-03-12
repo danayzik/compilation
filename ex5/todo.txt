@@ -1,7 +1,7 @@
 
 
 Make some commands use saved registers instead of temp(This is for dataflow part)
-
+Add register backup before IRing function call arguments
 Do soon:
 Translate to mips with infinite registers
 register allocate
@@ -11,6 +11,10 @@ profit
 check if i ever assigned "nil"
 assigning nil or not assigning is the same, no?
 Finish mips
+Add abort checks:
+-init array to size 0 check?
+-null dereference
+-others
 Backup saved registers by function.
 Backup temp registers by call
 Check global strings and correct la or lw

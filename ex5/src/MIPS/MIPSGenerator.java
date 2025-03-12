@@ -77,6 +77,15 @@ public class MIPSGenerator
 	public void add(String dst, String reg1, String reg2){//Add overflow check
 		fileWriter.format("\tadd %s, %s, %s\n", dst, reg1, reg2);
 	}
+	public void saveReturn(String dstReg){
+		fileWriter.format("\tmove %s, $v0\n", dstReg);
+	}
+	public void jalr(String reg){
+		fileWriter.format("\tjalr %s\n", reg);
+	}
+	public void jal(String label){
+		fileWriter.format("\tjal %s\n", label);
+	}
 	public void addImmediate(String dst, String reg1, int immediate){//Add overflow check
 		fileWriter.format("\taddi %s, %s, %d\n", dst, reg1, immediate);
 	}
@@ -153,6 +162,13 @@ public class MIPSGenerator
 			fileWriter.format("\tsw $s0, 0(%s)\n", dstReg);
 		}
 	}
+	public void newArray(String dstReg, String bytesReg){//Add expression is 0 check? if so then check if it's 4
+		fileWriter.format("\tmove $a0, %s\n", bytesReg);
+		fileWriter.format("\tli $v0, 9\n");
+		fileWriter.format("\tsyscall\n");
+		fileWriter.format("\tmove %s, $v0\n", dstReg);
+	}
+
 	public void loadImmediate(String dstReg, String immediate){
 		fileWriter.format("\tli %s, %s\n", dstReg, immediate);
 	}

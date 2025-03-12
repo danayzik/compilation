@@ -1,28 +1,37 @@
 
 package IR;
 
-import TEMP.TEMP;
+import MIPS.MIPSGenerator;
+import TEMP.*;
 import TYPES.*;
-
-import java.util.Set;
 
 public class IRcommand_New_Array extends IRcommand
 {
-	TEMP size;
+	TEMP arraySize;
 	TYPE type;
 	TEMP dst;
 
 	public IRcommand_New_Array(TEMP size, TYPE type, TEMP dst)
 	{
-		this.size = size;
+		this.arraySize = size;
 		this.type = type;
 		this.dst = dst;
 	}
 
 	public void printMe(){
 		super.printMe();
-		System.out.printf("%s = New array of type: %s, size: %s\n", dst, type.name, size);
+		System.out.printf("%s = New array of type: %s, size: %s\n", dst, type.name, arraySize);
 	}
 
-
+	@Override
+	public void mipsMe() {
+		MIPSGenerator gen = MIPSGenerator.getInstance();
+		TEMP_FACTORY fact = TEMP_FACTORY.getInstance();
+		String dstReg = fact.tempToRegister(dst.getSerialNumber());
+		String arraySizeReg = fact.tempToRegister(arraySize.getSerialNumber());
+		gen.shiftLeft(arraySizeReg, arraySizeReg, 2);
+		gen.addImmediate(arraySizeReg, arraySizeReg, 4);
+		gen.newArray(dstReg, arraySizeReg);
+		super.mipsMe();
+	}
 }

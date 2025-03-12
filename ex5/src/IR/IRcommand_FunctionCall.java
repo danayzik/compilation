@@ -1,6 +1,7 @@
 
 package IR;
-
+import TEMP.TEMP_FACTORY;
+import MIPS.MIPSGenerator;
 import TEMP.TEMP;
 import TEMP.TEMP_LIST;
 
@@ -10,6 +11,7 @@ public class IRcommand_FunctionCall extends IRcommand
 	String funcName;
 	TEMP ownerObj;
 	boolean isGlobal;
+
 	public TEMP dst;
 	public TEMP vtableAddr;
 	public int offset;
@@ -81,5 +83,27 @@ public class IRcommand_FunctionCall extends IRcommand
 			currTail = currTail.tail;
 		}
 		System.out.println();
+	}
+
+	@Override
+	public void mipsMe() {
+		TEMP_FACTORY fact = TEMP_FACTORY.getInstance();
+		MIPSGenerator gen = MIPSGenerator.getInstance();
+		if(isGlobal){
+			gen.jal(funcName);
+		}
+		else{
+			String vtableReg = fact.tempToRegister(vtableAddr.getSerialNumber());
+			String addr = String.format("%d(%s)", offset, vtableReg);
+			gen.loadAddress("$s0", addr);
+			gen.jalr("$s0");
+		}
+		if(saveReturnValue){
+			String dstReg = fact.tempToRegister(dst.getSerialNumber());
+			//Restore register backup here?
+			gen.saveReturn(dstReg);
+		}
+
+		super.mipsMe();
 	}
 }
