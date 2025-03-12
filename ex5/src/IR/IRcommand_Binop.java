@@ -1,6 +1,7 @@
 
 package IR;
-
+import TEMP.TEMP_FACTORY;
+import MIPS.MIPSGenerator;
 import TEMP.TEMP;
 
 public class IRcommand_Binop extends IRcommand
@@ -51,6 +52,22 @@ public class IRcommand_Binop extends IRcommand
 		else{
 			setsObj.uninitTempsOut.remove(dst.toString());
 		}
+	}
+	public void mipsMe(){
+		TEMP_FACTORY fact = TEMP_FACTORY.getInstance();
+		MIPSGenerator gen = MIPSGenerator.getInstance();
+		String dstReg = fact.tempToRegister(dst.getSerialNumber());
+		String reg1 = fact.tempToRegister(t1.getSerialNumber());
+		String reg2 = fact.tempToRegister(t2.getSerialNumber());
+
+		switch (op){
+			case 0:
+				gen.add(dstReg, reg1, reg2);
+			case 1:
+				gen.sub(dstReg, reg1, reg2);
+
+		}
+		super.mipsMe();
 	}
 
 }

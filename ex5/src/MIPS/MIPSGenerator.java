@@ -99,21 +99,14 @@ public class MIPSGenerator
 	}
 
 
-	public void add(TEMP dst,TEMP oprnd1,TEMP oprnd2)
-	{
-		int i1 =oprnd1.getSerialNumber();
-		int i2 =oprnd2.getSerialNumber();
-		int dstidx=dst.getSerialNumber();
 
-		fileWriter.format("\tadd Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
+	public void mul(String dst,String oprnd1,String oprnd2)
+	{
+		fileWriter.format("\tmul %s, %s, %s\n",dst, oprnd1, oprnd2);
 	}
-	public void mul(TEMP dst,TEMP oprnd1,TEMP oprnd2)
+	public void sub(String dst,String oprnd1,String oprnd2)//Add overflow checks
 	{
-		int i1 =oprnd1.getSerialNumber();
-		int i2 =oprnd2.getSerialNumber();
-		int dstidx=dst.getSerialNumber();
-
-		fileWriter.format("\tmul Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
+		fileWriter.format("\tsub %s, %s, %s\n",dst, oprnd1, oprnd2);
 	}
 
 	public void jump(String inlabel)
