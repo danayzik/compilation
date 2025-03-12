@@ -8,7 +8,8 @@ register allocate
 debug
 ???
 profit
-
+check if i ever assigned "nil"
+assigning nil or not assigning is the same, no?
 Finish mips
 Backup saved registers by function.
 Backup temp registers by call
