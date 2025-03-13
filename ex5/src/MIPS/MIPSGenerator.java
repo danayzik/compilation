@@ -134,6 +134,37 @@ public class MIPSGenerator
 		
 		fileWriter.format("\tblt Temp_%d,Temp_%d,%s\n",i1,i2,label);				
 	}
+	public void backupTemps(){
+		for (int i = 0; i < 10; i++) {
+			fileWriter.format("\taddi $sp, $sp, -4\n");
+			fileWriter.format("\tsw $t%d, 0($sp)\n", i);
+		}
+	}
+	public void restoreTemps(){
+		for (int i = 9; i >= 0; i--) {
+			fileWriter.format("\tlw $t%d, 0($sp)\n", i);
+			fileWriter.format("\taddi $sp, $sp, 4\n");
+
+		}
+	}
+	public void functionPrologue(){
+		fileWriter.format("\tsubi $sp, $sp, 4\n");
+		fileWriter.format("\tsw $ra, 0($sp)\n");
+		fileWriter.format("\tsubi $sp, $sp, 4\n");
+		fileWriter.format("\tsw $fp, $sp\n");
+		fileWriter.format("\tmove $fp, $sp\n");
+	}
+	public void functionEpilogue(){
+		fileWriter.format("\tmove $sp, $fp\n");
+		fileWriter.format("\tlw $fp, 0($sp)\n");
+		fileWriter.format("\tlw $ra, 4($sp)\n");
+		fileWriter.format("\taddi $sp, $sp, 8\n");
+		fileWriter.format("\tjr $ra\n");
+	}
+	public void returnValue(String returnReg){
+		fileWriter.format("\tmove $v0, %s\n", returnReg);
+	}
+
 	public void bge(TEMP oprnd1,TEMP oprnd2,String label)
 	{
 		int i1 =oprnd1.getSerialNumber();

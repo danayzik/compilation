@@ -1,6 +1,7 @@
 
 package IR;
 import TEMP.*;
+import MIPS.MIPSGenerator;
 
 public class IRcommand_Return extends IRcommand
 {
@@ -15,9 +16,15 @@ public class IRcommand_Return extends IRcommand
 		super.printMe();
 		System.out.printf("return %s\n", returnSrc);
 	}
-	//No return value for ex4
+
 
 	public boolean isReturn(){return true;}
 
+	public void mipsMe(){
+		MIPSGenerator gen = MIPSGenerator.getInstance();
+		gen.returnValue(TEMP_FACTORY.getInstance().tempToRegister(returnSrc.getSerialNumber()));
+		gen.functionEpilogue();
+		super.mipsMe();
+	}
 
 }

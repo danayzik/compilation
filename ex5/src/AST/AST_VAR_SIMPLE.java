@@ -79,7 +79,7 @@ public class AST_VAR_SIMPLE extends AST_VAR
 		if(isLocal) {
 			int offset;
 			if(isArg){
-				offset = indexInArgs*4+8;
+				offset = indexInArgs*4+48;
 			}
 			else{
 				offset = -localIndexInFunc*4-4;

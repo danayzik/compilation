@@ -59,7 +59,9 @@ public class AST_GLOBAL_FUNC_DEC extends AST_DEC {
         IRInstance.activateFunctionSection();
         IRInstance.declareNewFunc();
         IR.getInstance().Add_IRcommand(new IRcommand_Label(ID));
+        IR.getInstance().Add_IRcommand(new IRcommand_Func_Prologue());
         if (body != null) body.IRme();
+        IR.getInstance().Add_IRcommand(new IRcommand_Func_Epilogue());
         return null;
     }
 
