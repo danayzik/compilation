@@ -2,6 +2,8 @@
 package IR;
 
 import TEMP.TEMP;
+import MIPS.MIPSGenerator;
+import TEMP.TEMP_FACTORY;
 
 public class IRcommand_Binop_STR_EQ_CHECK extends IRcommand
 {
@@ -25,5 +27,14 @@ public class IRcommand_Binop_STR_EQ_CHECK extends IRcommand
 		System.out.printf("Strings EQ check %s = %s == %s\n", dst, t1,  t2);
 	}
 
-
+	@Override
+	public void mipsMe() {
+		MIPSGenerator gen = MIPSGenerator.getInstance();
+		TEMP_FACTORY fact = TEMP_FACTORY.getInstance();
+		String dstReg = fact.tempToRegister(dst.getSerialNumber());
+		String reg1 = fact.tempToRegister(t1.getSerialNumber());
+		String reg2 = fact.tempToRegister(t2.getSerialNumber());
+		gen.stringEqualityCheck(dstReg, reg1, reg2);
+		super.mipsMe();
+	}
 }

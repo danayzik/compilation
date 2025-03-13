@@ -147,6 +147,88 @@ public class MIPSGenerator
 
 		}
 	}
+	public void stringEqualityCheckFunc(){
+		fileWriter.format("li $v0, 1\n");
+		fileWriter.format("str_cmp_func:\n");
+		fileWriter.format("str_eq_loop:\n");
+		fileWriter.format("\tlb $s2, 0($a1)\n");
+		fileWriter.format("\tlb $s3, 0($a2)\n");
+		fileWriter.format("\tbne $s2, 0($s3) neq_label\n");
+		fileWriter.format("\tbeq $s2, $zero str_eq_end\n");
+		fileWriter.format("\taddi $a1, $a1 1\n");
+		fileWriter.format("\taddi $a2, $a2 1\n");
+		fileWriter.format("\tj str_eq_loop\n");
+		fileWriter.format("neq_label:\n");
+		fileWriter.format("\tli $v0, 0\n");
+		fileWriter.format("str_eq_end:\n");
+		fileWriter.format("jr $ra\n");
+	}
+	public void stringEqualityCheck(String dst, String reg1, String reg2){
+		fileWriter.format("\tmove $a1 %s\n", reg1);
+		fileWriter.format("\tmove $a2 %s\n", reg2);
+		fileWriter.format("\tjal str_cmp_func\n");
+		fileWriter.format("\tmove %s $v0\n", dst);
+	}
+	public void stringConcat(String dst, String reg1, String reg2){
+		fileWriter.format("\tmove $a1 %s\n", reg1);
+		fileWriter.format("\tmove $a2 %s\n", reg2);
+		fileWriter.format("\tjal concat_strings\n");
+		fileWriter.format("\tmove %s $v0\n", dst);
+	}
+	public void stringConcatFunc(){
+		//size = s1
+		//ptr1 = s0
+		//currChar = s2
+		fileWriter.format("concat_strings:\n");
+		fileWriter.format("\tmove $s0, $a1\n");
+		fileWriter.format("\tli $s1, 0\n");
+		fileWriter.format("count_loop1:\n");
+		fileWriter.format("\tlb $s2, 0($s0)\n");
+		fileWriter.format("\tbeqz $s2, done_count1\n");
+		fileWriter.format("\taddi $s1, $s1, 1\n");
+		fileWriter.format("\taddi $s0, $s0, 1\n");
+		fileWriter.format("\tj count_loop1\n");
+		fileWriter.format("done_count1:\n");
+
+		// Count length of second string
+		fileWriter.format("\tmove $s0, $a2\n");
+		fileWriter.format("count_loop2:\n");
+		fileWriter.format("\tlb $s2, 0($s0)\n");
+		fileWriter.format("\tbeqz $s2, done_count2\n");
+		fileWriter.format("\taddi $s1, $s1, 1\n");
+		fileWriter.format("\taddi $s0, $s0, 1\n");
+		fileWriter.format("\tj count_loop2\n");
+		fileWriter.format("done_count2:\n");
+
+		// Allocate memory
+		fileWriter.format("\taddi $a0, $s1, 1\n");
+		fileWriter.format("\tli $v0, 9\n");
+		fileWriter.format("\tsyscall\n");
+		fileWriter.format("\tmove $s2, $v0\n");
+		// newPtr = s2
+		// Copy first string
+
+		fileWriter.format("copy_loop1:\n");
+		fileWriter.format("\tlb $s0, 0($a1)\n");
+		fileWriter.format("\tbeqz $s0, done_copy1\n");
+		fileWriter.format("\tsb $s0, 0($s2)\n");
+		fileWriter.format("\taddi $a1, $a1, 1\n");
+		fileWriter.format("\taddi $s2, $s2, 1\n");
+		fileWriter.format("\tj copy_loop1\n");
+		fileWriter.format("done_copy1:\n");
+
+		// Copy second string
+
+		fileWriter.format("copy_loop2:\n");
+		fileWriter.format("\tlb $s0, 0($a2)\n");
+		fileWriter.format("\tsb $s0, 0($s2)\n");
+		fileWriter.format("\tbeqz $s0, done_copy2\n");
+		fileWriter.format("\taddi $a2, $a2, 1\n");
+		fileWriter.format("\taddi $s2, $s2, 1\n");
+		fileWriter.format("\tj copy_loop2\n");
+		fileWriter.format("done_copy2:\n");
+		fileWriter.format("\tjr $ra\n");
+	}
 	public void functionPrologue(){
 		fileWriter.format("\tsubi $sp, $sp, 4\n");
 		fileWriter.format("\tsw $ra, 0($sp)\n");
@@ -187,8 +269,8 @@ public class MIPSGenerator
 	public void beqz(TEMP oprnd1,String label)
 	{
 		int i1 =oprnd1.getSerialNumber();
-				
-		fileWriter.format("\tbeq Temp_%d,$zero,%s\n",i1,label);				
+
+		fileWriter.format("\tbeq Temp_%d,$zero,%s\n",i1,label);
 	}
 	public void newClassObject(String dstReg, int sizeToAlloc, boolean hasMethod, String vtableLabel){
 		fileWriter.format("\tli $a0, %d\n", sizeToAlloc);
@@ -205,6 +287,11 @@ public class MIPSGenerator
 		fileWriter.format("\tli $v0, 9\n");
 		fileWriter.format("\tsyscall\n");
 		fileWriter.format("\tmove %s, $v0\n", dstReg);
+	}
+	public void startTextSection(){
+		fileWriter.format(".text\n");
+		stringEqualityCheckFunc();
+		stringConcatFunc();
 	}
 
 	public void loadImmediate(String dstReg, String immediate){
