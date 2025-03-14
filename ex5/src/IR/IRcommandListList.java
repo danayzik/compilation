@@ -31,6 +31,10 @@ public class IRcommandListList {
             it.tail = new IRcommandListList(cmdList,null);
         }
     }
+    public void mipsMe(){
+        if(head!=null)head.mipsMe();
+        if(tail!=null)tail.mipsMe();
+    }
     public IRcommandList getLastList(){
         IRcommandList curr = head;
         IRcommandListList currTail = tail;

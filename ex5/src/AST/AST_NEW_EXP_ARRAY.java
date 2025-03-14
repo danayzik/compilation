@@ -35,8 +35,8 @@ public class AST_NEW_EXP_ARRAY extends AST_NEW_EXP
 		if(sizeExpType != TYPE_INT.getInstance())
 			throw new SemanticError(String.format("%s size expression is not an integer", line));
 		if (sizeExp instanceof AST_EXP_INT){
-			if(((AST_EXP_INT) sizeExp).value == 0){
-				throw new SemanticError(String.format("%s size expression can't be 0", line));
+			if(((AST_EXP_INT) sizeExp).value <= 0){
+				throw new SemanticError(String.format("%s constant size expression can't be less than or equal to zero", line));
 			}
 		}
 		semanticType = t;

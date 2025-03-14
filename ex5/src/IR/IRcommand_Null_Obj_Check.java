@@ -2,6 +2,8 @@
 package IR;
 
 import TEMP.TEMP;
+import TEMP.TEMP_FACTORY;
+import MIPS.MIPSGenerator;
 
 
 public class IRcommand_Null_Obj_Check extends IRcommand
@@ -20,5 +22,12 @@ public class IRcommand_Null_Obj_Check extends IRcommand
 		System.out.printf("if %s == 0 abort\n", objAddr);
 	}
 
-
+	@Override
+	public void mipsMe() {
+		MIPSGenerator gen = MIPSGenerator.getInstance();
+		TEMP_FACTORY fact = TEMP_FACTORY.getInstance();
+		String reg = fact.tempToRegister(objAddr.getSerialNumber());
+		gen.checkForNullDeref(reg);
+		super.mipsMe();
+	}
 }

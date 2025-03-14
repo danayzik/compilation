@@ -81,6 +81,7 @@ public class Main
 			}
 			AST.IRme();
 			IR.getInstance().printMe();
+			IR.getInstance().mipsMe();
 
 			
 			/*************************/

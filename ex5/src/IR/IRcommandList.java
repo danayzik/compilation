@@ -25,6 +25,7 @@ public class IRcommandList
 		}
 		this.tail = cmd;
 	}
+	public void mipsMe(){if(head!=null)head.mipsMe();}
 
 	public void printMe(){
 		IRcommand curr = head;

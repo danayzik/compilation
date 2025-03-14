@@ -1,20 +1,23 @@
 
-Check if array comparison is on reference or by values
 
 
 
+backup a3 before syscalls
+
+add exit to main.
+differentiate between main and user_main?
+how to deal with recursive main?
 
 check if i ever assigned "nil"
+Check nil assignment IR
+Check if all IR have been translated
 assigning nil or not assigning is the same, no?
 
-Add abort checks:
--init array to size 0 check?
--null dereference
--others
+add max/min values to arithmetic operations
 
 Check global strings and correct la or lw
 
-Add STR EQ and STR CONCAT as functions
+Init mips translation.
 
 
 Add nil as initial value for class var dec?

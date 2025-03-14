@@ -40,15 +40,13 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		return semanticType;
 	}
 
-	public TEMP IRme(){//Think
+	public TEMP IRme(){
 		IR instance = IR.getInstance();
 		Address arrayAddr = var.getStoreAddr();
 		TEMP index = subscript.IRme();
 		TEMP arrayAddrTemp = TEMP_FACTORY.getInstance().getFreshTEMP();
 		instance.Add_IRcommand(new IRcommand_Load(arrayAddrTemp, arrayAddr));
-		TEMP arraySize = TEMP_FACTORY.getInstance().getFreshTEMP();
-		instance.Add_IRcommand(new IRcommand_Array_Access(arraySize,
-				arrayAddrTemp, index));
+		instance.Add_IRcommand(new IRcommand_Array_Access(arrayAddrTemp, index));
 		TEMP indexOffset = TEMP_FACTORY.getInstance().getFreshTEMP();
 		instance.Add_IRcommand(new IRcommand_SLL(indexOffset, index));
 		TEMP finalAddr = TEMP_FACTORY.getInstance().getFreshTEMP();
@@ -67,9 +65,7 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		TEMP index = subscript.IRme();
 		TEMP arrayAddressTemp = TEMP_FACTORY.getInstance().getFreshTEMP();
 		instance.Add_IRcommand(new IRcommand_Load(arrayAddressTemp, arrayAddr));
-		TEMP arraySize = TEMP_FACTORY.getInstance().getFreshTEMP();
-		instance.Add_IRcommand(new IRcommand_Array_Access(arraySize,
-				arrayAddressTemp, index));
+		instance.Add_IRcommand(new IRcommand_Array_Access(arrayAddressTemp, index));
 		TEMP indexOffset = TEMP_FACTORY.getInstance().getFreshTEMP();
 		instance.Add_IRcommand(new IRcommand_SLL(indexOffset, index));
 		TEMP finalAddr = TEMP_FACTORY.getInstance().getFreshTEMP();

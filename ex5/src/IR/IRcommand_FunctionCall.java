@@ -104,7 +104,6 @@ public class IRcommand_FunctionCall extends IRcommand
 
 		if(saveReturnValue){
 			String dstReg = fact.tempToRegister(dst.getSerialNumber());
-			//Restore register backup here?
 			gen.saveReturn(dstReg);
 		}
 

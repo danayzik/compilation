@@ -1,5 +1,6 @@
 
 package IR;
+import MIPS.MIPSGenerator;
 import TYPES.TYPE_CLASS;
 
 import java.util.*;
@@ -46,7 +47,13 @@ public class IR
 
 
 
-
+	public void mipsMe(){
+		MIPSGenerator gen = MIPSGenerator.getInstance();
+		dataSectionCommands.mipsMe();
+		gen.startTextSection();
+		funcSection.mipsMe();
+		gen.finalizeFile();
+	}
 
 
 	private static IR instance = null;

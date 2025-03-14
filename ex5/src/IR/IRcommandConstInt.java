@@ -2,6 +2,7 @@
 package IR;
 
 import TEMP.*;
+import MIPS.MIPSGenerator;
 
 public class IRcommandConstInt extends IRcommand
 {
@@ -22,5 +23,14 @@ public class IRcommandConstInt extends IRcommand
 	public void inToOut(unInitSets setsObj){
 		super.inToOut(setsObj);
 		setsObj.uninitTempsOut.remove(t.toString());
+	}
+
+	@Override
+	public void mipsMe() {
+		MIPSGenerator gen = MIPSGenerator.getInstance();
+		TEMP_FACTORY fact = TEMP_FACTORY.getInstance();
+		String dstReg = fact.tempToRegister(t.getSerialNumber());
+		gen.loadImmediate(dstReg, String.valueOf(value));
+		super.mipsMe();
 	}
 }

@@ -22,7 +22,8 @@ public class IRcommand_Return extends IRcommand
 
 	public void mipsMe(){
 		MIPSGenerator gen = MIPSGenerator.getInstance();
-		gen.returnValue(TEMP_FACTORY.getInstance().tempToRegister(returnSrc.getSerialNumber()));
+		if(returnSrc!=null)
+			gen.returnValue(TEMP_FACTORY.getInstance().tempToRegister(returnSrc.getSerialNumber()));
 		gen.functionEpilogue();
 		super.mipsMe();
 	}

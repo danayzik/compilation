@@ -38,10 +38,15 @@ public class AST_CLASS_VAR_DEC extends AST_CFIELD
         if (assignedExp != null) assignedExp.PrintMe();
         if (assignedExp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,assignedExp.SerialNumber);
     }
-    private void transferInitialValue(TYPE_CLASS_FIELD tField){ //Add nil?
+    private void transferInitialValue(TYPE_CLASS_FIELD tField){
         if(assigned){
             if(assignedExp instanceof AST_EXP_INT){
                 int val = ((AST_EXP_INT) assignedExp).value;
+                intValue = val;
+                tField.setInitialInt(val);
+            }
+            if(assignedExp instanceof  AST_EXP_NIL){
+                int val = 0;
                 intValue = val;
                 tField.setInitialInt(val);
             }

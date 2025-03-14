@@ -28,7 +28,7 @@ public class AST_EXP_NIL extends AST_EXP
 	@Override
 	public TEMP IRme() {
 		TEMP t = TEMP_FACTORY.getInstance().getFreshTEMP();
-		IR.getInstance().Add_IRcommand(new IRcommandConstNil(t));
+		IR.getInstance().Add_IRcommand(new IRcommandConstInt(t, 0));
 		return t;
 	}
 }
