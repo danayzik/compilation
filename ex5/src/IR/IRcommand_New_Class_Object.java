@@ -26,6 +26,11 @@ public class IRcommand_New_Class_Object extends IRcommand
 		super.printMe();
 		System.out.printf("%s = New object of class %s allocate %d bytes\n", dst, type.name, size);
 	}
+	public void inToOut(InOutSets setsObj){
+		super.inToOut(setsObj);
+		setsObj.tempsOut.remove(dst.getSerialNumber());
+
+	}
 
 	@Override
 	public void mipsMe() {

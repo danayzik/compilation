@@ -20,10 +20,6 @@ public class IRcommandConstInt extends IRcommand
 		System.out.printf("%s = %d\n", t, value);
 	}
 
-	public void inToOut(unInitSets setsObj){
-		super.inToOut(setsObj);
-		setsObj.uninitTempsOut.remove(t.toString());
-	}
 
 	@Override
 	public void mipsMe() {
@@ -32,5 +28,11 @@ public class IRcommandConstInt extends IRcommand
 		String dstReg = fact.tempToRegister(t.getSerialNumber());
 		gen.loadImmediate(dstReg, String.valueOf(value));
 		super.mipsMe();
+	}
+	public void inToOut(InOutSets setsObj){
+		super.inToOut(setsObj);
+		setsObj.tempsOut.remove(t.getSerialNumber());
+
+
 	}
 }

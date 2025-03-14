@@ -35,4 +35,11 @@ public class IRcommand_Array_Access extends IRcommand
 		gen.outOfBoundsCheck(arrayAddrReg, indexReg);
 		super.mipsMe();
 	}
+
+	@Override
+	public void inToOut(InOutSets setsObj) {
+		super.inToOut(setsObj);
+		setsObj.tempsOut.add(index.getSerialNumber());
+		setsObj.tempsOut.add(firstElemAddr.getSerialNumber());
+	}
 }

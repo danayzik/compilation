@@ -30,4 +30,10 @@ public class IRcommand_SLL extends IRcommand
 		gen.shiftLeft(dstStr, index, 2);
 		super.mipsMe();
 	}
+	public void inToOut(InOutSets setsObj){
+		super.inToOut(setsObj);
+		setsObj.tempsOut.remove(dst.getSerialNumber());
+		setsObj.tempsOut.add(indexReg.getSerialNumber());
+
+	}
 }

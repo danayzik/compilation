@@ -29,6 +29,13 @@ public class IRcommand_Load extends IRcommand
 		super.mipsMe();
 
 	}
+	public void inToOut(InOutSets setsObj){
+		super.inToOut(setsObj);
+		setsObj.tempsOut.remove(dst.getSerialNumber());
+		if(addr.isCustomReg)
+			setsObj.tempsOut.add(addr.tempRegister.getSerialNumber());
+
+	}
 
 
 }

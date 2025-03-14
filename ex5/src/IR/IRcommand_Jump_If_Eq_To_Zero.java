@@ -27,4 +27,9 @@ public class IRcommand_Jump_If_Eq_To_Zero extends IRcommand
 		MIPSGenerator.getInstance().beq(reg1, reg2, label_name);
 		super.mipsMe();
 	}
+	public void inToOut(InOutSets setsObj){
+		super.inToOut(setsObj);
+		setsObj.tempsOut.add(t.getSerialNumber());
+
+	}
 }

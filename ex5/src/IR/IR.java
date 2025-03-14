@@ -84,32 +84,31 @@ public class IR
 
 
 
-	public Set<String> dataFlowAnalysis(){
+	public void dataFlowAnalysis(IRcommandList funcCommands){
 		TreeSet<Integer> workSet = new TreeSet<>();
-		workSet.add(1);
-		Map<Integer, unInitSets> setsMap = new HashMap<>();
+		workSet.add(funcCommands.tail.index);
+		Map<Integer, InOutSets> setsMap = new HashMap<>();
 		IRcommand workingCmd;
 		int workingIndex;
 		int nextCmd1Index;
 		int nextCmd2Index;
-		unInitSets workingSets;
+		InOutSets workingSets;
 		IRcommand nextCmd1;
 		IRcommand nextCmd2;
 
-		for (int i = 1; i < cmdIndex; i++) {
-			setsMap.put(i, new unInitSets());
-		}
-
+		for (int i = 1; i <= funcCommands.size; i++) {
+			setsMap.put(i, new InOutSets());
+		} //This doesn't map properly if indexes do not start from 1? possibly.
 
 		while(!workSet.isEmpty()){
 
-			workingIndex = workSet.first();
+			workingIndex = workSet.last();
 //			System.out.printf("Now working on %d\n", workingIndex);
 			workSet.remove(workingIndex);
 			workingCmd = cmdMap.get(workingIndex);
 			workingSets = setsMap.get(workingIndex);
-			nextCmd1 = workingCmd.next;
-			nextCmd2 = workingCmd.jumpToCmd;
+			nextCmd1 = workingCmd.prev;
+			nextCmd2 = workingCmd.jumpPrev;
 
 
 			workingSets.calculateOut(workingCmd);
@@ -129,13 +128,6 @@ public class IR
 			}
 		}
 
-		Set<String> usedUninitVariables = new HashSet<>();
-		for (int i = 1; i < cmdIndex; i++) {
-			workingCmd = cmdMap.get(i);
-			workingSets = setsMap.get(i);
-			workingCmd.addUninitVariableUse(usedUninitVariables, workingSets);
-		}
-		return usedUninitVariables;
 
 
 

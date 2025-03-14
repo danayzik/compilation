@@ -7,6 +7,7 @@ public class IRcommandList
 {
 	public IRcommand head;
 	public IRcommand tail;
+	public int size = 0;
 
 	public IRcommandList()
 	{
@@ -15,12 +16,16 @@ public class IRcommandList
 	}
 
 	public void addCommand(IRcommand cmd){
+		size++;
+		cmd.index = size;
 		if (head == null)
 		{
 			this.head = cmd;
 		}
 		else
 		{
+			if(!(this.tail.isReturn() || this.tail.isJump()))
+				cmd.prev = this.tail;
 			this.tail.next = cmd;
 		}
 		this.tail = cmd;

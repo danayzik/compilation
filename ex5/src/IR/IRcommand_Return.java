@@ -27,5 +27,10 @@ public class IRcommand_Return extends IRcommand
 		gen.functionEpilogue();
 		super.mipsMe();
 	}
+	public void inToOut(InOutSets setsObj){
+		super.inToOut(setsObj);
+		setsObj.tempsOut.add(returnSrc.getSerialNumber());
+
+	}
 
 }

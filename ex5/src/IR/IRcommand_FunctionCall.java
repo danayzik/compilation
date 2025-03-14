@@ -9,11 +9,11 @@ public class IRcommand_FunctionCall extends IRcommand
 {
 	TEMP_LIST argListValues;
 	String funcName;
-	TEMP ownerObj;
+	TEMP ownerObj = null;
 	boolean isGlobal;
 
-	public TEMP dst;
-	public TEMP vtableAddr;
+	public TEMP dst = null;
+	public TEMP vtableAddr = null;
 	public int offset;
 	public boolean saveReturnValue;
 
@@ -83,6 +83,15 @@ public class IRcommand_FunctionCall extends IRcommand
 			currTail = currTail.tail;
 		}
 		System.out.println();
+	}
+	public void inToOut(InOutSets setsObj){
+		super.inToOut(setsObj);
+		if(dst!=null)
+			setsObj.tempsOut.remove(dst.getSerialNumber());
+		if(vtableAddr!=null)
+			setsObj.tempsOut.add(vtableAddr.getSerialNumber());
+		if(ownerObj!=null)
+			setsObj.tempsOut.add(ownerObj.getSerialNumber());
 	}
 
 	@Override

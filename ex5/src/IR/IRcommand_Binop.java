@@ -44,14 +44,11 @@ public class IRcommand_Binop extends IRcommand
 		super.printMe();
 		System.out.printf("%s = %s %s %s\n", dst, t1, mapOperator(op), t2);
 	}
-	public void inToOut(unInitSets setsObj){
+	public void inToOut(InOutSets setsObj){
 		super.inToOut(setsObj);
-		if(setsObj.uninitTempsIn.contains(t1.toString()) | setsObj.uninitTempsIn.contains(t2.toString())){
-			setsObj.uninitTempsOut.add(dst.toString());
-		}
-		else{
-			setsObj.uninitTempsOut.remove(dst.toString());
-		}
+		setsObj.tempsOut.remove(dst.getSerialNumber());
+		setsObj.tempsOut.add(t1.getSerialNumber());
+		setsObj.tempsOut.add(t2.getSerialNumber());
 	}
 	public void mipsMe(){
 		TEMP_FACTORY fact = TEMP_FACTORY.getInstance();

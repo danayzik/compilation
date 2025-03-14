@@ -1,6 +1,5 @@
 
 package IR;
-import MIPS.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,6 +7,8 @@ import java.util.Set;
 public abstract class IRcommand
 {
 	public IRcommand next = null;
+	public IRcommand prev = null;
+	public IRcommand jumpPrev = null;
 	public IRcommand jumpToCmd = null;
 	protected static int label_counter=0;
 	protected static int strLabelCount=0;
@@ -29,13 +30,12 @@ public abstract class IRcommand
 
 	public boolean isLabel(){return false;}
 
-	public void inToOut(unInitSets setsObj){
+	public void inToOut(InOutSets setsObj){
 		workedOn = true;
-		setsObj.uninitVariablesOut = new HashSet<>(setsObj.uninitVariablesIn);
-		setsObj.uninitTempsOut = new HashSet<>(setsObj.uninitTempsIn);
+		setsObj.tempsOut = new HashSet<>(setsObj.tempsIn);
 	}
 
-	public void addUninitVariableUse(Set<String> varSet, unInitSets flowSets){}
+
 
 	public boolean workedOn = false;
 	public void mipsMe(){

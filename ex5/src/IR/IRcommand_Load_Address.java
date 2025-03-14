@@ -28,4 +28,9 @@ public class IRcommand_Load_Address extends IRcommand
 		MIPSGenerator.getInstance().loadAddress(reg, label);
 		super.mipsMe();
 	}
+	public void inToOut(InOutSets setsObj){
+		super.inToOut(setsObj);
+		setsObj.tempsOut.remove(dst.getSerialNumber());
+
+	}
 }

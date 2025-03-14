@@ -35,5 +35,11 @@ public class IRcommand_Binop_STR_CONCAT extends IRcommand
 		gen.stringConcat(dstReg, reg1, reg2);
 		super.mipsMe();
 	}
+	public void inToOut(InOutSets setsObj){
+		super.inToOut(setsObj);
+		setsObj.tempsOut.remove(dst.getSerialNumber());
+		setsObj.tempsOut.add(t1.getSerialNumber());
+		setsObj.tempsOut.add(t2.getSerialNumber());
+	}
 
 }

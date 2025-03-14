@@ -30,4 +30,10 @@ public class IRcommand_Null_Obj_Check extends IRcommand
 		gen.checkForNullDeref(reg);
 		super.mipsMe();
 	}
+	public void inToOut(InOutSets setsObj){
+		super.inToOut(setsObj);
+
+		setsObj.tempsOut.add(objAddr.getSerialNumber());
+
+	}
 }

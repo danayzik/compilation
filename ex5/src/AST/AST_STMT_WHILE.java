@@ -52,11 +52,13 @@ public class AST_STMT_WHILE extends AST_STMT
 		IRcommand condLabelCmd = new IRcommand_Label(condLabel);
 		IRcommand falseLabelCmd = new IRcommand_Label(falseLabel);
 		condLabelJump.jumpToCmd = condLabelCmd;
+		condLabelCmd.jumpPrev = condLabelJump;
 
 		IRInstance.Add_IRcommand(condLabelCmd);
 		TEMP condTemp = cond.IRme();
 		IRcommand beqCmd = new IRcommand_Jump_If_Eq_To_Zero(condTemp, falseLabel);
 		beqCmd.jumpToCmd = falseLabelCmd;
+		falseLabelCmd.jumpPrev = beqCmd;
 		IRInstance.Add_IRcommand(beqCmd);
 		body.IRme();
 		IRInstance.Add_IRcommand(condLabelJump);

@@ -1,6 +1,7 @@
 
 
-
+For a function call that is printstring/printint. do not put stuff on the stack?? there's a conflict here.
+printstring and printint intoOut
 
 backup a3 before syscalls
 
@@ -8,16 +9,15 @@ add exit to main.
 differentiate between main and user_main?
 how to deal with recursive main?
 
-check if i ever assigned "nil"
-Check nil assignment IR
-Check if all IR have been translated
-assigning nil or not assigning is the same, no?
+Init dataflow analysis per IRcommandlist in func sections
+Get live variables at the same time post dataflow analysis, per function
 
-add max/min values to arithmetic operations
+dataflow  doesn't map properly if indexes do not start from 1? possibly.
+
+assigning nil or not assigning is the same, no?
 
 Check global strings and correct la or lw
 
-Init mips translation.
 
 
 Add nil as initial value for class var dec?

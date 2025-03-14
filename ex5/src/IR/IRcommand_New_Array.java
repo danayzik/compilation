@@ -22,6 +22,12 @@ public class IRcommand_New_Array extends IRcommand
 		super.printMe();
 		System.out.printf("%s = New array of type: %s, size: %s\n", dst, type.name, arraySize);
 	}
+	public void inToOut(InOutSets setsObj){
+		super.inToOut(setsObj);
+		setsObj.tempsOut.remove(dst.getSerialNumber());
+		setsObj.tempsOut.add(arraySize.getSerialNumber());
+
+	}
 
 	@Override
 	public void mipsMe() {
