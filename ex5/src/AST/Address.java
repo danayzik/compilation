@@ -38,6 +38,7 @@ public class Address {
     public void setCustomReg(int offset, TEMP reg){
         this.isCustomReg = true;
         this.tempRegister = reg;
+        this.offset = offset;
     }
 
 
@@ -50,7 +51,7 @@ public class Address {
         if(isCustomReg)reg = TEMP_FACTORY.getInstance().tempToRegister(tempRegister.getSerialNumber());
         if(framePointerAddr)reg = "$fp";
         if(stackPointerAddr)reg = "$sp";
-        if(isFieldOfSelf)reg = "a3";
+        if(isFieldOfSelf)reg = "$a3";
         return String.format("%d(%s)", offset, reg);
     }
 

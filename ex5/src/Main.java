@@ -80,6 +80,7 @@ public class Main
 				return;
 			}
 			AST.IRme();
+			IR.getInstance().allocateRegister();
 			IR.getInstance().printMe();
 			IR.getInstance().mipsMe();
 

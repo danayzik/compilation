@@ -35,8 +35,7 @@ public class IRcommand_New_Array extends IRcommand
 		TEMP_FACTORY fact = TEMP_FACTORY.getInstance();
 		String dstReg = fact.tempToRegister(dst.getSerialNumber());
 		String arraySizeReg = fact.tempToRegister(arraySize.getSerialNumber());
-		gen.shiftLeft(arraySizeReg, arraySizeReg, 2);
-		gen.addImmediate(arraySizeReg, arraySizeReg, 4);
+
 		gen.newArray(dstReg, arraySizeReg);
 		super.mipsMe();
 	}

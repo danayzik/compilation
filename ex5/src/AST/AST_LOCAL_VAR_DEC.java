@@ -47,7 +47,7 @@ public class AST_LOCAL_VAR_DEC extends AST_STMT
         if (SYMBOL_TABLE.getInstance().findInInnerScope(ID) != null)
             throw new SemanticError(String.format("%s %s already exists in this scope", line, ID));
 
-        indexInFunc = SYMBOL_TABLE.getInstance().enter(ID, leftType);
+        indexInFunc = SYMBOL_TABLE.getInstance().enter(ID, leftType)- SYMBOL_TABLE.getInstance().getArgCount();
         if(assigned) {
             rightType = assignedExp.semantMe();
             if(!isLegalAssignment(leftType, rightType))
@@ -58,14 +58,19 @@ public class AST_LOCAL_VAR_DEC extends AST_STMT
 
     public TEMP IRme()
     {
-        IR.getInstance().Add_IRcommand(new IRcommand_Offset_Stack(-4));
 
         if (assigned)
         {
+            int offset = -indexInFunc*4-4;
             Address storeAddr = new Address(ID);
-            storeAddr.setAsSPAddr(0);
+            storeAddr.setAsFPAddr(offset);
             IR.getInstance().Add_IRcommand(new IRcommand_Store(storeAddr, assignedExp.IRme()));
         }
         return null;
+    }
+
+    @Override
+    public void initDeclarations() {
+        IR.getInstance().Add_IRcommand(new IRcommand_Offset_Stack(-4));
     }
 }

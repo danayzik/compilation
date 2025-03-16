@@ -51,6 +51,7 @@ public class AST_EXP_LIST extends AST_Node
 		IR instance = IR.getInstance();
 		Address storeAddr = new Address("");
 		storeAddr.setAsSPAddr(0);
+		instance.Add_IRcommand(new IRcommand_Store(storeAddr, t));
 		instance.Add_IRcommand(new IRcommand_Offset_Stack(4));
 		if(tail == null)
 			return new TEMP_LIST(t, null);

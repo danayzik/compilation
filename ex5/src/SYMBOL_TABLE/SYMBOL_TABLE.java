@@ -41,6 +41,7 @@ public class SYMBOL_TABLE
 	}
 
 	public void setLastEntryAsArg(int index){
+		tailScope.argCountInFunc++;
 		tailScope.tail.setAsArg(index);
 	}
 
@@ -64,6 +65,9 @@ public class SYMBOL_TABLE
 	}
 	public void inheritVarCount(){
 		tailScope.inheritVarCount();
+	}
+	public int getArgCount(){
+		return tailScope.argCountInFunc;
 	}
 
 

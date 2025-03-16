@@ -34,7 +34,7 @@ public class IRcommand_Store extends IRcommand
 	public void inToOut(InOutSets setsObj){
 		super.inToOut(setsObj);
 		if(addr.isCustomReg)
-			setsObj.tempsOut.remove(addr.tempRegister.getSerialNumber());
+			setsObj.tempsOut.add(addr.tempRegister.getSerialNumber());
 		setsObj.tempsOut.add(src.getSerialNumber());
 
 	}

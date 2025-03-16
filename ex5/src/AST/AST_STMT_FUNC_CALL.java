@@ -91,7 +91,7 @@ public class AST_STMT_FUNC_CALL extends AST_STMT
 		if (argList!=null)argCount = argList.getArgCount();
 		instance.Add_IRcommand(new IRcommand_Offset_Stack(-argCount*4));
 		TEMP_LIST tempList = argList.IRmeList();
-		instance.Add_IRcommand(new IRcommand_Offset_Stack(argCount*4));
+		instance.Add_IRcommand(new IRcommand_Offset_Stack(-argCount*4));
 		return tempList;
 	}
 

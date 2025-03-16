@@ -23,6 +23,7 @@ SRC_FILES                 = $(wildcard ${SRC_DIR}/*.java)             \
                             $(wildcard ${SRC_DIR}/TEMP/*.java)          \
                             $(wildcard ${SRC_DIR}/TYPES/*.java)       \
                             $(wildcard ${SRC_DIR}/MIPS/*.java)       \
+                            $(wildcard ${SRC_DIR}/INTERFERENCE_GRAPH/*.java)       \
                             $(wildcard ${SRC_DIR}/SYMBOL_TABLE/*.java)
 EXTERNAL_JAR_FILES        = ${EXTERNAL_JARS_DIR}\java-cup-11b-runtime.jar
 MANIFEST_FILE             = ${MANIFEST_DIR}\MANIFEST.MF

@@ -60,16 +60,22 @@ public class IRcommand_Binop extends IRcommand
 		switch (op){
 			case 0:
 				gen.add(dstReg, reg1, reg2);
+				break;
 			case 1:
 				gen.sub(dstReg, reg1, reg2);
+				break;
 			case 2:
 				gen.mul(dstReg, reg1, reg2);
+				break;
 			case 3:
 				gen.div(dstReg, reg1, reg2);
+				break;
 			case 4:
 				gen.slt(dstReg, reg1, reg2);
+				break;
 			case 5:
 				gen.slt(dstReg, reg2, reg1);
+				break;
 			case 6:
 				gen.seq(dstReg, reg2, reg1);
 

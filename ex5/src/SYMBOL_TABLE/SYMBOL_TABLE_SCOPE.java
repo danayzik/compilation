@@ -12,6 +12,7 @@ public class SYMBOL_TABLE_SCOPE {
 	public boolean isClassScope;
 
 	public int varCountInFunc = 0;
+	public int argCountInFunc = 0;
 
 
 	public SYMBOL_TABLE_SCOPE(SYMBOL_TABLE_SCOPE parent) {
@@ -32,6 +33,7 @@ public class SYMBOL_TABLE_SCOPE {
 	}
 	public void inheritVarCount(){
 		varCountInFunc = prev.varCountInFunc;
+		argCountInFunc = prev.argCountInFunc;
 	}
 
 	public TYPE findInScope(String name){
@@ -65,10 +67,11 @@ public class SYMBOL_TABLE_SCOPE {
 				return target;
 			}
 			if (currScope.isClassScope) {
-				instance.lastSearchedIsMethod = true;
+
 				target = findInClass(name);
 			}
 			if (target != null) {
+				instance.lastSearchedIsMethod = true;
 				return target;
 			}
 			currScope = currScope.prev;

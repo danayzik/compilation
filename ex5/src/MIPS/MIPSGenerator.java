@@ -7,7 +7,6 @@ import java.io.PrintWriter;
 /*******************/
 /* PROJECT IMPORTS */
 /*******************/
-import TEMP.*;
 
 public class MIPSGenerator
 {
@@ -26,19 +25,30 @@ public class MIPSGenerator
 //		fileWriter.print("\tsyscall\n");
 		fileWriter.close();
 	}
-	public void print_int(String argReg)
+	public void printInt()
 	{
-		fileWriter.format("\tmove $a0, %s\n",argReg);
+		fileWriter.format("\tjal PrintInt\n");
+	}
+	public void printIntFunc(){
+		fileWriter.format("PrintInt:\n");
+		fileWriter.format("\tlw $a0, 0($sp)\n");
 		fileWriter.format("\tli $v0, 1\n");
 		fileWriter.format("\tsyscall\n");
 		fileWriter.format("\tli $a0, 32\n");
 		fileWriter.format("\tli $v0, 11\n");
 		fileWriter.format("\tsyscall\n");
+		fileWriter.format("\tjr $ra\n");
+		addToStack(4);
 	}
-	public void printString(String argReg){
-		fileWriter.format("\tmove $a0, %s\n",argReg);
+	public void printString(){
+		fileWriter.format("\tjal PrintString\n");
+	}
+	public void printStringFunc(){
+		fileWriter.format("PrintString:\n");
+		fileWriter.format("\tlw $a0, 0($sp)\n");
 		fileWriter.format("\tli $v0, 4\n");
 		fileWriter.format("\tsyscall\n");
+		addToStack(4);
 	}
 
 	public void addConstStringToData(String label, String data){
@@ -71,7 +81,7 @@ public class MIPSGenerator
 	}
 	public void outOfBoundsCheckFunc(){
 		fileWriter.format("array_access_check_func:\n");
-		fileWriter.format("\tbltz $a0, $zero, illegal_access_to_arr\n");
+		fileWriter.format("\tblt $a0, $zero, illegal_access_to_arr\n");
 		fileWriter.format("\tlw $s0, 0($a0)\n");
 		fileWriter.format("\tblt $a1, $s0, legal_access_to_arr\n");
 		fileWriter.format("\tillegal_access_to_arr:\n");
@@ -89,7 +99,7 @@ public class MIPSGenerator
 		fileWriter.format("\t%s: .word %s\n", label, data);
 	}
 	public void loadAddress(String reg, String label){
-		fileWriter.format("\tla: %s, %s\n", reg, label);
+		fileWriter.format("\tla %s, %s\n", reg, label);
 	}
 	public void writeLabel(String label){
 		fileWriter.format("%s:\n", label);
@@ -110,6 +120,9 @@ public class MIPSGenerator
 		fileWriter.format("\tadd %s, %s, %s\n", dst, reg1, reg2);
 		overflowCheck(dst);
 	}
+	public void addAddresses(String dst, String reg1, String reg2){
+		fileWriter.format("\tadd %s, %s, %s\n", dst, reg1, reg2);
+	}
 	public void saveReturn(String dstReg){
 		fileWriter.format("\tmove %s, $v0\n", dstReg);
 	}
@@ -119,7 +132,7 @@ public class MIPSGenerator
 	public void jal(String label){
 		fileWriter.format("\tjal %s\n", label);
 	}
-	public void addImmediate(String dst, String reg1, int immediate){//Add overflow check
+	public void addImmediate(String dst, String reg1, int immediate){
 		fileWriter.format("\taddi %s, %s, %d\n", dst, reg1, immediate);
 	}
 	public void shiftLeft(String dst, String reg, int amount){
@@ -142,7 +155,7 @@ public class MIPSGenerator
 	{
 		fileWriter.format("\tmove $a0, %s\n", oprnd2);
 		fileWriter.format("\tjal divide_by_zero_check_func\n", oprnd2);
-		fileWriter.format("\tDIV %s, %s\n", oprnd1, oprnd2);
+		fileWriter.format("\tdiv %s, %s\n", oprnd1, oprnd2);
 		fileWriter.format("\tmflo %s\n", dst);
 		overflowCheck(dst);
 	}
@@ -178,7 +191,7 @@ public class MIPSGenerator
 	public void overflowCheck(String resultReg){
 		fileWriter.format("\tmove $a0, %s\n", resultReg);
 		fileWriter.format("\tjal overflow_check_func\n");
-		fileWriter.format("\tmove %s, v0\n", resultReg);
+		fileWriter.format("\tmove %s, $v0\n", resultReg);
 	}
 
 	public void sub(String dst,String oprnd1,String oprnd2)
@@ -191,33 +204,38 @@ public class MIPSGenerator
 		fileWriter.format("\txor %s, %s, %s\n",dst, oprnd1, oprnd2);
 		fileWriter.format("\tsltiu %s, %s, 1\n",dst, dst);
 	}
+	public void backupRegisters(){
+		fileWriter.format("\taddi $sp, $sp, -4\n");
+		fileWriter.format("\tsw $a3, 0($sp)\n");
+		for (int i = 0; i < 10; i++) {
+			fileWriter.format("\taddi $sp, $sp, -4\n");
+			fileWriter.format("\tsw $t%d, 0($sp)\n", i);
+		}
+	}
+	public void restoreRegisters(){
+		for (int i = 9; i >= 0; i--) {
+			fileWriter.format("\tlw $t%d, 0($sp)\n", i);
+			fileWriter.format("\taddi $sp, $sp, 4\n");
+		}
+		fileWriter.format("\tlw $a3, 0($sp)\n");
+		fileWriter.format("\taddi $sp, $sp, 4\n");
+
+	}
 
 	public void jump(String inlabel)
 	{
 		fileWriter.format("\tj %s\n",inlabel);
 	}	
 
-	public void backupTemps(){
-		for (int i = 0; i < 10; i++) {
-			fileWriter.format("\taddi $sp, $sp, -4\n");
-			fileWriter.format("\tsw $t%d, 0($sp)\n", i);
-		}
-	}
-	public void restoreTemps(){
-		for (int i = 9; i >= 0; i--) {
-			fileWriter.format("\tlw $t%d, 0($sp)\n", i);
-			fileWriter.format("\taddi $sp, $sp, 4\n");
 
-		}
-	}
 	public void stringEqualityCheckFunc(){
 		fileWriter.format("str_cmp_func:\n");
 		fileWriter.format("\tli $v0, 1\n");
 		fileWriter.format("\tstr_eq_loop:\n");
 		fileWriter.format("\tlb $s2, 0($a1)\n");
 		fileWriter.format("\tlb $s3, 0($a2)\n");
-		fileWriter.format("\tbne $s2, 0($s3) neq_label\n");
-		fileWriter.format("\tbeq $s2, $zero str_eq_end\n");
+		fileWriter.format("\tbne $s2, $s3, neq_label\n");
+		fileWriter.format("\tbeq $s2, $zero, str_eq_end\n");
 		fileWriter.format("\taddi $a1, $a1 1\n");
 		fileWriter.format("\taddi $a2, $a2 1\n");
 		fileWriter.format("\tj str_eq_loop\n");
@@ -293,10 +311,10 @@ public class MIPSGenerator
 		fileWriter.format("\tjr $ra\n");
 	}
 	public void functionPrologue(){
-		fileWriter.format("\tsubi $sp, $sp, 4\n");
+		fileWriter.format("\taddi $sp, $sp, -4\n");
 		fileWriter.format("\tsw $ra, 0($sp)\n");
-		fileWriter.format("\tsubi $sp, $sp, 4\n");
-		fileWriter.format("\tsw $fp, $sp\n");
+		fileWriter.format("\taddi $sp, $sp, -4\n");
+		fileWriter.format("\tsw $fp, 0($sp)\n");
 		fileWriter.format("\tmove $fp, $sp\n");
 	}
 	public void functionEpilogue(){
@@ -327,11 +345,15 @@ public class MIPSGenerator
 			fileWriter.format("\tsw $s0, 0(%s)\n", dstReg);
 		}
 	}
-	public void newArray(String dstReg, String bytesReg){
-		fileWriter.format("\tmove $a0, %s\n", bytesReg);
+	public void newArray(String dstReg, String sizeReg){
+		fileWriter.format("\tmove $s0, %s\n", sizeReg);
+		shiftLeft(sizeReg, sizeReg, 2);
+		addImmediate(sizeReg, sizeReg, 4);
+		fileWriter.format("\tmove $a0, %s\n", sizeReg);
 		fileWriter.format("\tli $v0, 9\n");
 		fileWriter.format("\tsyscall\n");
 		fileWriter.format("\tmove %s, $v0\n", dstReg);
+		fileWriter.format("\tsw $s0, 0(%s)\n", dstReg);
 	}
 	public void startTextSection(){
 		fileWriter.format(".text\n");
@@ -341,6 +363,8 @@ public class MIPSGenerator
 		checkForNullDerefFunc();
 		outOfBoundsCheckFunc();
 		overflowCheckFunc();
+		printStringFunc();
+		printIntFunc();
 	}
 
 	public void loadImmediate(String dstReg, String immediate){

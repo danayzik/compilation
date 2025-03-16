@@ -44,5 +44,10 @@ public class AST_STMT_LIST extends AST_Node
 		if(tail!=null) tail.IRme();
 		return null;
 	}
+
+	public void initDeclarations(){
+		if(head != null) head.initDeclarations();
+		if(tail != null) tail.initDeclarations();
+	}
 	
 }

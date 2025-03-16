@@ -40,8 +40,11 @@ public class AST_VAR_SIMPLE extends AST_VAR
 		if(entry != null) {
 			isLocal = entry.isLocal;
 			isGlobal = entry.isGlobal;
-			localIndexInFunc = entry.indexInFunc;
+			localIndexInFunc = entry.indexInFunc - SYMBOL_TABLE.getInstance().getArgCount();
 			isArg = entry.isLocalArg;
+			if(isArg){
+				indexInArgs = entry.indexInArg;
+			}
 		}
 		isField = (!isGlobal) && (!isLocal);
 
@@ -61,7 +64,7 @@ public class AST_VAR_SIMPLE extends AST_VAR
 		}
 		else if (isLocal){
 			if(isArg)
-				offset = indexInArgs*4+8;
+				offset = indexInArgs*4+52;
 			else
 				offset = -localIndexInFunc*4-4;
 			varAddr.setAsFPAddr(offset);
@@ -79,7 +82,7 @@ public class AST_VAR_SIMPLE extends AST_VAR
 		if(isLocal) {
 			int offset;
 			if(isArg){
-				offset = indexInArgs*4+48;
+				offset = indexInArgs*4+52;
 			}
 			else{
 				offset = -localIndexInFunc*4-4;

@@ -1,23 +1,21 @@
 
 
-For a function call that is printstring/printint. do not put stuff on the stack?? there's a conflict here.
-printstring and printint intoOut
-
+How to deal with local variables decleration inside loop? they keep offsetting the stack
 backup a3 before syscalls
 
 add exit to main.
 differentiate between main and user_main?
 how to deal with recursive main?
+Error throw in IG for no valid coloring
+Even if a temp is never alive. i need to have a mapping for it. //it's probably fine
 
-Init dataflow analysis per IRcommandlist in func sections
-Get live variables at the same time post dataflow analysis, per function
 
-dataflow  doesn't map properly if indexes do not start from 1? possibly.
 
 assigning nil or not assigning is the same, no?
 
-Check global strings and correct la or lw
+check comparing with nil|
 
+Multiple definitions in different scopes, currently works. might be fucked later
 
 
 Add nil as initial value for class var dec?

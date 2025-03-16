@@ -2,12 +2,15 @@
 package IR;
 
 
+import java.util.HashMap;
+import java.util.Map;
 
 public class IRcommandList
 {
 	public IRcommand head;
 	public IRcommand tail;
 	public int size = 0;
+	public Map<Integer, IRcommand> cmdMap = new HashMap<>();
 
 	public IRcommandList()
 	{
@@ -16,15 +19,16 @@ public class IRcommandList
 	}
 
 	public void addCommand(IRcommand cmd){
-		size++;
 		cmd.index = size;
+		cmdMap.put(size, cmd);
+		size++;
 		if (head == null)
 		{
 			this.head = cmd;
 		}
 		else
 		{
-			if(!(this.tail.isReturn() || this.tail.isJump()))
+			if(!(this.tail.isReturn() || this.tail.isJump()) || cmd.isReturn())
 				cmd.prev = this.tail;
 			this.tail.next = cmd;
 		}

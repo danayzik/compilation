@@ -18,7 +18,7 @@ public class IRcommand_Return extends IRcommand
 	}
 
 
-	public boolean isReturn(){return true;}
+
 
 	public void mipsMe(){
 		MIPSGenerator gen = MIPSGenerator.getInstance();
@@ -29,7 +29,8 @@ public class IRcommand_Return extends IRcommand
 	}
 	public void inToOut(InOutSets setsObj){
 		super.inToOut(setsObj);
-		setsObj.tempsOut.add(returnSrc.getSerialNumber());
+		if(returnSrc!=null)
+			setsObj.tempsOut.add(returnSrc.getSerialNumber());
 
 	}
 

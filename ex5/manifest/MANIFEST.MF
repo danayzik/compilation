@@ -7,4 +7,6 @@ Class-Path: ./jar_files/java-cup-11b-runtime.jar
   ./bin/TEMP/*.class
   ./bin/TYPES/*.class
   ./bin/SYMBOL_TABLE/*.class
+  ./bin/MIPS/*.class
+  ./bin/INTERFERENCE_GRAPH/*.class
 Main-Class: Main

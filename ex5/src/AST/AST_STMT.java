@@ -10,4 +10,5 @@ public abstract class AST_STMT extends AST_Node
 	public void matchReturnType(TYPE t){
 		return;
 	}
+	public void initDeclarations(){}
 }

@@ -64,7 +64,10 @@ public class AST_CLASS_FUNC_DEC extends AST_CFIELD
         IRInstance.declareNewFunc();
         IR.getInstance().Add_IRcommand(new IRcommand_Label(String.format("%s_%s", ownerClass.name, ID)));
         IR.getInstance().Add_IRcommand(new IRcommand_Func_Prologue());
-        if (body != null) body.IRme();
+        if (body != null) {
+            body.initDeclarations();
+            body.IRme();
+        }
         IR.getInstance().Add_IRcommand(new IRcommand_Func_Epilogue());
         return null;
     }

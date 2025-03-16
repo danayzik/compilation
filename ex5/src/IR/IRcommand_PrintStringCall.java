@@ -30,9 +30,8 @@ public class IRcommand_PrintStringCall extends IRcommand
 	}
 	@Override
 	public void mipsMe() {
-		TEMP arg = tempList.head;
-		String argReg = TEMP_FACTORY.getInstance().tempToRegister(arg.getSerialNumber());
-		MIPSGenerator.getInstance().printString(argReg);
+		MIPSGenerator.getInstance().printString();
 		super.mipsMe();
 	}
+
 }

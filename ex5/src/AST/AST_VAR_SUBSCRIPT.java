@@ -50,10 +50,10 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		TEMP indexOffset = TEMP_FACTORY.getInstance().getFreshTEMP();
 		instance.Add_IRcommand(new IRcommand_SLL(indexOffset, index));
 		TEMP finalAddr = TEMP_FACTORY.getInstance().getFreshTEMP();
+		instance.Add_IRcommand(new IRcommand_Add_Addresses(finalAddr, indexOffset, arrayAddrTemp));
 		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
 		Address addr = new Address(arrayAddr.varName);
 		addr.setCustomReg(4, finalAddr);
-
 		instance.Add_IRcommand(new IRcommand_Load(dst, addr));
 		return dst;
 	}
@@ -69,7 +69,7 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		TEMP indexOffset = TEMP_FACTORY.getInstance().getFreshTEMP();
 		instance.Add_IRcommand(new IRcommand_SLL(indexOffset, index));
 		TEMP finalAddr = TEMP_FACTORY.getInstance().getFreshTEMP();
-		instance.Add_IRcommand(new IRcommand_Binop(finalAddr, indexOffset, arrayAddressTemp,0));
+		instance.Add_IRcommand(new IRcommand_Add_Addresses(finalAddr, indexOffset, arrayAddressTemp));
 		Address addr = new Address(arrayAddr.varName);
 		addr.setCustomReg(4, finalAddr);
         return addr;

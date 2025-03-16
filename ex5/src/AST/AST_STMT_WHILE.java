@@ -65,4 +65,8 @@ public class AST_STMT_WHILE extends AST_STMT
 		IRInstance.Add_IRcommand(falseLabelCmd);
 		return null;
 	}
+	@Override
+	public void initDeclarations() {
+		if(body!=null)body.initDeclarations();
+	}
 }

@@ -55,4 +55,9 @@ public class AST_STMT_IF extends AST_STMT
 		IRInstance.Add_IRcommand(labelCmd);
 		return null;
 	}
+
+	@Override
+	public void initDeclarations() {
+		if(body!=null)body.initDeclarations();
+	}
 }

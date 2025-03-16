@@ -98,7 +98,7 @@ public class IRcommand_FunctionCall extends IRcommand
 	public void mipsMe() {
 		TEMP_FACTORY fact = TEMP_FACTORY.getInstance();
 		MIPSGenerator gen = MIPSGenerator.getInstance();
-		gen.backupTemps();
+		gen.backupRegisters();
 		if(isGlobal){
 			gen.jal(funcName);
 		}
@@ -108,7 +108,7 @@ public class IRcommand_FunctionCall extends IRcommand
 			gen.loadAddress("$s0", addr);
 			gen.jalr("$s0");
 		}
-		gen.restoreTemps();
+		gen.restoreRegisters();
 		gen.addToStack(argListValues.size*4);
 
 		if(saveReturnValue){

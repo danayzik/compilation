@@ -39,7 +39,7 @@ public class IRcommand_New_Class_Object extends IRcommand
 		String vtableLabel = null;
 		boolean hasMethod = type.hasMethod;
 		if(hasMethod){
-			vtableLabel = String.format("vtable_%s", type.name);
+			vtableLabel = String.format("%s_vtable", type.name);
 		}
 		gen.newClassObject(dstReg, size, hasMethod, vtableLabel);
 		TYPE_CLASS_FIELD currField;
@@ -50,7 +50,7 @@ public class IRcommand_New_Class_Object extends IRcommand
 				gen.loadAddress("$s0", val);
 			}
 			else{
-				gen.loadImmediate(dstReg, val);
+				gen.loadImmediate("$s0", val);
 			}
 			int offset = type.getFieldOffset(currField.name);
 			String address = String.format("%d(%s)", offset, dstReg);

@@ -25,5 +25,8 @@ public class IRcommand_Func_Epilogue extends IRcommand
 
 	}
 
-
+	@Override
+	public boolean isReturn() {
+		return true;
+	}
 }

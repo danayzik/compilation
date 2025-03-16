@@ -1,12 +1,9 @@
-int g;
-void main() {
-    int x;
-    int y;
-    int z;
+int f(int x, int y) {
+    int z := x + y;
+    return z;
+}
 
-    x := 1;
-    if (y > 0) {
-        z := x + g + 1;
-        x := x + 1;
-    }
+void main() {
+    int z := f(1, 2);
+    PrintInt(z);
 }
