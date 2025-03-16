@@ -1,17 +1,17 @@
 
 
-How to deal with local variables decleration inside loop? they keep offsetting the stack
+
 backup a3 before syscalls
 
 add exit to main.
 differentiate between main and user_main?
-how to deal with recursive main?
+
 Error throw in IG for no valid coloring
 Even if a temp is never alive. i need to have a mapping for it. //it's probably fine
 
 
 
-assigning nil or not assigning is the same, no?
+
 
 check comparing with nil|
 
@@ -20,3 +20,14 @@ Multiple definitions in different scopes, currently works. might be fucked later
 
 Add nil as initial value for class var dec?
 Add nil as init value for global var IR?
+
+Test ideas:
+String eq check
+string concat
+field inited to string
+implicit fields
+implicit method calls
+explicit method call with another object from implicit method call
+object.obj.obj...
+max value overflow
+min value overflow
