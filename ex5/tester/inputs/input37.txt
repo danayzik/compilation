@@ -1,4 +1,4 @@
-
+class Person{int x;}
 array intarr = int[];
 
 void main() {

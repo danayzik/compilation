@@ -65,8 +65,9 @@ public class AST_EXP_BINOP extends AST_EXP
 		boolean bothObjects = t1.isClass() && t2.isClass();
 		boolean oneIsNil = t1.isNil() || t2.isNil();
 		boolean oneIsClass = t1.isClass() || t2.isClass();
-		boolean oneIsArray = t1.isArray() && t2.isArray();
+		boolean oneIsArray = t1.isArray() || t2.isArray();
 		boolean comparable = oneIsNil && (oneIsArray || oneIsClass);
+
 		switch (OP) {
 			case 0:
 				if(bothStrings){

@@ -101,7 +101,7 @@ overflow_check_func:
 	li $v0, 32767
 	jr $ra
 	return_min_value:
-	li $s1, -32768
+	li $v0, -32768
 	jr $ra
 PrintString:
 	lw $a0, 0($sp)

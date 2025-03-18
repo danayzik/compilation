@@ -197,7 +197,7 @@ public class MIPSGenerator
 		fileWriter.format("\tli $v0, 32767\n");
 		fileWriter.format("\tjr $ra\n");
 		fileWriter.format("\treturn_min_value:\n");
-		fileWriter.format("\tli $s1, -32768\n");
+		fileWriter.format("\tli $v0, -32768\n");
 		fileWriter.format("\tjr $ra\n");
 
 	}

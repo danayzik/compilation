@@ -6,10 +6,10 @@ class x{
         PrintInt(y);
     }
     int bar(){
-        y := 3;
+        int y := 3;
         PrintInt(y);
         x shlomo := new x;
-        x.foo();
+        shlomo.foo();
 
         return 5;
     }
