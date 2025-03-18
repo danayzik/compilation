@@ -86,7 +86,9 @@ public class AST_EXP_FUNC_CALL extends AST_EXP
 		IR instance = IR.getInstance();
 		if (argList!=null)argCount = argList.getArgCount();
 		instance.Add_IRcommand(new IRcommand_Offset_Stack(-argCount*4));
-		TEMP_LIST tempList = argList.IRmeList();
+		TEMP_LIST tempList = null;
+		if(argList!=null)
+			tempList = argList.IRmeList();
 		instance.Add_IRcommand(new IRcommand_Offset_Stack(-argCount*4));
 		return tempList;
 	}

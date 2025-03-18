@@ -21,10 +21,9 @@ public class MIPSGenerator
 	/***********************/
 	public void finalizeFile()
 	{
-//		fileWriter.print("\tli $v0,10\n");
-//		fileWriter.print("\tsyscall\n");
 		fileWriter.close();
 	}
+
 	public void printInt()
 	{
 		fileWriter.format("\tjal PrintInt\n");
@@ -33,12 +32,20 @@ public class MIPSGenerator
 		fileWriter.format("PrintInt:\n");
 		fileWriter.format("\tlw $a0, 0($sp)\n");
 		fileWriter.format("\tli $v0, 1\n");
-		fileWriter.format("\tsyscall\n");
+		syscall();
 		fileWriter.format("\tli $a0, 32\n");
 		fileWriter.format("\tli $v0, 11\n");
-		fileWriter.format("\tsyscall\n");
+		syscall();
 		fileWriter.format("\tjr $ra\n");
 		addToStack(4);
+	}
+	public void syscall(){
+		fileWriter.format("\taddi $sp, $sp, -4\n");
+		fileWriter.format("\tsw $a3, 0($sp)\n");
+		fileWriter.format("\tsyscall\n");
+		fileWriter.format("\tlw $a3, 0($sp)\n");
+		fileWriter.format("\taddi $sp, $sp, 4\n");
+
 	}
 	public void printString(){
 		fileWriter.format("\tjal PrintString\n");
@@ -47,7 +54,7 @@ public class MIPSGenerator
 		fileWriter.format("PrintString:\n");
 		fileWriter.format("\tlw $a0, 0($sp)\n");
 		fileWriter.format("\tli $v0, 4\n");
-		fileWriter.format("\tsyscall\n");
+		syscall();
 		addToStack(4);
 	}
 
@@ -284,7 +291,7 @@ public class MIPSGenerator
 		// Allocate memory
 		fileWriter.format("\taddi $a0, $s1, 1\n");
 		fileWriter.format("\tli $v0, 9\n");
-		fileWriter.format("\tsyscall\n");
+		syscall();
 		fileWriter.format("\tmove $s2, $v0\n");
 		// newPtr = s2
 		// Copy first string
@@ -338,7 +345,7 @@ public class MIPSGenerator
 	public void newClassObject(String dstReg, int sizeToAlloc, boolean hasMethod, String vtableLabel){
 		fileWriter.format("\tli $a0, %d\n", sizeToAlloc);
 		fileWriter.format("\tli $v0,9\n");
-		fileWriter.format("\tsyscall\n");
+		syscall();
 		fileWriter.format("\tmove %s, $v0\n", dstReg);
 		if(hasMethod){
 			fileWriter.format("\tla $s0, %s\n", vtableLabel);
@@ -351,7 +358,7 @@ public class MIPSGenerator
 		addImmediate(sizeReg, sizeReg, 4);
 		fileWriter.format("\tmove $a0, %s\n", sizeReg);
 		fileWriter.format("\tli $v0, 9\n");
-		fileWriter.format("\tsyscall\n");
+		syscall();
 		fileWriter.format("\tmove %s, $v0\n", dstReg);
 		fileWriter.format("\tsw $s0, 0(%s)\n", dstReg);
 	}
@@ -378,7 +385,18 @@ public class MIPSGenerator
 
 	protected MIPSGenerator() {}
 
+	public void setOutPutFileName(String filePath){
+		try
+		{
 
+			instance.fileWriter = new PrintWriter(filePath);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+	}
 	public static MIPSGenerator getInstance()
 	{
 		if (instance == null)

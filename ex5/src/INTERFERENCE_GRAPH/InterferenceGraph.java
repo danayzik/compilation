@@ -50,11 +50,11 @@ public class InterferenceGraph {
                 node.removeNeighbour(minDegNode);
             }
         }
-        while(!nodeStack.isEmpty()){ // Fix error throw
+        while(!nodeStack.isEmpty()){
             Node curr = nodeStack.pop();
             graph.add(curr);
             if(!curr.assignReg())
-                throw new RuntimeException("Can't color graph");
+                throw new RegisterAllocationError("Register Allocation Failed");
             curr.addSelfToNeighbours();
             TEMP_FACTORY.getInstance().tempToReg.put(curr.tempSerialNum, curr.assignedReg);
         }

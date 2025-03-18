@@ -105,11 +105,12 @@ public class IRcommand_FunctionCall extends IRcommand
 		else{
 			String vtableReg = fact.tempToRegister(vtableAddr.getSerialNumber());
 			String addr = String.format("%d(%s)", offset, vtableReg);
-			gen.loadAddress("$s0", addr);
+			gen.loadFromAddress("$s0", addr);
 			gen.jalr("$s0");
 		}
 		gen.restoreRegisters();
-		gen.addToStack(argListValues.size*4);
+		if(argListValues!=null)
+			gen.addToStack(argListValues.size*4);
 
 		if(saveReturnValue){
 			String dstReg = fact.tempToRegister(dst.getSerialNumber());

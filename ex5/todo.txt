@@ -1,19 +1,16 @@
 
 
 
-backup a3 before syscalls
-
+no need for now:
 add exit to main.
 differentiate between main and user_main?
-
-Error throw in IG for no valid coloring
 Even if a temp is never alive. i need to have a mapping for it. //it's probably fine
 
 
 
 
 
-check comparing with nil|
+
 
 Multiple definitions in different scopes, currently works. might be fucked later
 
@@ -21,13 +18,4 @@ Multiple definitions in different scopes, currently works. might be fucked later
 Add nil as initial value for class var dec?
 Add nil as init value for global var IR?
 
-Test ideas:
-String eq check
-string concat
-field inited to string
-implicit fields
-implicit method calls
-explicit method call with another object from implicit method call
-object.obj.obj...
-max value overflow
-min value overflow
+

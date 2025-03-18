@@ -6,7 +6,6 @@ class IntList
 
 IntList MergeLists(IntList l1, IntList l2)
 {
-
     if (l1 = nil)
     {
         return l2;
@@ -30,7 +29,9 @@ IntList MergeLists(IntList l1, IntList l2)
         return l3;
     }
 
-
+    /**************************************************/
+    /* Execution falls off here ... what should we do */
+    /**************************************************/
 }
 
 void main()

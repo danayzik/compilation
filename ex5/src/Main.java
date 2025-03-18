@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import INTERFERENCE_GRAPH.RegisterAllocationError;
+import MIPS.MIPSGenerator;
 import java_cup.runtime.Symbol;
 import AST.*;
 import IR.*;
@@ -80,8 +82,18 @@ public class Main
 				return;
 			}
 			AST.IRme();
-			IR.getInstance().allocateRegister();
-			IR.getInstance().printMe();
+			try{
+				IR.getInstance().allocateRegister();
+			}
+			catch (RegisterAllocationError e){
+				String msg = e.getMessage();
+				file_writer.println(msg);
+				System.out.format(msg);
+				file_writer.close();
+				return;
+			}
+
+			MIPSGenerator.getInstance().setOutPutFileName(outputFilename);
 			IR.getInstance().mipsMe();
 
 			
