@@ -50,7 +50,7 @@ public class Tester {
 				Process process = processBuilder.start();
 				process.waitFor();
 				processBuilder = new ProcessBuilder(
-						"qtspim", "-f", mipsFile.toAbsolutePath().toString()
+						"spim", "-f", mipsFile.toAbsolutePath().toString()
 				);
 
 
