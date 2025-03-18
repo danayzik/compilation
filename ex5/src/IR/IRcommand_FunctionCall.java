@@ -103,6 +103,11 @@ public class IRcommand_FunctionCall extends IRcommand
 			gen.jal(funcName);
 		}
 		else{
+			if(ownerObj!=null) {
+				String ownerReg = fact.tempToRegister(ownerObj.getSerialNumber());
+				gen.moveSelfObject(ownerReg);
+
+			}
 			String vtableReg = fact.tempToRegister(vtableAddr.getSerialNumber());
 			String addr = String.format("%d(%s)", offset, vtableReg);
 			gen.loadFromAddress("$s0", addr);

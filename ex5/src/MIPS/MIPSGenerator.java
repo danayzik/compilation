@@ -49,6 +49,9 @@ public class MIPSGenerator
 		fileWriter.format("\taddi $sp, $sp, 4\n");
 
 	}
+	public void moveSelfObject(String selfObjReg){
+		fileWriter.format("\tmove $a3, %s\n", selfObjReg);
+	}
 	public void printString(){
 		fileWriter.format("\tjal PrintString\n");
 	}
