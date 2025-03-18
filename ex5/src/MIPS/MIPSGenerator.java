@@ -37,8 +37,9 @@ public class MIPSGenerator
 		fileWriter.format("\tli $a0, 32\n");
 		fileWriter.format("\tli $v0, 11\n");
 		syscall();
-		fileWriter.format("\tjr $ra\n");
 		addToStack(4);
+		fileWriter.format("\tjr $ra\n");
+
 	}
 	public void syscall(){
 		fileWriter.format("\taddi $sp, $sp, -4\n");
@@ -57,6 +58,7 @@ public class MIPSGenerator
 		fileWriter.format("\tli $v0, 4\n");
 		syscall();
 		addToStack(4);
+		fileWriter.format("\tjr $ra\n");
 	}
 
 	public void addConstStringToData(String label, String data){

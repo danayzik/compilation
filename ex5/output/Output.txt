@@ -1,3 +1,7 @@
+.data
+	string_access_violation: .asciiz "Access Violation"
+	string_illegal_div_by_0: .asciiz "Illegal Division By Zero"
+	string_invalid_ptr_dref: .asciiz "Invalid Pointer Dereference"
 .text
 str_cmp_func:
 	li $v0, 1
@@ -108,6 +112,7 @@ PrintString:
 	lw $a3, 0($sp)
 	addi $sp, $sp, 4
 	addi $sp, $sp, 4
+	jr $ra
 PrintInt:
 	lw $a0, 0($sp)
 	li $v0, 1
@@ -123,8 +128,8 @@ PrintInt:
 	syscall
 	lw $a3, 0($sp)
 	addi $sp, $sp, 4
-	jr $ra
 	addi $sp, $sp, 4
+	jr $ra
 fib:
 	addi $sp, $sp, -4
 	sw $ra, 0($sp)
