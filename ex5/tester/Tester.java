@@ -66,7 +66,7 @@ public class Tester {
 					System.out.println("Test " + fileNumber + " FAILED.");
 					failedTests++;
 				}
-				System.exit(0);
+
 			} catch (IOException | InterruptedException e) {
 				System.err.println("Error running test " + fileNumber + ": " + e.getMessage());
 			}
@@ -77,6 +77,17 @@ public class Tester {
 	private static boolean compareFiles(File file1, File file2) throws IOException {
 		List<String> lines1 = Files.readAllLines(file1.toPath());
 		List<String> lines2 = Files.readAllLines(file2.toPath());
+
+		// Remove trailing empty lines
+		trimTrailingEmptyLines(lines1);
+		trimTrailingEmptyLines(lines2);
+
 		return lines1.equals(lines2);
+	}
+
+	private static void trimTrailingEmptyLines(List<String> lines) {
+		while (!lines.isEmpty() && lines.get(lines.size() - 1).trim().isEmpty()) {
+			lines.remove(lines.size() - 1);
+		}
 	}
 }
