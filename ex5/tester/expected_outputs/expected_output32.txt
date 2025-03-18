@@ -5,4 +5,3 @@ See the file README for a full copyright notice.
 Loaded: /usr/lib/spim/exceptions.s
 abc
 abcd
-

@@ -78,9 +78,13 @@ public class Tester {
 		List<String> lines1 = Files.readAllLines(file1.toPath());
 		List<String> lines2 = Files.readAllLines(file2.toPath());
 
-		// Remove trailing empty lines
+		// Trim trailing spaces and empty lines
 		trimTrailingEmptyLines(lines1);
 		trimTrailingEmptyLines(lines2);
+
+		// Remove trailing spaces on each line
+		trimTrailingSpaces(lines1);
+		trimTrailingSpaces(lines2);
 
 		return lines1.equals(lines2);
 	}
@@ -88,6 +92,12 @@ public class Tester {
 	private static void trimTrailingEmptyLines(List<String> lines) {
 		while (!lines.isEmpty() && lines.get(lines.size() - 1).trim().isEmpty()) {
 			lines.remove(lines.size() - 1);
+		}
+	}
+
+	private static void trimTrailingSpaces(List<String> lines) {
+		for (int i = 0; i < lines.size(); i++) {
+			lines.set(i, lines.get(i).trim());
 		}
 	}
 }
