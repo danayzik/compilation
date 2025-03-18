@@ -50,10 +50,12 @@ public class Tester {
 				Process process = processBuilder.start();
 				process.waitFor();
 				processBuilder = new ProcessBuilder(
-						"spim", "-f", mipsFile.toAbsolutePath().toString(), ">",
-						outputFile.toAbsolutePath().toString()
+						"qtspim", "-f", mipsFile.toAbsolutePath().toString()
 				);
+
+
 				processBuilder.directory(COMPILER_DIR.toFile());
+				processBuilder.redirectOutput(outputFile.toFile());
 				processBuilder.redirectErrorStream(true);
 				process = processBuilder.start();
 				process.waitFor();
@@ -64,6 +66,7 @@ public class Tester {
 					System.out.println("Test " + fileNumber + " FAILED.");
 					failedTests++;
 				}
+				System.exit(0);
 			} catch (IOException | InterruptedException e) {
 				System.err.println("Error running test " + fileNumber + ": " + e.getMessage());
 			}
