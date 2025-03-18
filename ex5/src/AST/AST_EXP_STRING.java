@@ -28,6 +28,10 @@ public class AST_EXP_STRING extends AST_EXP
 		semanticType = TYPE_STRING.getInstance();
 		return semanticType;
 	}
+	public void initGlobalString(){
+		IR.getInstance().activateDataSection();
+		IR.getInstance().Add_IRcommand(new IRcommandConstString(strLabel, str));
+	}
 	@Override
 	public TEMP IRme() {
 		TEMP t = TEMP_FACTORY.getInstance().getFreshTEMP();
