@@ -16,6 +16,7 @@ public class MIPSGenerator
 	/***********************/
 	private PrintWriter fileWriter;
 
+
 	/***********************/
 	/* The file writer ... */
 	/***********************/
@@ -390,6 +391,10 @@ public class MIPSGenerator
 		{
 
 			instance.fileWriter = new PrintWriter(filePath);
+			instance.fileWriter.print(".data\n");
+			instance.fileWriter.print("\tstring_access_violation: .asciiz \"Access Violation\"\n");
+			instance.fileWriter.print("\tstring_illegal_div_by_0: .asciiz \"Illegal Division By Zero\"\n");
+			instance.fileWriter.print("\tstring_invalid_ptr_dref: .asciiz \"Invalid Pointer Dereference\"\n");
 		}
 		catch (Exception e)
 		{
@@ -404,25 +409,8 @@ public class MIPSGenerator
 
 			instance = new MIPSGenerator();
 
-			try
-			{
-
-				String dirname="./output/";
-				String filename=String.format("MIPS.txt");
 
 
-				instance.fileWriter = new PrintWriter(dirname+filename);
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-
-
-			instance.fileWriter.print(".data\n");
-			instance.fileWriter.print("\tstring_access_violation: .asciiz \"Access Violation\"\n");
-			instance.fileWriter.print("\tstring_illegal_div_by_0: .asciiz \"Illegal Division By Zero\"\n");
-			instance.fileWriter.print("\tstring_invalid_ptr_dref: .asciiz \"Invalid Pointer Dereference\"\n");
 		}
 		return instance;
 	}

@@ -50,7 +50,7 @@ public class Tester {
 				Process process = processBuilder.start();
 				process.waitFor();
 				processBuilder = new ProcessBuilder(
-						"SPIM", "-f", mipsFile.toAbsolutePath().toString(), ">",
+						"spim", "-f", mipsFile.toAbsolutePath().toString(), ">",
 						outputFile.toAbsolutePath().toString()
 				);
 				processBuilder.directory(COMPILER_DIR.toFile());
