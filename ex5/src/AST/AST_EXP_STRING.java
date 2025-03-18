@@ -12,6 +12,7 @@ public class AST_EXP_STRING extends AST_EXP
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 		this.str = str;
 		this.line = String.valueOf(line);
+		strLabel = IRcommand.getFreshStrLabel();
 	}
 
 	public void PrintMe()
@@ -30,8 +31,6 @@ public class AST_EXP_STRING extends AST_EXP
 	@Override
 	public TEMP IRme() {
 		TEMP t = TEMP_FACTORY.getInstance().getFreshTEMP();
-		String strLabel = IRcommand.getFreshStrLabel();
-		this.strLabel = strLabel;
 		IR.getInstance().activateDataSection();
 		IR.getInstance().Add_IRcommand(new IRcommandConstString(strLabel, str));
 		IR.getInstance().activateFunctionSection();
