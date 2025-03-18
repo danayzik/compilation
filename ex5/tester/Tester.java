@@ -47,7 +47,7 @@ public class Tester {
 				);
 				processBuilder.directory(COMPILER_DIR.toFile()); // Set working directory
 				processBuilder.redirectErrorStream(true);
-				process = processBuilder.start();
+				Process process = processBuilder.start();
 				process.waitFor();
 				processBuilder = new ProcessBuilder(
 						"SPIM", "-f", mipsFile.toAbsolutePath().toString(), ">",
@@ -55,7 +55,7 @@ public class Tester {
 				);
 				processBuilder.directory(COMPILER_DIR.toFile());
 				processBuilder.redirectErrorStream(true);
-				Process process = processBuilder.start();
+				process = processBuilder.start();
 				process.waitFor();
 
 				if (compareFiles(outputFile.toFile(), expectedFile.toFile())) {
