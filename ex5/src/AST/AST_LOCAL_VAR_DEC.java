@@ -58,13 +58,19 @@ public class AST_LOCAL_VAR_DEC extends AST_STMT
 
     public TEMP IRme()
     {
+        int offset = -indexInFunc*4-4;
+        Address storeAddr = new Address(ID);
+        storeAddr.setAsFPAddr(offset);
 
         if (assigned)
         {
-            int offset = -indexInFunc*4-4;
-            Address storeAddr = new Address(ID);
-            storeAddr.setAsFPAddr(offset);
+
             IR.getInstance().Add_IRcommand(new IRcommand_Store(storeAddr, assignedExp.IRme()));
+        }
+        else{
+            TEMP t = TEMP_FACTORY.getInstance().getFreshTEMP();
+            IR.getInstance().Add_IRcommand(new IRcommandConstInt(t, 0));
+            IR.getInstance().Add_IRcommand(new IRcommand_Store(storeAddr, t));
         }
         return null;
     }
